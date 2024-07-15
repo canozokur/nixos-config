@@ -8,7 +8,7 @@
   outputs = { nixpkgs, ... }@inputs: 
   let
     mkBox = import ./lib/mkbox.nix {
-      inherit nixpkgs inputs;
+      inherit nixpkgs;
     };
   in
   {
