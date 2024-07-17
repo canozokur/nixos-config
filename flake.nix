@@ -10,11 +10,13 @@
     mkBox = import ./lib/mkbox.nix {
       inherit nixpkgs;
     };
+
   in
   {
     nixosConfigurations = mkBox {
       box = "virtnixbox";
       system = "x86_64-linux";
+      users = [ "canozokur" ];
     };
   };
 }

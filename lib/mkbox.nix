@@ -1,9 +1,10 @@
 { nixpkgs }:
 { box, system, users }:
 let
-  mkUser = user:
-    import ../users/${user}/nixos.nix;
-    import ../users/${user}/home-manager.nix;
+  mkUser = user: [
+    ../users/${user}/nixos.nix
+    ../users/${user}/home-manager.nix
+  ];
 in
 {
   ${box} = nixpkgs.lib.nixosSystem {
