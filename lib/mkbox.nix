@@ -12,7 +12,6 @@ in
     modules = [
       ../boxes/${box}/hardware-configuration.nix
       ../boxes/${box}/configuration.nix
-      builtins.map mkUser users
-    ];
+    ] ++ builtins.concatLists (builtins.map mkUser users);
   };
 }
