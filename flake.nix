@@ -12,16 +12,10 @@
     };
   in
   {
-    nixosConfigurations.virtnixbox = mkBox {
-      box = "virtnixbox";
-      system = "x86_64-linux";
+    nixosConfigurations = mkBox {
+      virtnixbox = {
+        system = "x86_64-linux";
+      };
     };
-   # nixosConfigurations.virtnixbox = nixpkgs.lib.nixosSystem {
-   #   system = "x86_64-linux";
-   #   modules = [
-   #     ./virtnixbox/hardware-configuration.nix
-   #     ./configuration.nix
-   #   ];
-   # };
   };
 }
