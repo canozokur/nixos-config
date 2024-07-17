@@ -25,12 +25,6 @@
   networking.hostName = "virtnixbox";
   time.timeZone = "Europe/Helsinki";
 
-  users.users.canozokur = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    createHome = true;
-  };
-
   environment.systemPackages = with pkgs; [
     vim
     wget
