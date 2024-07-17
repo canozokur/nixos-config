@@ -13,9 +13,8 @@
   in
   {
     nixosConfigurations = mkBox {
-      virtnixbox = {
-        system = "x86_64-linux";
-      };
+      box = "virtnixbox";
+      system = "x86_64-linux";
     };
   };
 }
