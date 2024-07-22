@@ -4,7 +4,6 @@ let
   hm = inputs.hm.nixosModules.home-manager;
   mkUser = user: [
     ../users/${user}/nixos.nix
-    ../users/${user}/home-manager.nix
     hm {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
