@@ -1,9 +1,15 @@
 { nixpkgs, inputs }:
 { box, system, users }:
 let
+  hm = inputs.hm.nixosModules.home-manager;
   mkUser = user: [
     ../users/${user}/nixos.nix
     ../users/${user}/home-manager.nix
+    hm {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users.${user} = import ../users/${user}/home-manager.nix;
+    }
   ];
 in
 {
@@ -12,11 +18,6 @@ in
     modules = [
       ../boxes/${box}/hardware-configuration.nix
       ../boxes/${box}/configuration.nix
-      inputs.hm.nixosModules.home-manager {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.users.canozokur = import ../users/canozokur/home.nix;
-      }
     ] ++ builtins.concatLists (builtins.map mkUser users);
   };
 }
