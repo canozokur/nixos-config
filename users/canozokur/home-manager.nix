@@ -24,7 +24,6 @@
         bare = false;
         logallrefupdates = true;
       };
-      interactive.difffilter = "${pkgs.delta} --color-only | ${pkgs.less} -RSFX";
     };
     delta = {
       enable = true;
