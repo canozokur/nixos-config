@@ -19,6 +19,12 @@
       init = { defaultbranch = "main"; };
       push = { autosetupremote = true; };
       url."git@github.com:".insteadOf = "https://github.com/";
+      core = {
+        filemode = true;
+        bare = false;
+        logallrefupdates = true;
+      };
+      interactive.difffilter = "${pkgs.delta} --color-only | ${pkgs.less} -RSFX";
     };
     delta = {
       enable = true;
