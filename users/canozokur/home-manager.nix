@@ -4,5 +4,9 @@
   home.packages = with pkgs; [
     fzf
     tree
+    jq
+    htop
+    ripgrep
+    watch
   ];
 }
