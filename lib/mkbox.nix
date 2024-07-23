@@ -1,10 +1,9 @@
-{ nixpkgs, inputs }:
+{ nixpkgs, home-manager }:
 { box, system, users }:
 let
-  hm = inputs.hm.nixosModules.home-manager;
   mkUser = user: [
     ../users/${user}/nixos.nix
-    hm {
+    home-manager.nixosModules.home-manager {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.users.${user} = import ../users/${user}/home-manager.nix;

@@ -3,15 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    hm.url = "github:nix-community/home-manager";
-    hm.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, ... }@inputs: 
+  outputs = { nixpkgs, home-manager, ... }@inputs: 
   let
     mkBox = import ./lib/mkbox.nix {
       inherit nixpkgs;
-      inherit inputs;
+      inherit home-manager;
     };
 
   in
