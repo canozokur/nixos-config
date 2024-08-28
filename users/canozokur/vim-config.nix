@@ -86,6 +86,10 @@ vim.g.mapleader = " "
 
 -- Disable mouse
 vim.opt.mouse = ""
+
+-- Whitespace and other chars
+vim.opt.list = true
+vim.opt.listchars= { eol = '¬', tab = '>·', trail = '~', extends = '>',precedes = '<', space = '·' }
 -- END CONFIG
 
 require('hardline').setup {}
