@@ -2,6 +2,7 @@
 {
   imports = [
     nixvim.homeManagerModules.nixvim
+    ./nixvim
   ];
 
   home.stateVersion = "24.05";
@@ -49,9 +50,5 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-
-    imports = [
-      ./nixvim # all nixvim config goes into this dir
-    ];
   };
 }
