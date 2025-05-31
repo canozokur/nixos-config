@@ -18,12 +18,11 @@
   };
 
   outputs = { nixpkgs, home-manager, ... }@inputs:
-    let
+  let
     mkBox = import ./lib/mkbox.nix {
       inherit nixpkgs;
       inherit home-manager;
     };
-
   in
   {
     nixosConfigurations = mkBox {
