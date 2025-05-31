@@ -23,7 +23,35 @@
     };
   };
 
-  networking.hostName = "virtnixbox";
+  networking = {
+    hostName = "virtnixbox";
+    nameservers = [
+      "192.168.50.2"
+    ];
+    networkmanager = {
+      enable = true;
+      dns = "none";
+      ensureProfiles.profiles = {
+        wired = {
+          connection = {
+            id = "wired";
+            permissions = "";
+            type = "802-3-ethernet";
+            interface-name = "ens33";
+          };
+        };
+        host_only = {
+          connection = {
+            id = "host-only";
+            permissions = "";
+            type = "802-3-ethernet";
+            interface-name = "ens37";
+          };
+        };
+      };
+    };
+  };
+
   time.timeZone = "Europe/Helsinki";
 
   environment.systemPackages = with pkgs; [
