@@ -1,9 +1,12 @@
-{ nixpkgs, home-manager }:
+{ nixpkgs, home-manager, nixvim }:
 { box, system, users }:
 let
   mkUser = user: [
     ../users/${user}/nixos.nix
     home-manager.nixosModules.home-manager {
+      home-manager.extraSpecialArgs = {
+        inherit nixvim;
+      };
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.users.${user} = import ../users/${user}/home-manager.nix;

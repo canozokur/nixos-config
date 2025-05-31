@@ -17,10 +17,11 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }@inputs:
+  outputs = { nixvim, nixpkgs, home-manager, ... }@inputs:
   let
     mkBox = import ./lib/mkbox.nix {
       inherit nixpkgs;
+      inherit nixvim;
       inherit home-manager;
     };
   in
