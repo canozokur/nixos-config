@@ -2,7 +2,7 @@
 {
   imports = [
     ./barbar.nix
-    ./blink.nix
+    ./blink-cmp.nix
     ./hardline.nix
   ];
 }
