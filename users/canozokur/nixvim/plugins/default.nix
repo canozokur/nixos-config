@@ -8,5 +8,7 @@
     ./telescope.nix
     ./telescope-send-to-harpoon2.nix
     ./indent-blankline.nix
+    ./treesitter.nix
+    ./undotree.nix
   ];
 }
