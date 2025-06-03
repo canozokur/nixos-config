@@ -4,5 +4,8 @@
     ./barbar.nix
     ./blink-cmp.nix
     ./hardline.nix
+    ./harpoon2.nix
+    ./telescope.nix
+    ./telescope-send-to-harpoon2.nix
   ];
 }
