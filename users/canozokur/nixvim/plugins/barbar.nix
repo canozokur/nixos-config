@@ -6,6 +6,13 @@
       keymaps = {
         pick.key = "<C-p>";
         pickDelete.key = "<C-s-p>";
+        close.key = "<A-c>";
+      };
+      lazyLoad = {
+        enable = true;
+        settings = {
+          event = ["BufRead"];
+        };
       };
     };
 
