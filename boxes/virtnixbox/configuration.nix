@@ -2,6 +2,10 @@
 
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.optimise = {
+    automatic = true;
+    dates = ["03:45"];
+  };
   nixpkgs.config.allowUnfree = true;
 
   boot = {
