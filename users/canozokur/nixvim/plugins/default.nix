@@ -11,5 +11,6 @@
     ./treesitter.nix
     ./undotree.nix
     ./lzn-auto-require.nix
+    ./suda.nix
   ];
 }
