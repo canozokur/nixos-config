@@ -63,6 +63,12 @@
       plugin = "telescope.nvim";
     }
     {
+      key = "<leader>reg";
+      action = "<cmd>Telescope registers<cr>";
+      mode = "n";
+      plugin = "telescope.nvim";
+    }
+    {
       key = "<leader>ps";
       action.__raw = "function() live_grep_from_project_git_root() end";
       mode = "n";
