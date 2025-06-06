@@ -73,11 +73,6 @@
       mode = "n";
     }
     {
-      key = "==";
-      action = "vim.lsp.buf.format";
-      mode = "n";
-    }
-    {
       key = "<C-j>";
       action = "<cmd>cnext<cr>zz";
       mode = "n";
