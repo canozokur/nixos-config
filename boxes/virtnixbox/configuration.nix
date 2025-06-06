@@ -59,7 +59,6 @@
   time.timeZone = "Europe/Helsinki";
 
   environment.systemPackages = with pkgs; [
-    vim
     wget
     git
   ];
