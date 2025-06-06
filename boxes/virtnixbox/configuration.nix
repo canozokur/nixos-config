@@ -1,13 +1,5 @@
-{ pkgs, ... }:
-
+{ ... }:
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.optimise = {
-    automatic = true;
-    dates = ["03:45"];
-  };
-  nixpkgs.config.allowUnfree = true;
-
   boot = {
     loader = {
       systemd-boot.enable = true;
@@ -58,13 +50,7 @@
 
   time.timeZone = "Europe/Helsinki";
 
-  environment.systemPackages = with pkgs; [
-    wget
-    git
-  ];
-
   services.openssh.enable = true;
   system.stateVersion = "23.11";
-
 }
 

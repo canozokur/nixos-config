@@ -17,6 +17,7 @@ in
   ${box} = nixpkgs.lib.nixosSystem {
     inherit system;
     modules = [
+      ../boxes/_shared.nix
       ../boxes/${box}/hardware-configuration.nix
       ../boxes/${box}/configuration.nix
     ] ++ builtins.concatLists (builtins.map mkUser users);

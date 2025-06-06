@@ -3,6 +3,7 @@
   imports = [
     nixvim.homeManagerModules.nixvim
     ./nixvim
+    ./programs
   ];
 
   home.stateVersion = "24.05";
