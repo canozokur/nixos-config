@@ -19,5 +19,6 @@
     withPython3 = false;
     withRuby = false;
     plugins.lz-n.enable = true; # enable lazy loading
+    dependencies.gcc.enable = true;
   };
 }
