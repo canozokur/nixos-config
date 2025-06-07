@@ -19,5 +19,18 @@
   environment.systemPackages = with pkgs; [
     wget
     git
+    greetd.greetd
+    greetd.tuigreet
   ];
+
+  services.greetd = {
+    enable = true;
+    restart = true;
+    vt = 1;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd sway";
+      };
+    };
+  };
 }
