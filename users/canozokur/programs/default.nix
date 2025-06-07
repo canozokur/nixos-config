@@ -6,5 +6,6 @@
     ./sway.nix
     ./ghostty.nix
     ./fonts.nix
+    ./firefox.nix
   ];
 }
