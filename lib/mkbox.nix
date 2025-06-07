@@ -3,23 +3,40 @@
 let
   mkUser = user: [
     ../users/${user}/nixos.nix
-    home-manager.nixosModules.home-manager {
+    # inline module to merge the host overrides for home-manager configuration
+    ({ config, ... }: {
+      imports = [ home-manager.nixosModules.home-manager ];
       home-manager.extraSpecialArgs = {
         inherit nixvim;
       };
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.users.${user} = import ../users/${user}/home-manager.nix;
-    }
+      home-manager.users.${user} =
+        let
+          userHomeFile = ../users/${user}/home-manager.nix;
+          hostOverridesForPrograms = config.hostSpecificOverrides or {};
+        in
+        {
+          imports = [ userHomeFile ];
+          config = hostOverridesForPrograms;
+        };
+    })
   ];
 in
 {
   ${box} = nixpkgs.lib.nixosSystem {
     inherit system;
     modules = [
+      # another inline module so we can define a "hostSpecificOverrides" config option and use it later
+      ({ lib, ... }: {
+        options.hostSpecificOverrides = lib.mkOption {
+          type = lib.types.attrs;
+          default = {};
+          description = "Host-specific overrides to be merged into the main home-manager config.";
+        };
+      })
       ../boxes/_shared.nix
-      ../boxes/${box}/hardware-configuration.nix
-      ../boxes/${box}/configuration.nix
+      ../boxes/${box}
     ] ++ builtins.concatLists (builtins.map mkUser users);
   };
 }
