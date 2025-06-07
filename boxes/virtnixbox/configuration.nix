@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   boot = {
     loader = {
@@ -49,6 +49,9 @@
   };
 
   time.timeZone = "Europe/Helsinki";
+
+  virtualisation.vmware.guest.enable = true;
+  hardware.graphics.enable = true;
 
   services.openssh.enable = true;
   system.stateVersion = "23.11";
