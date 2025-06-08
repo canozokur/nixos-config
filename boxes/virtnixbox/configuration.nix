@@ -53,6 +53,10 @@
   virtualisation.vmware.guest.enable = true;
   hardware.graphics.enable = true;
 
+  security.pam.loginLimits = [
+    { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+  ];
+
   services.openssh.enable = true;
   system.stateVersion = "23.11";
 }
