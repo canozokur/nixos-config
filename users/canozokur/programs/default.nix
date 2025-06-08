@@ -7,5 +7,6 @@
     ./ghostty.nix
     ./fonts.nix
     ./firefox.nix
+    ./zellij.nix
   ];
 }
