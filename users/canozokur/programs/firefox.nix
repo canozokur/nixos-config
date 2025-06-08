@@ -21,6 +21,7 @@
               urls = [{
                 template = "https://search.nixos.org/packages";
                 params = [
+                  { name = "channel"; value = "unstable"; }
                   { name = "type"; value = "packages"; }
                   { name = "query"; value = "{searchTerms}"; }
                 ];
@@ -44,6 +45,12 @@
             "google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
           };
         };
+        # stylesheet to disable tab close buttons
+        # don't forget to open about:config and enable toolkit.legacyUserProfileCustomizations.stylesheets
+        userChrome = ''
+          @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+          .tab-close-button { display: none !important; }
+        '';
       };
     };
   };
