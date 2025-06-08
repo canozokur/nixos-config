@@ -11,6 +11,10 @@
           "browser.startup.homepage" = "about:newtab";
           "browser.search.defaultenginename" = "Kagi";
           "browser.search.order.1" = "Kagi";
+          "browser.aboutConfig.showWarning" = false;
+          "browser.firefox-view.feature-tour" = { "message" = "FIREFOX_VIEW_FEATURE_TOUR"; "screen" = ""; "complete" = true; };
+          "browser.toolbars.bookmarks.visibility" = "never";
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         };
         search = {
           force = true;
