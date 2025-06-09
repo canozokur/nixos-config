@@ -1,6 +1,6 @@
 { ... }:
 {
   nixpkgs.overlays = [
-    (import ./ghostty.nix)
+#    (import ./ghostty.nix)
   ];
 }
