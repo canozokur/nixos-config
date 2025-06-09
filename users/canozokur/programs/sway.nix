@@ -1,17 +1,28 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   services.gnome-keyring.enable = true; # enable a keyring provider
   wayland.windowManager.sway = {
     enable = true;
     xwayland = true;
     wrapperFeatures.gtk = true;
-    config = {
+    config = rec {
       modifier = "Mod4";
       terminal = "${pkgs.ghostty}/bin/ghostty";
       fonts = {
         names = ["Droid Sans"];
         style = "Regular";
         size = "8";
+      };
+
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+q" = "kill";
+        "${modifier}+d" = ''
+          exec ${pkgs.wofi}/bin/wofi -combi-modi "window#drun" -show combi -modi combi \
+                -line-padding 4 -columns 2 -padding 50 -hide-scrollbar \
+                -show-icons -drun-icon-theme "Arc-X-D" -matching fuzzy \
+                -font "Droid Sans Regular 10"
+        '';
+        "${modifier}+Shift+r" = "reload";
       };
 
       startup = [

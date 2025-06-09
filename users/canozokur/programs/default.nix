@@ -8,5 +8,6 @@
     ./fonts.nix
     ./firefox.nix
     ./zellij.nix
+    ./rofi.nix
   ];
 }
