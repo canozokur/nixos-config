@@ -17,7 +17,7 @@
       keybindings = lib.mkOptionDefault {
         "${modifier}+q" = "kill";
         "${modifier}+d" = ''
-          exec ${pkgs.wofi}/bin/wofi -combi-modi "window#drun" -show combi -modi combi \
+          exec ${pkgs.rofi}/bin/rofi -combi-modi "window#drun" -show combi -modi combi \
                 -line-padding 4 -columns 2 -padding 50 -hide-scrollbar \
                 -show-icons -drun-icon-theme "Arc-X-D" -matching fuzzy \
                 -font "Droid Sans Regular 10"
