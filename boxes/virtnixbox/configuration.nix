@@ -9,7 +9,7 @@
     initrd = {
       luks.devices = {
         luksroot = {
-          device = "/dev/disk/by-uuid/3a31c2f8-b66f-4420-9444-c98cce8c1fad";
+          device = "/dev/disk/by-uuid/a97e8f8a-2e6e-4dac-af71-f4e67496dfc9";
         };
       };
       availableKernelModules = [
