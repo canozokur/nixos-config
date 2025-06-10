@@ -13,5 +13,6 @@
     ./cliphist.nix
     ./wlsunset.nix
     ./i3status-rs.nix
+    ./ssh-agent.nix
   ];
 }
