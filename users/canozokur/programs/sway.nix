@@ -1,5 +1,13 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 12;
+  };
+
   services.gnome-keyring.enable = true; # enable a keyring provider
   wayland.windowManager.sway = {
     enable = true;
