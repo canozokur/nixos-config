@@ -17,6 +17,9 @@
         "cryptd"
       ];
     };
+    kernelModules = [ "hv_vmbus" "hv_storvsc" ];
+    kernelParams = [ "video=hyperv_fb:1900x1200" ];
+    kernel.sysctl."vm.overcommit_memory" = 1; # https://github.com/NixOS/nix/issues/421
   };
 
   networking = {
@@ -50,7 +53,6 @@
 
   time.timeZone = "Europe/Helsinki";
 
-  virtualisation.vmware.guest.enable = true;
   hardware.graphics.enable = true;
 
   security.pam.loginLimits = [
