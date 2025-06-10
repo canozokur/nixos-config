@@ -35,4 +35,5 @@
   };
 
   security.polkit.enable = true; # required for sway
+  security.pam.services.swaylock = {}; # required for swaylock
 }

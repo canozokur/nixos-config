@@ -9,5 +9,9 @@
     ./firefox.nix
     ./zellij.nix
     ./rofi.nix
+    ./swaylock.nix
+    ./cliphist.nix
+    ./wlsunset.nix
+    ./i3status-rs.nix
   ];
 }
