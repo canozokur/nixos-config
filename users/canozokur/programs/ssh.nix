@@ -1,6 +1,7 @@
 { ... }:
 {
   programs.ssh = {
+    enable = true;
     addKeysToAgent = "yes";
     matchBlocks = {
       "aur.archlinux.org" = {
