@@ -15,5 +15,6 @@
     ./i3status-rs.nix
     ./ssh-agent.nix
     ./keybase.nix
+    ./ssh.nix
   ];
 }
