@@ -76,6 +76,7 @@
         "perms"
         "jobs"
         "exit"
+        "nix-shell"
       ];
 
       settings = {
