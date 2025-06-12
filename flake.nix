@@ -15,11 +15,17 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixvim, nixpkgs, home-manager, ... }@inputs:
+  outputs = inputs@{ nixvim, nixpkgs, home-manager, ... }:
   let
     mkBox = import ./lib/mkbox.nix {
+      inherit inputs;
       inherit nixpkgs;
       inherit nixvim;
       inherit home-manager;

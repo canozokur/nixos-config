@@ -1,5 +1,9 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
+  imports = [
+    inputs.sops.nixosModules.sops
+  ];
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nix.optimise = {

@@ -1,4 +1,4 @@
-{ nixpkgs, home-manager, nixvim }:
+{ inputs, nixpkgs, home-manager, nixvim }:
 { box, system, users }:
 let
   mkUser = user: [
@@ -26,6 +26,11 @@ in
 {
   ${box} = nixpkgs.lib.nixosSystem {
     inherit system;
+
+    specialArgs = {
+      inherit inputs;
+    };
+
     modules = [
       # another inline module so we can define a "hostSpecificOverrides" config option and use it later
       ({ lib, ... }: {
