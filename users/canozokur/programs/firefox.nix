@@ -45,6 +45,12 @@
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = [ "@k" ];
             };
+            "Noogle" = {
+              urls = [{ template = "https://noogle.dev/q?term={searchTerms}"; }];
+              icon = "https://noogle.dev/favicon.ico";
+              updateInterval = 24 * 60 * 60 * 1000; # every day
+              definedAliases = [ "@ng" ];
+            };
             "bing".metaData.hidden = true;
             "google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
           };
