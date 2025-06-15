@@ -14,8 +14,11 @@ in
     gnupg.sshKeyPaths = [];
 
     secrets = {
-      "ssh/keys" = {
+      "ssh/keys/default" = {
         path = "/home/canozokur/.ssh/id_ed25519";
+      };
+      "ssh/keys/queljin" = {
+        path = "/home/canozokur/.ssh/queljin";
       };
     };
   };
