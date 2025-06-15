@@ -34,6 +34,11 @@
       inherit nixpkgs;
       inherit home-manager;
     };
+
+    forAllSystems = nixpkgs.lib.genAttrs [
+      "aarch64-linux"
+      "x86_64-linux"
+    ];
   in
   {
     nixosConfigurations = mkBox {
@@ -41,5 +46,18 @@
       system = "x86_64-linux";
       users = [ "canozokur" ];
     };
+
+    devShells = forAllSystems (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      {
+        default = pkgs.mkShell {
+          buildInputs = [
+            pkgs.sops
+          ];
+        };
+      }
+    );
   };
 }
