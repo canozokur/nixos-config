@@ -87,6 +87,23 @@
         "type": "github"
       }
     },
+    "nix-secrets": {
+      "locked": {
+        "lastModified": 1749938438,
+        "narHash": "sha256-BKBpCaJgcsxmQJx5Ue67RRQl4OC8o0G5GKTBmrS3R4A=",
+        "ref": "main",
+        "rev": "3ac9c7c7feca76ca9922ed2e29de135df25b0ecb",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/canozokur/nix-secrets.git"
+      },
+      "original": {
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/canozokur/nix-secrets.git"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1748693115,
@@ -152,12 +169,13 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "nix-secrets": "nix-secrets",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
-        "sops": "sops"
+        "sops-nix": "sops-nix"
       }
     },
-    "sops": {
+    "sops-nix": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"

@@ -1,9 +1,11 @@
-{ pkgs, nixvim, ... }:
+{ pkgs, nixvim, sops-nix, ... }:
 {
   imports = [
     nixvim.homeManagerModules.nixvim
+    sops-nix.homeManagerModules.sops
     ./nixvim
     ./programs
+    ./sops.nix
   ];
 
   home.stateVersion = "24.05";

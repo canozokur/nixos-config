@@ -1,13 +1,15 @@
-{ inputs, nixpkgs, home-manager, nixvim }:
+{ inputs, nixpkgs, home-manager }:
 { box, system, users }:
 let
   mkUser = user: [
     ../users/${user}/nixos.nix
     # inline module to merge the host overrides for home-manager configuration
-    ({ config, ... }: {
+    ({ config, inputs, ... }: {
       imports = [ home-manager.nixosModules.home-manager ];
       home-manager.extraSpecialArgs = {
-        inherit nixvim;
+        inherit (inputs) nixvim;
+        inherit (inputs) sops-nix;
+        inherit (inputs) nix-secrets;
       };
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;

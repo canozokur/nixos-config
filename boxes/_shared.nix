@@ -1,7 +1,7 @@
 { inputs, pkgs, ... }:
 {
   imports = [
-    inputs.sops.nixosModules.sops
+    inputs.sops-nix.nixosModules.sops
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
