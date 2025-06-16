@@ -1,5 +1,10 @@
-{ ... }:
+{ pkgs, ... }:
 {
+  # we need this for alias completion in bash
+  home.packages = with pkgs; [
+    complete-alias
+  ];
+
   programs = {
     bash = {
       enable = true;
@@ -12,6 +17,7 @@
         ls = "ls --color=auto";
         ll = "ls -lav --ignore=..";   # show long listing of all except ".."
         l = "ls -lav --ignore=.?*";   # show long listing but no hidden dotfiles except "."
+        apl = "ansible-playbook";
         cuti = ''
           curl -w '
           time_namelookup:  %{time_namelookup}
@@ -24,10 +30,15 @@
           time_total:  %{time_total}\n' -o /dev/null -s
         '';
         k = "kubectl";
+        ky = "kubectl -o yaml";
       };
       initExtra = ''
         bind '"\e[A":history-search-backward'
         bind '"\e[B":history-search-forward'
+        . ${pkgs.complete-alias}/bin/complete_alias
+        complete -F _complete_alias ky
+        complete -F _complete_alias k
+        complete -F _complete_alias apl
       '';
       bashrcExtra = ''
         # base64 decode helper
