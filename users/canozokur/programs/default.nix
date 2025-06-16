@@ -19,5 +19,6 @@
     ./direnv.nix
     ./spotify-player.nix
     ./google-cloud-sdk.nix
+    ./flameshot.nix
   ];
 }
