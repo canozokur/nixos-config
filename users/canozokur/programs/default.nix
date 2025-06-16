@@ -16,5 +16,6 @@
     ./ssh-agent.nix
     ./keybase.nix
     ./ssh.nix
+    ./direnv.nix
   ];
 }
