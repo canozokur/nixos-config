@@ -22,5 +22,6 @@
     globalprotect-openconnect
     kubectl
     kubectx
+    zoom-us
   ];
 }
