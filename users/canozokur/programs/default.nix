@@ -18,5 +18,6 @@
     ./ssh.nix
     ./direnv.nix
     ./spotify-player.nix
+    ./google-cloud-sdk.nix
   ];
 }
