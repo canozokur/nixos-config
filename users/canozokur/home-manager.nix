@@ -19,5 +19,8 @@
     htop
     ripgrep
     watch
+    globalprotect-openconnect
+    kubectl
+    kubectx
   ];
 }
