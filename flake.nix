@@ -53,8 +53,10 @@
       in
       {
         default = pkgs.mkShell {
-          buildInputs = [
-            pkgs.sops
+          buildInputs = with pkgs; [
+            sops
+            age
+            ssh-to-age
           ];
         };
       }
