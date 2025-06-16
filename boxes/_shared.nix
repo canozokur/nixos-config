@@ -4,6 +4,8 @@
     inputs.sops-nix.nixosModules.sops
   ];
 
+  # enable all firmware regardless of license
+  hardware.enableAllFirmware = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nix.optimise = {
@@ -26,6 +28,7 @@
     greetd.greetd
     greetd.tuigreet
   ];
+
 
   services.greetd = {
     enable = true;
