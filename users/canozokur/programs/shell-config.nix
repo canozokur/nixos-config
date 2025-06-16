@@ -21,7 +21,9 @@
           time_redirect:  %{time_redirect}
           time_starttransfer:  %{time_starttransfer}
           ----------
-          time_total:  %{time_total}\n' -o /dev/null -s'';
+          time_total:  %{time_total}\n' -o /dev/null -s
+        '';
+        k = "kubectl";
       };
       initExtra = ''
         bind '"\e[A":history-search-backward'
