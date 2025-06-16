@@ -1,3 +1,6 @@
+alias rebuild := switch
+alias r := switch
+alias b := switch
 switch:
   nixos-rebuild --use-remote-sudo switch --flake .
 
