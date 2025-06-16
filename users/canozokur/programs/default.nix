@@ -17,5 +17,6 @@
     ./keybase.nix
     ./ssh.nix
     ./direnv.nix
+    ./spotify-player.nix
   ];
 }
