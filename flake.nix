@@ -41,13 +41,19 @@
     ];
   in
   {
-    nixosConfigurations = mkBox {
+    nixosConfigurations.virtnixbox = mkBox {
       box = "virtnixbox";
       system = "x86_64-linux";
       users = [ "canozokur" ];
     };
 
-    devShells = forAllSystems (system:
+    nixosConfigurations.nexusbox = mkBox {
+      box = "nexusbox";
+      system = "x86_64-linux";
+      users = [ "canozokur" ];
+    };
+
+    devShells = forAllSystems (system: 
       let
         pkgs = nixpkgs.legacyPackages.${system};
       in

@@ -25,25 +25,23 @@ let
     })
   ];
 in
-{
-  ${box} = nixpkgs.lib.nixosSystem {
-    inherit system;
+nixpkgs.lib.nixosSystem {
+  inherit system;
 
-    specialArgs = {
-      inherit inputs;
-    };
-
-    modules = [
-      # another inline module so we can define a "hostSpecificOverrides" config option and use it later
-      ({ lib, ... }: {
-        options.hostSpecificOverrides = lib.mkOption {
-          type = lib.types.attrs;
-          default = {};
-          description = "Host-specific overrides to be merged into the main home-manager config.";
-        };
-      })
-      ../boxes/_shared.nix
-      ../boxes/${box}
-    ] ++ builtins.concatLists (builtins.map mkUser users);
+  specialArgs = {
+    inherit inputs;
   };
+
+  modules = [
+    # another inline module so we can define a "hostSpecificOverrides" config option and use it later
+    ({ lib, ... }: {
+      options.hostSpecificOverrides = lib.mkOption {
+        type = lib.types.attrs;
+        default = {};
+        description = "Host-specific overrides to be merged into the main home-manager config.";
+      };
+    })
+    ../boxes/_shared.nix
+    ../boxes/${box}
+  ] ++ builtins.concatLists (builtins.map mkUser users);
 }
