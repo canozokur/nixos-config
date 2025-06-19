@@ -88,11 +88,14 @@
       }
     },
     "nix-secrets": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
       "locked": {
-        "lastModified": 1750108024,
-        "narHash": "sha256-wnfoPBk1m0/coNNSoW/stslJ0KSlHGm9vPrOndO8QE4=",
+        "lastModified": 1750319474,
+        "narHash": "sha256-CkV1Ugwq6DlZboysgrrJ2iWh1OXNxLo20diD2TvO+2I=",
         "ref": "main",
-        "rev": "be42f68f21a8500e8507ddecf6f9e964aa194c02",
+        "rev": "fabdbfd84cfb3039ab774b421c65fd0b8a2f1b01",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/canozokur/nix-secrets.git"
@@ -105,6 +108,20 @@
       }
     },
     "nixpkgs": {
+      "locked": {
+        "lastModified": 1750215678,
+        "narHash": "sha256-Rc/ytpamXRf6z8UA2SGa4aaWxUXRbX2MAWIu2C8M+ok=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5395fb3ab3f97b9b7abca147249fa2e8ed27b192",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1748693115,
         "narHash": "sha256-StSrWhklmDuXT93yc3GrTlb0cKSS0agTAxMGjLKAsY8=",
@@ -170,7 +187,7 @@
       "inputs": {
         "home-manager": "home-manager",
         "nix-secrets": "nix-secrets",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim",
         "sops-nix": "sops-nix"
       }

@@ -8,7 +8,7 @@ dry-build:
   nixos-rebuild dry-build --flake .
 
 dry-activate:
-  nixos-rebuild dry-activate --flake .
+  nixos-rebuild --use-remote-sudo dry-activate --flake .
 
 test:
   nixos-rebuild --use-remote-sudo test --flake .
