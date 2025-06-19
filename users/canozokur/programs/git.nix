@@ -1,9 +1,14 @@
-{ ... }:
+{ config, ... }:
 {
   programs.git = {
     enable = true;
     userEmail = "13416785+canozokur@users.noreply.github.com";
     userName = "canozokur";
+    signing = {
+      key = "${config.home.homeDirectory}/.ssh/id_ed25519";
+      format = "ssh";
+      signByDefault = true;
+    };
     extraConfig = {
       pull = { ff = "only"; };
       init = { defaultbranch = "main"; };
@@ -19,6 +24,7 @@
       enable = true;
       options = {
         features = "side-by-side line-numbers decorations";
+        syntax-theme = "zenburn";
         whitespace-error-style = "22 reverse";
         decorations = {
           commit-decoration-style = "bold yellow box ul";
