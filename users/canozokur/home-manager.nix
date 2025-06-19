@@ -23,5 +23,6 @@
     kubectl
     kubectx
     zoom-us
+    slack
   ];
 }
