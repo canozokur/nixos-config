@@ -75,8 +75,8 @@ in
         file = config.sops.secrets."network/secrets/home-wifi/psk".path;
         key = "psk";
         matchId = "home-wifi";
-        matchSetting = "wireless-security";
-        matchType = "wifi";
+        matchSetting = "802-11-wireless-security";
+        matchType = "802-11-wireless";
       }
     ];
     profiles = {
