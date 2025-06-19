@@ -25,6 +25,11 @@
       url = "git+ssh://git@github.com/canozokur/nix-secrets.git?ref=main&shallow=1";
       inputs = {};
     };
+
+    kolide-launcher = {
+      url = "github:/kolide/nix-agent/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }:

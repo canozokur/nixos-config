@@ -87,15 +87,36 @@
         "type": "github"
       }
     },
+    "kolide-launcher": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1746473343,
+        "narHash": "sha256-F0YpvaRbAjh4qKrBGip+CxvAkCIY3yKVKGitK1gsqkk=",
+        "owner": "kolide",
+        "repo": "nix-agent",
+        "rev": "73d5caa7acefdf77d77fcee5ef4e482dbcaf8e47",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kolide",
+        "ref": "main",
+        "repo": "nix-agent",
+        "type": "github"
+      }
+    },
     "nix-secrets": {
       "inputs": {
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1750330186,
-        "narHash": "sha256-az1YyryegZWP9gYesiDj5LBN+B3r2APHwVnxE6WshAk=",
+        "lastModified": 1750369469,
+        "narHash": "sha256-0kZvWl46aLSmncfgdfv+warwI684DfYpBSfw12k26ZY=",
         "ref": "main",
-        "rev": "d336f40ec588845271488edf8c5ec7e525dd2c75",
+        "rev": "201d72418b06cd4fe299fab4850a84d810369a75",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/canozokur/nix-secrets.git"
@@ -186,6 +207,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "kolide-launcher": "kolide-launcher",
         "nix-secrets": "nix-secrets",
         "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim",
