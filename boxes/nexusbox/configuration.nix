@@ -43,6 +43,9 @@
   time.timeZone = "Europe/Helsinki";
 
   hardware.graphics.enable = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
 
   security.pam.loginLimits = [
     { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
