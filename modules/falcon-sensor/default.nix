@@ -1,3 +1,5 @@
+# configuration taken from https://github.com/ymgyt/mynix/tree/d36958c48f57d0c7783c0264e54f9841a628f84f/modules/nixos/falcon
+# added cid option to pass secrets to CrowdStrike and make it start with a single build
 { lib, config, pkgs, ... }:
 let
   cfg = config.falconSensor;
