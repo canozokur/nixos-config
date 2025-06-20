@@ -7,5 +7,6 @@
     ./configuration-overrides
     ./overlays
     ./kolide.nix
+    ./falcon-sensor.nix
   ];
 }

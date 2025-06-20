@@ -22,7 +22,7 @@
     };
 
     nix-secrets = {
-      url = "git+ssh://git@github.com/canozokur/nix-secrets.git?ref=main&shallow=1";
+      url = "git+ssh://git@github.com/canozokur/nix-secrets.git?ref=main&shallow=1&lfs=1";
       inputs = {};
     };
 
