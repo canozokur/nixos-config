@@ -44,7 +44,6 @@ in
     binutils
   ];
 
-
   services.greetd = {
     enable = true;
     restart = true;
