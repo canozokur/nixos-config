@@ -45,6 +45,12 @@
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = [ "@k" ];
             };
+            "NixOS Options" = {
+              urls = [{ template = "https://search.nixos.org/options?channel=unstable&type=packages&query={searchTerms}"; }];
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              updateInterval = 24 * 60 * 60 * 1000; # every day
+              definedAliases = [ "@no" ];
+            };
             "Home Manager Options" = {
               urls = [{ template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master"; }];
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
