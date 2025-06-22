@@ -9,6 +9,5 @@
     ./overlays
     ./kolide.nix
     ./falcon-sensor.nix
-    ./undervolt.nix
   ];
 }
