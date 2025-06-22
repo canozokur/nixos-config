@@ -2,7 +2,7 @@
 {
   services.undervolt = {
     enable = true;
-    coreOffset = -80;
+    coreOffset = -75;
     temp = 70;
     verbose = true;
   };
