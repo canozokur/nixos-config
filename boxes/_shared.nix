@@ -21,6 +21,8 @@ in
   hardware.enableAllFirmware = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  users.mutableUsers = false;
+
   nix.optimise = {
     automatic = true;
     dates = ["03:45"];
