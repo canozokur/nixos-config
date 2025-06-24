@@ -21,5 +21,6 @@
     ./google-cloud-sdk.nix
     ./flameshot.nix
     ./kanshi.nix
+    ./obsidian.nix
   ];
 }
