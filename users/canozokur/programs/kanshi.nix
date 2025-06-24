@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+let
+  swayMsg = "${pkgs.sway}/bin/swaymsg";
+  assignWorkspace = ws: monitor: "${swayMsg} workspace ${toString ws}, workspace ${toString ws} output '\"${monitor}\"'";
+  moveWorkspace = ws: monitor: "${swayMsg} [workspace=${toString ws}] move workspace to '\"${monitor}\"'";
+in
 {
   services.kanshi = {
     enable = true;
@@ -30,20 +35,10 @@
               position = "1440,0";
             }
           ];
-          exec = [
-            "${pkgs.sway}/bin/swaymsg workspace 1, workspace 1 output '\"ASUSTek COMPUTER INC PG279QE K7LMQS096556\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 2, workspace 2 output '\"ASUSTek COMPUTER INC PG279QE K7LMQS096556\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 3, workspace 3 output '\"ASUSTek COMPUTER INC PG279QE K7LMQS096556\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 4, workspace 4 output '\"ASUSTek COMPUTER INC PG279QE K7LMQS096556\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 5, workspace 5 output '\"ASUSTek COMPUTER INC PG279QE K7LMQS096556\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 6, workspace 6 output '\"ASUSTek COMPUTER INC VG27B LALMQS275717\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 7, workspace 7 output '\"ASUSTek COMPUTER INC VG27B LALMQS275717\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 8, workspace 8 output '\"ASUSTek COMPUTER INC VG27B LALMQS275717\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 9, workspace 9 output '\"ASUSTek COMPUTER INC VG27B LALMQS275717\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 1, move workspace to '\"ASUSTek COMPUTER INC PG279QE K7LMQS096556\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 2, move workspace to '\"ASUSTek COMPUTER INC PG279QE K7LMQS096556\"'"
-            "${pkgs.sway}/bin/swaymsg workspace 6, move workspace to '\"ASUSTek COMPUTER INC VG27B LALMQS275717\"'"
-          ];
+          exec = builtins.map (ws: assignWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
+            ++ builtins.map (ws: assignWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9)
+            ++ builtins.map (ws: moveWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
+            ++ builtins.map (ws: moveWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9);
         };
       }
       {
