@@ -49,7 +49,7 @@ in
   services.greetd = {
     enable = true;
     restart = true;
-    vt = 2;
+    vt = 1;
     settings = {
       default_session = {
         command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd sway";
@@ -57,7 +57,7 @@ in
     };
   };
 
-  boot.kernelParams = [ "console=tty1" ];
+  boot.consoleLogLevel = 0;
 
   security.polkit.enable = true; # required for sway
   security.pam.services.swaylock = {}; # required for swaylock
