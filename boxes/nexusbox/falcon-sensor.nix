@@ -4,6 +4,9 @@ let
 in
 {
   sops.secrets."falcon-sensor/cid" = {};
+  # allow dynamically linked executables to run
+  # required for Kolide integration
+  programs.nix-ld.enable = true;
 
   falconSensor = rec {
     enable = true;
