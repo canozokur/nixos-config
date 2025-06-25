@@ -28,6 +28,12 @@
       workspaceAutoBackAndForth = true;
       floating.modifier = modifier;
 
+      seat = {
+        "*" = {
+          hide_cursor = "when-typing enable";
+        };
+      };
+
       bars = [
         {
           fonts = {
