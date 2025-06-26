@@ -16,6 +16,9 @@ test:
 update-secrets:
   nix flake update nix-secrets
 
+updat-all:
+  nix flake update
+
 _rebuild-boot:
   nixos-rebuild --sudo boot --flake .
 
