@@ -13,11 +13,15 @@ dry-activate:
 test:
   nixos-rebuild --sudo test --flake .
 
-update secrets:
+update-secrets:
   nix flake update nix-secrets
 
-# target: all, old
-purge target:
-  {{ if target == "all" { "rm -rf ~/.cache/direnv" } else { "" } }}
-  sudo {{ if target == "all" { "nix-collect-garbage -d" } else { "nix-collect-garbage --delete-older-than 7d" } }}
+_rebuild-boot:
   nixos-rebuild --sudo boot --flake .
+
+purge-all: && _rebuild-boot
+  rm -rf ~/.cache/direnv
+  sudo nix-collect-garbage -d
+
+purge-old: && _rebuild-boot
+  sudo nix-collect-garbage --delete-older-than 7d
