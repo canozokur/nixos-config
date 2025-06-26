@@ -22,5 +22,6 @@
     ./flameshot.nix
     ./kanshi.nix
     ./obsidian.nix
+    ./nix.nix
   ];
 }
