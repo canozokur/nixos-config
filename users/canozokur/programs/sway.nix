@@ -49,7 +49,7 @@
         "${modifier}+Return" = "exec ${terminal}";
         "${modifier}+q" = "kill";
         "${modifier}+Shift+r" = "reload";
-        "${modifier}+Shift+q" = "swaynag -t warning -m 'Really exit?' -b 'Yes' 'swaymsg exit'";
+        "${modifier}+Shift+q" = "exec swaynag -t warning -m 'Really exit?' -b 'Yes' 'swaymsg exit'";
         "${modifier}+r" = "mode 'resize'";
         "${modifier}+j" = "focus down";
         "${modifier}+k" = "focus up";
