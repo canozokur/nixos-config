@@ -37,5 +37,6 @@
     kubectx
     zoom-us
     slack
+    devenv
   ];
 }
