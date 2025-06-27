@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./shell-config.nix
@@ -23,5 +23,19 @@
     ./kanshi.nix
     ./obsidian.nix
     ./nix.nix
+  ];
+
+  home.packages = with pkgs; [
+    fzf
+    tree
+    jq
+    htop
+    ripgrep
+    watch
+    globalprotect-openconnect
+    kubectl
+    kubectx
+    zoom-us
+    slack
   ];
 }

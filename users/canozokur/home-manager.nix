@@ -1,4 +1,4 @@
-{ pkgs, nixvim, sops-nix, ... }:
+{ nixvim, sops-nix, ... }:
 {
   imports = [
     nixvim.homeManagerModules.nixvim
@@ -12,17 +12,4 @@
   xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
 
   home.stateVersion = "24.05";
-  home.packages = with pkgs; [
-    fzf
-    tree
-    jq
-    htop
-    ripgrep
-    watch
-    globalprotect-openconnect
-    kubectl
-    kubectx
-    zoom-us
-    slack
-  ];
 }
