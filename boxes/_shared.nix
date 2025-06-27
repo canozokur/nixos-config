@@ -20,6 +20,7 @@ in
   # enable all firmware regardless of license
   hardware.enableAllFirmware = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.trusted-users = [ "root" ];
 
   users.mutableUsers = false;
 

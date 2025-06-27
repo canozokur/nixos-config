@@ -16,4 +16,7 @@
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  # required for devenv
+  nix.settings.trusted-users = [ "canozokur" ];
 }
