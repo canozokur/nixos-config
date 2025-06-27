@@ -16,7 +16,7 @@ test:
 update-secrets:
   nix flake update nix-secrets
 
-updat-all:
+update-all:
   nix flake update
 
 _rebuild-boot:
