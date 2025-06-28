@@ -21,7 +21,6 @@
     ./google-cloud-sdk.nix
     ./flameshot.nix
     ./kanshi.nix
-    ./obsidian.nix
     ./nix.nix
   ];
 
@@ -38,5 +37,6 @@
     zoom-us
     slack
     devenv
+    obsidian
   ];
 }
