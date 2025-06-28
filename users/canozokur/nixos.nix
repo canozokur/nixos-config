@@ -7,6 +7,7 @@
     extraGroups = [
       "wheel"
       "networkmanager"
+      "docker"
     ];
     createHome = true;
     hashedPasswordFile = config.sops.secrets."passwords/canozokur".path;
