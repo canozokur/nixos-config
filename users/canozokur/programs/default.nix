@@ -17,7 +17,6 @@
     ./keybase.nix
     ./ssh.nix
     ./direnv.nix
-    ./spotify-player.nix
     ./google-cloud-sdk.nix
     ./flameshot.nix
     ./kanshi.nix
@@ -38,5 +37,6 @@
     slack
     devenv
     obsidian
+    spotify
   ];
 }
