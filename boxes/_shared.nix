@@ -63,6 +63,18 @@ in
   security.polkit.enable = true; # required for sway
   security.pam.services.swaylock = {}; # required for swaylock
 
+# enable docker
+  virtualisation.docker = {
+    enable = true;
+    rootless.enable = true;
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+      flags = [ "--all" ];
+      persistent = true;
+    };
+  };
+
   # TODO: this could be moved to a library function to create the secrets config
   # i.e. makeNMProfile "conn-id" { .. other config ... }
   sops.secrets."network/secrets/home-wifi/psk" = {};
