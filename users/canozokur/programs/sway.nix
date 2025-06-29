@@ -37,7 +37,8 @@
       bars = [
         {
           fonts = {
-            names = [ "Hack" "FontAwesome6Free" ];
+            names = [ "CaskaydiaCove NFM" "FontAwesome6Free" ];
+            size = 10.0;
           };
           position = "bottom";
           trayOutput = "*";
