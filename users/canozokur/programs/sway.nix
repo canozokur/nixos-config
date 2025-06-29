@@ -26,7 +26,16 @@
         titlebar = false; # pixel if false, normal if true
       };
       workspaceAutoBackAndForth = true;
-      floating.modifier = modifier;
+      floating = {
+        modifier = modifier;
+        criteria = [
+          { window_type = "dialog"; }
+          { window_type = "menu"; }
+          { window_role = "dialog"; }
+          { window_role = "pop-up"; }
+          { window_role = "bubble"; }
+        ];
+      };
 
       seat = {
         "*" = {
@@ -56,15 +65,11 @@
         "${modifier}+k" = "focus up";
         "${modifier}+h" = "focus left";
         "${modifier}+l" = "focus right";
-        "${modifier}+Down" = "focus down";
-        "${modifier}+Up" = "focus up";
-        "${modifier}+Left" = "focus left";
-        "${modifier}+Right" = "focus right";
-        "${modifier}+Shift+Down" = "move down";
-        "${modifier}+Shift+Up" = "move up";
-        "${modifier}+Shift+Left" = "move left";
-        "${modifier}+Shift+Right" = "move right";
-        "${modifier}+shift+l" = "exec ${pkgs.swaylock}/bin/swaylock -f -c 000000";
+        "${modifier}+Shift+j" = "move down";
+        "${modifier}+Shift+k" = "move up";
+        "${modifier}+Shift+h" = "move left";
+        "${modifier}+Shift+l" = "move right";
+        "${modifier}+shift+y" = "exec ${pkgs.swaylock}/bin/swaylock -f -c 000000";
         "${modifier}+b" = "split h";
         "${modifier}+v" = "split v";
         "${modifier}+f" = "fullscreen toggle";
