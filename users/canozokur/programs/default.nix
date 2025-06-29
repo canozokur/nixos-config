@@ -22,6 +22,7 @@
     ./kanshi.nix
     ./nix.nix
     ./swaync.nix
+    ./spotify-player.nix
   ];
 
   home.packages = with pkgs; [
@@ -38,6 +39,5 @@
     slack
     devenv
     obsidian
-    spotify
   ];
 }
