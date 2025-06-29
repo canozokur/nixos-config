@@ -57,9 +57,14 @@
           }
           {
             block = "notify";
+            driver = "swaync";
             click = [
               {
                 button = "right";
+                action = "toggle_paused";
+              }
+              {
+                button = "left";
                 action = "show";
               }
             ];

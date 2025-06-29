@@ -63,7 +63,7 @@ in
   security.polkit.enable = true; # required for sway
   security.pam.services.swaylock = {}; # required for swaylock
 
-# enable docker
+  # enable docker
   virtualisation.docker = {
     enable = true;
     rootless.enable = true;
@@ -74,6 +74,9 @@ in
       persistent = true;
     };
   };
+
+  # swaync & i3status-rs requires dconf to pause notifications
+  programs.dconf.enable = true;
 
   # TODO: this could be moved to a library function to create the secrets config
   # i.e. makeNMProfile "conn-id" { .. other config ... }

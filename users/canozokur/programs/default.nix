@@ -21,6 +21,7 @@
     ./flameshot.nix
     ./kanshi.nix
     ./nix.nix
+    ./swaync.nix
   ];
 
   home.packages = with pkgs; [
