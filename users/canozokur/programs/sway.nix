@@ -90,6 +90,8 @@
         "${modifier}+Shift+7" = "move container to workspace 7";
         "${modifier}+Shift+8" = "move container to workspace 8";
         "${modifier}+Shift+9" = "move container to workspace 9";
+        "${modifier}+minus" = "scratchpad show";
+        "${modifier}+Shift+minus" = "floating enable, resize set width 1366 height 675, move container to scratchpad";
 
 
         "${modifier}+d" = ''
