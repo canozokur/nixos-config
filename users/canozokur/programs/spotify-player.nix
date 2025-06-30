@@ -12,4 +12,12 @@
       };
     };
   };
+
+  xdg.desktopEntries.spotify-player = {
+    name = "spotify-player";
+    exec = "wezterm -e spotify_player";
+    terminal = false;
+    type = "Application";
+    categories = [ "Audio" ];
+  };
 }

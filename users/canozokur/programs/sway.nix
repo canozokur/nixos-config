@@ -22,7 +22,7 @@ in
     wrapperFeatures.gtk = true;
     config = rec {
       modifier = "Mod4";
-      terminal = "${pkgs.ghostty}/bin/ghostty";
+      terminal = "${pkgs.wezterm}/bin/wezterm";
       fonts = {
         names = ["Droid Sans"];
         style = "Regular";
