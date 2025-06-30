@@ -53,8 +53,8 @@ in
       bars = [
         {
           fonts = {
-            names = [ "CaskaydiaCove NFM" "FontAwesome6Free" ];
-            size = 10.0;
+            names = [ "CaskaydiaCove NF" "Font Awesome 6 Free" ];
+            size = "10";
           };
           position = "bottom";
           trayOutput = "*";

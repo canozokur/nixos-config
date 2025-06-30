@@ -1,9 +1,9 @@
 { pkgs, ... }:
 {
-  home.packages = [
-    pkgs.nerd-fonts.caskaydia-cove
-    pkgs.hack-font
-    pkgs.font-awesome
+  home.packages = with pkgs; [
+    nerd-fonts.caskaydia-cove
+    hack-font
+    font-awesome
   ];
 
   fonts.fontconfig = {
