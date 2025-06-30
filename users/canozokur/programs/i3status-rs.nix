@@ -16,7 +16,7 @@
           }
           {
             block = "net";
-            format = " $icon $speed_down.eng(prefix:K,w:3)/$speed_up.eng(prefix:K,w:3)";
+            format = " $icon  $speed_down.eng(prefix:K,w:3)/$speed_up.eng(prefix:K,w:3)";
             interval = 5;
           }
           {
