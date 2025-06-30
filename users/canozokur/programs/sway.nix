@@ -1,4 +1,11 @@
 { pkgs, ... }:
+let
+  satty = ''
+    ${pkgs.satty}/bin/satty -f - --initial-tool=arrow \
+      --copy-command=wl-copy --actions-on-escape="save-to-clipboard,exit" \
+      --brush-smooth-history-size=5 --disable-notifications
+  '';
+in
 {
 
   home.pointerCursor = {
@@ -55,6 +62,16 @@
         }
       ];
 
+      modes = {
+        screenshot = {
+          r = ''exec swaymsg 'mode "default"' && ${pkgs.grim}/bin/grim -t ppm -g "$(${pkgs.slurp}/bin/slurp -d)" - | ${satty}'';
+          f = ''exec swaymsg 'mode "default"' && grim -t ppm - | ${satty}'';
+          w = ''exec swaymsg 'mode "default"' && swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | grim -t ppm -g - - | ${satty}'';
+          Return = "mode default";
+          Escape = "mode default";
+        };
+      };
+
       keybindings = {
         "${modifier}+Return" = "exec ${terminal}";
         "${modifier}+q" = "kill";
@@ -98,6 +115,8 @@
         "${modifier}+Shift+9" = "move container to workspace 9";
         "${modifier}+minus" = "scratchpad show";
         "${modifier}+Shift+minus" = "floating enable, resize set width 1366 height 675, move container to scratchpad";
+        "${modifier}+Shift+p" = "mode screenshot";
+
 
 
         "${modifier}+d" = ''

@@ -53,7 +53,7 @@ in
     vt = 7;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd sway";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
       };
     };
   };

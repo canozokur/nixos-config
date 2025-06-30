@@ -18,7 +18,6 @@
     ./ssh.nix
     ./direnv.nix
     ./google-cloud-sdk.nix
-    ./flameshot.nix
     ./kanshi.nix
     ./nix.nix
     ./swaync.nix
@@ -39,5 +38,9 @@
     slack
     devenv
     obsidian
+    # slurp, grim and satty are required for screenshots
+    slurp
+    grim
+    satty
   ];
 }
