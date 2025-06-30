@@ -6,7 +6,7 @@ in
   programs.rofi = {
     package = pkgs.rofi-wayland;
     enable = true;
-    terminal = "${pkgs.ghostty}";
+    terminal = "${pkgs.wezterm}";
     font = "CaskaydiaCove Nerd Font Mono 11";
     theme = {
       #/* ROFI SQUARED THEME USING THE EVERFOREST PALETTE  */
