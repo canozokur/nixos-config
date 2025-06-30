@@ -22,6 +22,7 @@
     ./nix.nix
     ./swaync.nix
     ./spotify-player.nix
+    ./wezterm.nix
   ];
 
   home.packages = with pkgs; [
