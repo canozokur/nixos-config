@@ -6,6 +6,7 @@
     enable = true;
     settings = {
       theme = "catppuccin_mocha";
+      enable_notify = false;
       client_id_command = {
         command = "cat";
         args = [ config.sops.secrets."spotify/client-id".path ];
