@@ -29,6 +29,7 @@
 
       return {
         color_scheme = "Catppuccin Mocha",
+        term = "wezterm",
         font = wezterm.font({family="CaskaydiaCove Nerd Font Mono", weight="Regular"}),
         font_rules = {
           {
