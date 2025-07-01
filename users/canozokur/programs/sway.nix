@@ -70,6 +70,15 @@ in
           Return = "mode default";
           Escape = "mode default";
         };
+        resize = {
+          h = "resize shrink width 10 px";
+          j = "resize grow height 10 px";
+          k = "resize shrink height 10 px";
+          l = "resize grow width 10 px";
+          Return = "mode default";
+          Escape = "mode default";
+          "${modifier}+r" = "mode default";
+        };
       };
 
       keybindings = {
@@ -116,8 +125,6 @@ in
         "${modifier}+minus" = "scratchpad show";
         "${modifier}+Shift+minus" = "floating enable, resize set width 1366 height 675, move container to scratchpad";
         "${modifier}+Shift+p" = "mode screenshot";
-
-
 
         "${modifier}+d" = ''
           exec rofi -combi-modes "window#drun" -show combi -modes combi \
