@@ -17,12 +17,6 @@
             "buffer"
           ];
         };
-        lazyLoad = {
-          enable = true;
-          settings = {
-            event = ["InsertEnter"];
-          };
-        };
       };
     };
   };
