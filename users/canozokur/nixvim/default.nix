@@ -18,6 +18,9 @@
     withPerl = false;
     withPython3 = false;
     withRuby = false;
+    # EXPERIMENTAL! luaLoader and combinePlugins are experimental
+    luaLoader.enable = true;
+    performance.combinePlugins.enable = true;
     plugins.lz-n.enable = true; # enable lazy loading
     dependencies.gcc.enable = true;
   };
