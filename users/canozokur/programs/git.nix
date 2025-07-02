@@ -21,18 +21,9 @@
         logallrefupdates = true;
       };
     };
-    delta = {
+    difftastic = {
       enable = true;
-      options = {
-        features = "side-by-side line-numbers decorations";
-        syntax-theme = "zenburn";
-        whitespace-error-style = "22 reverse";
-        decorations = {
-          commit-decoration-style = "bold yellow box ul";
-          file-style = "bold yellow ul";
-          file-decoration-style = "none";
-        };
-      };
+      enableAsDifftool = true;
     };
   };
 }
