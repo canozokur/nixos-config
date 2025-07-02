@@ -1,14 +1,13 @@
 { ... }:
 {
   programs.nixvim.colorschemes = {
-    tokyonight = {
+    catppuccin = {
       enable = true;
       lazyLoad.enable = true;
       settings = {
-        style = "moon";
-        transparent = true;
-        dim_inactive = false;
-        on_colors = "function(colors) colors.bg = colors.bg_dark1 end";
+        flavour = "mocha";
+        transparent_background = true;
+        dim_inactive.enabled = false;
       };
     };
   };
