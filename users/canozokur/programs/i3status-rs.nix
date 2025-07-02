@@ -5,14 +5,16 @@
     bars = {
       default = {
         settings = {
-          font = "pango:Hack, FontAwesome 6 Free";
+          theme = {
+            theme = "ctp-mocha";
+            overrides = { separator = "<span font='15'></span>"; };
+          };
         };
-        theme = "ctp-mocha";
         icons = "awesome6";
         blocks = [
           {
             block = "music";
-            format = " $icon {$combo.str(max_w:15,rot_interval:0.5) $prev $play $next |}";
+            format = " $icon {$combo.str(max_w:15,rot_interval:0.5,rot_separator:' 󰎇 ') $prev $play $next |}";
           }
           {
             block = "net";

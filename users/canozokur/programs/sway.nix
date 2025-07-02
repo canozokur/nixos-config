@@ -56,6 +56,29 @@ in
             names = [ "CaskaydiaCove NF" "Font Awesome 6 Free" ];
             size = "10";
           };
+          colors = {
+            # catppuccin mocha palette
+            inactiveWorkspace = {
+              background = "#313244";
+              border = "#313244";
+              text = "#888888";
+            };
+            focusedWorkspace = {
+              background = "#89b4fa";
+              border = "#313244";
+              text = "#1e1e2e";
+            };
+            urgentWorkspace = {
+              background = "#F38BA8";
+              border = "#313244";
+              text = "#1e1e2e";
+            };
+            activeWorkspace = {
+              background = "#9399b2";
+              border = "#313244";
+              text = "#1e1e2e";
+            };
+          };
           position = "bottom";
           trayOutput = "*";
           statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-default.toml";
