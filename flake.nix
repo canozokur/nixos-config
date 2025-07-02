@@ -32,6 +32,10 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    zjstatus = {
+      url = "github:dj95/zjstatus";
+    };
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }:

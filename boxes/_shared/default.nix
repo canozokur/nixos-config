@@ -5,7 +5,7 @@ in
 {
   imports = [
     inputs.sops-nix.nixosModules.sops
-    ../modules
+    ../../modules
   ];
 
   sops = {

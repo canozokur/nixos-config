@@ -41,7 +41,7 @@ nixpkgs.lib.nixosSystem {
         description = "Host-specific overrides to be merged into the main home-manager config.";
       };
     })
-    ../boxes/_shared.nix
+    ../boxes/_shared
     ../boxes/${box}
   ] ++ builtins.concatLists (builtins.map mkUser users);
 }
