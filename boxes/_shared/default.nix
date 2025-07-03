@@ -6,6 +6,7 @@ in
   imports = [
     inputs.sops-nix.nixosModules.sops
     ../../modules
+    ./overlays
   ];
 
   sops = {
