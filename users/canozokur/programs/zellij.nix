@@ -263,18 +263,6 @@ in
     }
     load_plugins {
     }
-    ui {
-        pane_frames {
-            hide_session_name true
-        }
-    }
-    //default_layout "compact"
-    //layout {
-    //  pane
-    //  pane size=1 borderless=true {
-    //    plugin location="compact-bar"
-    //  }
-    //}
     pane_frames false
     scrollback_editor "/usr/bin/nvim"
     show_startup_tips false
@@ -288,13 +276,6 @@ in
               ${zellijColors}
               format_left   "{mode}#[fg=$base]{tabs}"
               format_space  ""
-
-              border_enabled  "true"
-              border_char     "─"
-              border_format   "#[fg=$overlay0]{char}"
-              border_position "top"
-
-              hide_frame_for_single_pane "true"
 
               mode_normal        "#[bg=$base,fg=$text]  #[bg=$base,fg=$base]"
               mode_tab           "#[bg=$base,fg=$text,bold] 󰌒 #[bg=$base,fg=$base]"
