@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 let
   swayMsg = "${pkgs.sway}/bin/swaymsg";
   assignWorkspace = ws: monitor: "${swayMsg} workspace ${toString ws}, workspace ${toString ws} output '\"${monitor}\"'";
@@ -35,10 +35,10 @@ in
               position = "1440,0";
             }
           ];
-          exec = builtins.map (ws: assignWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
+          exec = lib.mkIf config.wayland.windowManager.sway.enable (builtins.map (ws: assignWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
             ++ builtins.map (ws: assignWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9)
             ++ builtins.map (ws: moveWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
-            ++ builtins.map (ws: moveWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9);
+            ++ builtins.map (ws: moveWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9));
         };
       }
       {
