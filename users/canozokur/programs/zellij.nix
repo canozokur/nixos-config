@@ -277,6 +277,8 @@ in
               format_left   "{mode}#[fg=$base]{tabs}"
               format_space  ""
 
+              hide_frame_except_for_search "true"
+
               mode_normal        "#[bg=$base,fg=$text] n #[bg=$base,fg=$base]"
               mode_tab           "#[bg=$base,fg=$text,bold] t #[bg=$base,fg=$base]"
               mode_tmux          "#[bg=$peach,fg=$text] T #[fg=$peach,bg=$base]"
