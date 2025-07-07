@@ -46,12 +46,7 @@
     settings = {
       "$mod" = "SUPER";
       "$terminal" = "${pkgs.wezterm}/bin/wezterm";
-      "$launcher" = ''
-        ${pkgs.rofi-wayland}/bin/rofi -combi-modes "window,drun" -show combi -modes combi \
-                      -line-padding 4 -columns 2 -padding 50 -hide-scollbar \
-                      -show-icons -drun-icon-theme "Arc-X-D" matching fuzzy \
-                      -font "Droid Sans Regular 10"
-      '';
+      "$launcher" = "${pkgs.rofi-wayland}/bin/rofi -matching fuzzy";
       bind = [
         "$mod, Return, exec, $terminal"
         "$mod, q, killactive,"
@@ -83,7 +78,8 @@
         "$mod SHIFT, 7, movetoworkspace, 7"
         "$mod SHIFT, 8, movetoworkspace, 8"
         "$mod SHIFT, 9, movetoworkspace, 9"
-        "$mod, d, exec, $launcher"
+        "$mod, d, exec, $launcher -combi-modes \"window,drun\" -show combi -modes combi -columns 2"
+        "$mod SHIFT, e, exec, cliphist list | $launcher -dmenu -display-columns 2 | cliphist decode | wl-copy"
       ];
       binds = {
         workspace_back_and_forth = true;

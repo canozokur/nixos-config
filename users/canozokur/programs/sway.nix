@@ -7,7 +7,6 @@ let
   '';
 in
 {
-
   services.gnome-keyring.enable = true; # enable a keyring provider
   wayland.windowManager.sway = {
     enable = true;
@@ -143,15 +142,10 @@ in
         "${modifier}+Shift+p" = "mode screenshot";
 
         "${modifier}+d" = ''
-          exec rofi -combi-modes "window#drun" -show combi -modes combi \
-                  -line-padding 4 -columns 2 -padding 50 -hide-scrollbar \
-                  -show-icons -drun-icon-theme "Arc-X-D" -matching fuzzy \
-                  -font "Droid Sans Regular 10"
+          exec rofi -combi-modes "window#drun" -show combi -modes combi -show-icons -matching fuzzy
         '';
         "${modifier}+shift+e" = ''
-          exec cliphist list | rofi -dmenu -drun-icon-theme "Arc-X-D" \
-                  -font "Droid Sans Regular 10" -display-columns 2 | cliphist decode \
-                  | wl-copy
+          exec cliphist list | rofi -dmenu -display-columns 2 | cliphist decode | wl-copy
         '';
       };
 
