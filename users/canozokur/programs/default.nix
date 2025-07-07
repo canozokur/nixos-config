@@ -25,6 +25,8 @@
     ./wezterm.nix
     ./hyprland.nix
     ./waybar.nix
+    ./mouse-cursor.nix
+    ./clipboard.nix
   ];
 
   home.packages = with pkgs; [

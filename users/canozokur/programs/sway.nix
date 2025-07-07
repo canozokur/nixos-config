@@ -8,13 +8,6 @@ let
 in
 {
 
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.catppuccin-cursors.mochaDark;
-    name = "catppuccin-mocha-dark-cursors";
-    size = 12;
-  };
-
   services.gnome-keyring.enable = true; # enable a keyring provider
   wayland.windowManager.sway = {
     enable = true;
@@ -167,9 +160,5 @@ in
       ];
     };
   };
-
-  home.packages = [
-    pkgs.wl-clipboard
-  ];
 }
 
