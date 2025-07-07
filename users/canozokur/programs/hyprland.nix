@@ -46,7 +46,7 @@
     settings = {
       "$mod" = "SUPER";
       "$terminal" = "${pkgs.wezterm}/bin/wezterm";
-      "$launcher" = "${pkgs.rofi-wayland}/bin/rofi -matching fuzzy";
+      "$launcher" = "${pkgs.rofi-wayland}/bin/rofi -show-icons -matching fuzzy";
       bind = [
         "$mod, Return, exec, $terminal"
         "$mod, q, killactive,"
