@@ -84,6 +84,9 @@
         "$mod SHIFT, 9, movetoworkspace, 9"
         "$mod, d, exec, $launcher"
       ];
+      binds = {
+        workspace_back_and_forth = true;
+      };
       animations.enabled = false;
       gestures = {
         workspace_swipe = true;
