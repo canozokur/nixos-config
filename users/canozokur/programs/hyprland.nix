@@ -7,6 +7,10 @@
     size = 12;
   };
 
+  home.packages = [
+    pkgs.wl-clipboard
+  ];
+
   services.hyprpolkitagent.enable = true;
 
   wayland.windowManager.hyprland = {
