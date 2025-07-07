@@ -11,6 +11,41 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    # until this or something adjacent has merged https://github.com/nix-community/home-manager/pull/7277
+    # we should keep extraConfig for now
+    extraConfig = ''
+      # window resize
+      bind = $mod, r, submap, resize
+      submap = resize
+      binde = , h, resizeactive, -10 0
+      binde = , l, resizeactive, 10 0
+      binde = , j, resizeactive, 0 10
+      binde = , k, resizeactive, 0 -10
+      binde = SHIFT, h, resizeactive, -30 0
+      binde = SHIFT, l, resizeactive, 30 0
+      binde = SHIFT, j, resizeactive, 0 30
+      binde = SHIFT, k, resizeactive, 0 -30
+      bind = , escape, submap, reset
+      bind = , Return, submap, reset
+      bind = $mod, r, submap, reset
+      submap = reset
+
+      # screenshot
+      $satty = ${pkgs.satty}/bin/satty -f - --initial-tool=arrow \
+                --copy-command=wl-copy --actions-on-escape="save-to-clipboard,exit" \
+                --brush-smooth-history-size=5 --disable-notifications
+      bind = $mod SHIFT, p, submap, screenshot
+      submap = screenshot
+      bindp = , r, exec, ${pkgs.grim}/bin/grim -t ppm -g "$(${pkgs.slurp}/bin/slurp -d)" - | $satty
+      bindp = , r, submap, reset
+      bindp = , f, exec, ${pkgs.grim}/bin/grim -t ppm - | $satty
+      bindp = , f, submap, reset
+      bindp = , w, exec, hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"' | grim -t ppm -g - - | $satty
+      bindp = , w, submap, reset
+      bind = , Return, submap, reset
+      bind = , Escape, submap, reset
+      submap = reset
+    '';
     settings = {
       "$mod" = "SUPER";
       "$terminal" = "${pkgs.wezterm}/bin/wezterm";
@@ -22,8 +57,8 @@
       '';
       bind = [
         "$mod, Return, exec, $terminal"
-        "$mod, Q, killactive,"
-        "$mod SHIFT, Q, exit"
+        "$mod, q, killactive,"
+        "$mod SHIFT, q, exit"
         "$mod, f, fullscreen,"
         "$mod, h, movefocus, l"
         "$mod, l, movefocus, r"
