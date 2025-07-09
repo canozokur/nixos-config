@@ -81,6 +81,9 @@
         "$mod, d, exec, $launcher -combi-modes \"window,drun\" -show combi -modes combi -columns 2"
         "$mod SHIFT, e, exec, cliphist list | $launcher -dmenu -display-columns 2 | cliphist decode | wl-copy"
       ];
+      layerrule = [
+        "blur, waybar"
+      ];
       binds = {
         workspace_back_and_forth = true;
       };
@@ -95,6 +98,19 @@
       ecosystem = {
         no_donation_nag = true;
         no_update_news = true;
+      };
+      decoration = {
+        blur = {
+          enabled = true;
+          size = 6;
+          passes = 1;
+          new_optimizations = true;
+        };
+      };
+      render = {
+        # wpaperd and hyprland does not agree on vertical screens
+        # https://github.com/hyprwm/Hyprland/issues/9408#issuecomment-2661608482
+        expand_undersized_textures = false;
       };
     };
   };

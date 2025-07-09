@@ -24,9 +24,11 @@
     ./spotify-player.nix
     ./wezterm.nix
     ./hyprland.nix
-    ./waybar.nix
+    ./waybar
     ./mouse-cursor.nix
     ./clipboard.nix
+    ./wpaperd.nix
+    ./playerctld.nix
   ];
 
   home.packages = with pkgs; [

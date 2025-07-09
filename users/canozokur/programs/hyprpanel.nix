@@ -1,0 +1,6 @@
+{ ... }:
+{
+  programs.hyprpanel = {
+    enable = true;
+  };
+}
