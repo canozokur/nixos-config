@@ -68,15 +68,21 @@ window#waybar > box {
 #clock,
 #mpris,
 #tray {
+  font-size: 18;
   border-radius: 4px;
   margin: 3px 6px;
   padding: 12px 6px;
-  background-color: @surface0;
+  background-color: transparent;
   color: @mantle;
 }
 
+#clock,
 #mpris {
-  background-color: @overlay1;
+  font-size: 14;
+}
+
+#mpris {
+  color: @overlay1;
 }
 
 #custom-power {
@@ -84,45 +90,44 @@ window#waybar > box {
 }
 
 #memory {
-  background-color: @peach;
+  color: @peach;
 }
 
 #battery {
-  background-color: @green;
-  color: @base;
+  color: @green;
 }
 
 #battery.warning {
-  background-color: @yellow;
+  color: @yellow;
 }
 
 #battery.critical,
 #battery.urgent {
-  background-color: @red;
+  color: @red;
 }
 
 #battery.charging {
-  background-color: @teal;
+  color: @teal;
 }
 
 #backlight {
-  background-color: @peach;
+  color: @peach;
 }
 
 #wireplumber {
-  background-color: @yellow;
+  color: @yellow;
 }
 
 #network {
-  background-color: @teal;
+  color: @teal;
 }
 
 #clock {
-  background-color: @mauve;
+  color: @mauve;
 }
 
 #custom-power {
-  background-color: @flamingo;
+  color: @flamingo;
 }
 
 tooltip {
