@@ -82,6 +82,9 @@
         "$mod SHIFT, e, exec, cliphist list | $launcher -dmenu -display-columns 2 | cliphist decode | wl-copy"
         "$mod SHIFT, 0, exec, hyprlock"
       ];
+      bindm = [
+        "$mod, mouse:272, movewindow"
+      ];
       layerrule = [
         "blur, waybar"
       ];
