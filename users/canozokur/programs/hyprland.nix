@@ -80,6 +80,7 @@
         "$mod SHIFT, 9, movetoworkspace, 9"
         "$mod, d, exec, $launcher -combi-modes \"window,drun\" -show combi -modes combi -columns 2"
         "$mod SHIFT, e, exec, cliphist list | $launcher -dmenu -display-columns 2 | cliphist decode | wl-copy"
+        "$mod SHIFT, 0, exec, hyprlock"
       ];
       layerrule = [
         "blur, waybar"

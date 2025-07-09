@@ -29,6 +29,7 @@
     ./clipboard.nix
     ./wpaperd.nix
     ./playerctld.nix
+    ./hyprlock.nix
   ];
 
   home.packages = with pkgs; [
