@@ -88,7 +88,7 @@ in
           format = "{player_icon} {dynamic}";
           rotate = 270;
           interval = 20;
-          dynamic-len = 60;
+          dynamic-len = 30;
           dynamic-order = [ "title" "artist" ];
           player-icons = {
             default = "▶";

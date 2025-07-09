@@ -3,7 +3,7 @@
 * {
   border: none;
   border-radius: 0;
-  min-height: 0;
+  min-width: 40px;
   font-family: CaskaydiaCove NFP;
   font-size: 13px;
 }
