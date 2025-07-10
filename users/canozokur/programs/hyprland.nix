@@ -89,6 +89,9 @@
       layerrule = [
         "blur, waybar"
       ];
+      windowrule = [
+        "stayfocused, class:zoom, title:menu window"
+      ];
       binds = {
         workspace_back_and_forth = true;
       };
