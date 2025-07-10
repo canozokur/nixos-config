@@ -86,6 +86,7 @@ in
 
         mpris = {
           format = "{player_icon} {dynamic}";
+          ignored-players = [ "firefox" ];
           rotate = 270;
           interval = 20;
           dynamic-len = 30;
