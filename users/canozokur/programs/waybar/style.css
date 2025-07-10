@@ -61,6 +61,7 @@ window#waybar > box {
 #network,
 #clock,
 #mpris,
+#custom-swaync,
 .not-power,
 #tray {
   font-size: 18;
@@ -85,12 +86,16 @@ window#waybar > box {
 }
 
 .not-power,
-#memory {
-  color: @peach;
+#memory,
+#battery,
+#wireplumber,
+#network,
+#custom-swaync {
+  color: @blue;
 }
 
-#battery {
-  color: @green;
+#custom-swaync.disabled {
+  color: @red;
 }
 
 #battery.warning {
@@ -106,25 +111,12 @@ window#waybar > box {
   color: @teal;
 }
 
-#backlight {
-  color: @peach;
-}
-
 #wireplumber {
-  color: @yellow;
   font-size: 16;
-}
-
-#network {
-  color: @teal;
 }
 
 #clock {
   color: @mauve;
-}
-
-#custom-power {
-  color: @flamingo;
 }
 
 tooltip {

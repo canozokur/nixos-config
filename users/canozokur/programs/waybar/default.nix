@@ -4,6 +4,42 @@ let
     url = "https://github.com/catppuccin/waybar/releases/download/v1.1/mocha.css";
     hash = "sha256-llnz9uTFmEiQtbfMGSyfLb4tVspKnt9Fe5lo9GbrVpE=";
   };
+
+  swayncScript = pkgs.writeShellApplication {
+  name = "swaync.sh";
+
+  runtimeInputs = [
+    pkgs.swaynotificationcenter
+  ];
+
+  text = ''
+    readonly ENABLED='󰂜'
+    readonly ENABLED_WITH_NOTIFICATIONS='󰂚'
+    readonly DISABLED='󰪑'
+    readonly DISABLED_WITH_NOTIFICATIONS='󰂛'
+    dbus-monitor path='/org/freedesktop/Notifications',interface='org.freedesktop.Notifications',member='OnDndToggle' member='Notify' member='NotificationClosed' --profile |
+      while read -r _; do
+        PAUSED="$(swaync-client -D)"
+        if [ "$PAUSED" == 'false' ]; then
+          CLASS="enabled"
+          TEXT="$ENABLED"
+          COUNT="$(swaync-client -c)"
+          if [ "$COUNT" != '0' ]; then
+            TEXT="$ENABLED_WITH_NOTIFICATIONS"
+          fi
+        else
+          CLASS="disabled"
+          TEXT="$DISABLED"
+          COUNT="$(swaync-client -c)"
+          if [ "$COUNT" != '0' ]; then
+            TEXT="$DISABLED_WITH_NOTIFICATIONS"
+          fi
+        fi
+        printf '{"text": "%s", "class": "%s"}\n' "$TEXT" "$CLASS"
+      done
+  '';
+  };
+
 in
 {
   xdg.configFile."waybar/ctp-mocha.css".source = ctp-mocha;
@@ -30,6 +66,7 @@ in
           "group/hardware"
           "network"
           "wireplumber"
+          "custom/swaync"
           "battery"
         ];
 
@@ -45,6 +82,13 @@ in
             "cpu"
             "temperature"
           ];
+        };
+
+        "custom/swaync" = {
+          exec = "${swayncScript}/bin/swaync.sh";
+          return-type = "json";
+          on-click = "swaync-client -t";
+          on-click-right = "swaync-client -d";
         };
 
         temperature = {
