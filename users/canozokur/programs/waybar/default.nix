@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   ctp-mocha = pkgs.fetchurl {
     url = "https://github.com/catppuccin/waybar/releases/download/v1.1/mocha.css";
@@ -27,11 +27,29 @@ in
         modules-right = [
           "clock"
           "tray"
-          "memory"
+          "group/hardware"
           "network"
           "wireplumber"
           "battery"
         ];
+
+        "group/hardware" = {
+          orientation = "vertical";
+          drawer = {
+            transition-duration = 500;
+            children-class = "not-power";
+            transition-left-to-right = false;
+          };
+          modules = [
+            "memory"
+            "cpu"
+            "temperature"
+          ];
+        };
+
+        temperature = {
+          hwmon-path = lib.mkDefault "";
+        };
 
         memory = {
           interval = 30;
@@ -46,10 +64,11 @@ in
         };
 
         clock = {
-          interval = 60;
+          format = "{:%H\n%M\n%S}";
+          format-alt = "{:%a\n%d\n%b\n'%y}";
+          justify = "right";
+          interval = 1;
           tooltip-format = "{calendar}";
-          format-alt = "{:%a\n%d\n%b\n%Y}";
-          format = "{:%H:%M}";
         };
 
         network = {
@@ -88,7 +107,7 @@ in
           format = "{player_icon} {dynamic}";
           ignored-players = [ "firefox" ];
           rotate = 270;
-          interval = 20;
+          interval = 2;
           dynamic-len = 30;
           dynamic-order = [ "title" "artist" ];
           player-icons = {
