@@ -68,7 +68,7 @@ in
           format-alt = "{:%a\n%d\n%b\n'%y}";
           justify = "right";
           interval = 1;
-          tooltip-format = "{calendar}";
+          tooltip-format = "<span size='18pt'>{calendar}</span>";
         };
 
         network = {
