@@ -116,6 +116,7 @@ window#waybar > box {
 
 #wireplumber {
   color: @yellow;
+  font-size: 16;
 }
 
 #network {
