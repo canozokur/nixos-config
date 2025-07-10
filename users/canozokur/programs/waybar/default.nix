@@ -99,7 +99,6 @@ in
         };
 
         "hyprland/workspaces" = {
-          disable-scroll = true;
           sort-by-name = true;
           format = "{icon}";
         };
