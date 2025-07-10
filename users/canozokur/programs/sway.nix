@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 let
   satty = ''
     ${pkgs.satty}/bin/satty -f - --initial-tool=arrow \
@@ -42,7 +42,7 @@ in
         };
       };
 
-      bars = [
+      bars = lib.mkIf config.programs.swaybar.enabled [
         {
           fonts = {
             names = [ "CaskaydiaCove NF" "Font Awesome 6 Free" ];
@@ -151,6 +151,7 @@ in
 
       startup = [
         { command = "${pkgs.wl-clipboard}/bin/wl-paste --watch cliphist store"; }
+        lib.mkIf config.programs.waybar.enabled { command = "${pkgs.waybar}/bin/waybar"; } 
       ];
     };
   };
