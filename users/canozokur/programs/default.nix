@@ -9,10 +9,8 @@
     ./firefox.nix
     ./zellij.nix
     ./rofi.nix
-#    ./swaylock.nix
     ./cliphist.nix
     ./wlsunset.nix
-#    ./i3status-rs.nix
     ./ssh-agent.nix
     ./keybase.nix
     ./ssh.nix
@@ -23,7 +21,7 @@
     ./swaync.nix
     ./spotify-player.nix
     ./wezterm.nix
-    ./hyprland.nix
+#    ./hyprland.nix
     ./waybar
     ./mouse-cursor.nix
     ./clipboard.nix

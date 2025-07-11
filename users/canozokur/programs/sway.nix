@@ -11,6 +11,8 @@ in
   wayland.windowManager.sway = {
     enable = true;
     xwayland = true;
+    package = pkgs.swayfx;
+    checkConfig = false;
     wrapperFeatures.gtk = true;
     config = rec {
       modifier = "Mod4";
@@ -20,6 +22,7 @@ in
         style = "Regular";
         size = "8";
       };
+
       window = {
         border = 3; # titlebar config will decide if this is normal or pixel
         titlebar = false; # pixel if false, normal if true
@@ -110,7 +113,7 @@ in
         "${modifier}+Shift+k" = "move up";
         "${modifier}+Shift+h" = "move left";
         "${modifier}+Shift+l" = "move right";
-        "${modifier}+shift+y" = "exec ${pkgs.swaylock}/bin/swaylock -f -c 000000";
+        "${modifier}+shift+0" = "exec ${pkgs.hyprlock}/bin/hyprlock";
         "${modifier}+b" = "split h";
         "${modifier}+v" = "split v";
         "${modifier}+f" = "fullscreen toggle";
@@ -152,7 +155,14 @@ in
       startup = [
         { command = "${pkgs.wl-clipboard}/bin/wl-paste --watch cliphist store"; }
       ];
+
     };
+    extraConfig = ''
+      layer_effects "waybar" {
+        blur enable;
+        blur_xray enable;
+      }
+    '';
   };
 }
 
