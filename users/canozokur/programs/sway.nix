@@ -156,11 +156,15 @@ in
         { command = "${pkgs.wl-clipboard}/bin/wl-paste --watch cliphist store"; }
       ];
 
+      gaps.outer = 10;
+
     };
     extraConfig = ''
       layer_effects "waybar" {
+        reset;
         blur enable;
-        blur_xray enable;
+        blur_passes 1;
+        blur_size 3;
       }
     '';
   };

@@ -27,6 +27,7 @@ window#waybar > box {
 }
 
 #submap,
+#mode,
 #workspaces button {
   all: initial;
   min-width: 0;
@@ -38,6 +39,7 @@ window#waybar > box {
 }
 
 #submap,
+#mode,
 #workspaces button.active {
   color: @base;
   background-color: @lavender;

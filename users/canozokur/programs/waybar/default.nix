@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 let
   ctp-mocha = pkgs.fetchurl {
     url = "https://github.com/catppuccin/waybar/releases/download/v1.1/mocha.css";
@@ -53,9 +53,15 @@ in
         position = "right";
         width = 20;
         spacing = 0;
-        modules-left = [
-          "hyprland/workspaces"
-          "hyprland/submap"
+        modules-left = lib.concatLists [
+          (lib.optionals config.wayland.windowManager.hyprland.enable [
+            "hyprland/workspaces"
+            "hyprland/submap"
+          ])
+          (lib.optionals config.wayland.windowManager.sway.enable [
+            "sway/workspaces"
+            "sway/mode"
+          ])
         ];
         modules-center = [
           "mpris"
@@ -163,6 +169,10 @@ in
 
         "hyprland/workspaces" = {
           sort-by-name = true;
+          format = "{icon}";
+        };
+
+        "sway/workspaces" = {
           format = "{icon}";
         };
 
