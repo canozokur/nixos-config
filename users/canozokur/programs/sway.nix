@@ -42,7 +42,7 @@ in
         };
       };
 
-      bars = lib.mkIf config.programs.swaybar.enabled [
+      bars = lib.optionals (config.programs.waybar.enable == false) [
         {
           fonts = {
             names = [ "CaskaydiaCove NF" "Font Awesome 6 Free" ];
@@ -151,8 +151,7 @@ in
 
       startup = [
         { command = "${pkgs.wl-clipboard}/bin/wl-paste --watch cliphist store"; }
-        lib.mkIf config.programs.waybar.enabled { command = "${pkgs.waybar}/bin/waybar"; } 
-      ];
+      ] ++ lib.optional config.programs.waybar.enable { command = "${pkgs.waybar}/bin/waybar"; };
     };
   };
 }
