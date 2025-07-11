@@ -151,7 +151,7 @@ in
 
       startup = [
         { command = "${pkgs.wl-clipboard}/bin/wl-paste --watch cliphist store"; }
-      ] ++ lib.optional config.programs.waybar.enable { command = "${pkgs.waybar}/bin/waybar"; };
+      ];
     };
   };
 }
