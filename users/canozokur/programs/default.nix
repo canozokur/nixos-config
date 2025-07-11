@@ -3,7 +3,6 @@
   imports = [
     ./shell-config.nix
     ./git.nix
-    ./sway.nix
     ./ghostty.nix
     ./fonts.nix
     ./firefox.nix
@@ -21,7 +20,7 @@
     ./swaync.nix
     ./spotify-player.nix
     ./wezterm.nix
-#    ./hyprland.nix
+    ./hyprland.nix
     ./waybar
     ./mouse-cursor.nix
     ./clipboard.nix
