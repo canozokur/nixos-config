@@ -53,7 +53,7 @@ in
         position = "right";
         width = 20;
         spacing = 0;
-        modules-left = lib.concatLists [
+        modules-center = lib.concatLists [
           (lib.optionals config.wayland.windowManager.hyprland.enable [
             "hyprland/workspaces"
             "hyprland/submap"
@@ -63,7 +63,7 @@ in
             "sway/mode"
           ])
         ];
-        modules-center = [
+        modules-left = [
           "mpris"
         ];
         modules-right = [
@@ -115,9 +115,22 @@ in
 
         clock = {
           format = "{:%H\n%M\n%S}";
-          format-alt = "{:%a\n%d\n%b\n'%y}";
+          format-alt = "<span size='8pt'>{:%a\n%d\n%b\n'%y}</span>";
           justify = "right";
           interval = 1;
+          calendar = {
+            mode = "year";
+            mode-mon-col = 3;
+            weeks-pos = "right";
+            on-scroll = 1;
+            format = {
+              months = "<span color='#ffead3'><b>{}</b></span>";
+              days = "<span color='#ecc6d9'><b>{}</b></span>";
+              weeks = "<span color='#99ffdd'><b>W{}</b></span>";
+              weekdays = "<span color='#ffcc66'><b>{}</b></span>";
+              today = "<span color='#ff6699'><b><u>{}</u></b></span>";
+            };
+          };
           tooltip-format = "<span size='18pt'>{calendar}</span>";
         };
 
