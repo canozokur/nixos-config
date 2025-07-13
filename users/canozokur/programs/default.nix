@@ -48,4 +48,7 @@
     grim
     satty
   ];
+
+  # enable bluetooth by default
+  services.blueman-applet.enable = true;
 }
