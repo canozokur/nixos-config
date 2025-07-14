@@ -101,6 +101,15 @@ in
           hwmon-path = lib.mkDefault "";
         };
 
+        wireplumber = {
+          format = "{icon}";
+          tooltip-format = "{volume}%";
+          format-icons = {
+            mute = "󰝟";
+            default = ["󰕿" "󰖀" "󰕾"];
+          };
+        };
+
         memory = {
           interval = 30;
           format = "";
