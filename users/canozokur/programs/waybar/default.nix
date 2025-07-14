@@ -44,6 +44,8 @@ in
 {
   xdg.configFile."waybar/ctp-mocha.css".source = ctp-mocha;
 
+  home.packages = [ pkgs.pavucontrol ];
+
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -71,7 +73,7 @@ in
           "tray"
           "group/hardware"
           "network"
-          "wireplumber"
+          "pulseaudio"
           "custom/swaync"
           "battery"
         ];
@@ -101,13 +103,25 @@ in
           hwmon-path = lib.mkDefault "";
         };
 
-        wireplumber = {
+        pulseaudio = {
           format = "{icon}";
-          tooltip-format = "{volume}%";
+          tooltip-format = "{volume}";
+          format-bluetooth = "󰂰";
+          format-muted = "";
           format-icons = {
-            mute = "󰝟";
-            default = ["󰕿" "󰖀" "󰕾"];
+            headphone = "";
+            hands-free = "!";
+            headset = "";
+            phone = "";
+            phone-muted = "";
+            portable = "";
+            car = "";
+            default = ["" ""];
           };
+          scroll-step = 1;
+          on-click = "pavucontrol";
+          on-click-right = "wpctl set-mute @DEFAULT_SINK@ toggle";
+          ignored-sinks = ["Easy Effects Sink"];
         };
 
         memory = {

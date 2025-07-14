@@ -60,6 +60,7 @@ window#waybar > box {
 #battery,
 #backlight,
 #wireplumber,
+#pulseaudio,
 #network,
 #clock,
 #mpris,
@@ -91,6 +92,7 @@ window#waybar > box {
 #memory,
 #battery,
 #wireplumber,
+#pulseaudio,
 #network,
 #custom-swaync {
   color: @blue;
@@ -100,6 +102,7 @@ window#waybar > box {
   color: @red;
 }
 
+#pulseaudio.muted,
 #wireplumber.disabled {
   color: @red;
 }
