@@ -158,7 +158,7 @@ in
             bind "/" { SwitchToMode "entersearch"; SearchInput 0; }
             bind "D" { ScrollToBottom; }
             bind "U" { ScrollToTop; }
-            bind "c" { }
+            bind "c" { Clear; }
             bind "e" { EditScrollback; SwitchToMode "normal"; }
         }
         search {
