@@ -10,6 +10,7 @@ let
 
   runtimeInputs = [
     pkgs.swaynotificationcenter
+    pkgs.dbus
   ];
 
   text = ''
