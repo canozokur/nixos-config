@@ -94,6 +94,9 @@
       ];
       layerrule = [
         "blur, waybar"
+        #"blur, swaync-control-center"
+        #"ignorezero, swaync-control-center"
+        #"ignorealpha 0.5, swaync-control-center"
       ];
       windowrule = [
         "stayfocused, class:zoom, title:menu window"

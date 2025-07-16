@@ -19,6 +19,18 @@ in
   services.swaync = {
     enable = true;
     settings = {
+      transition-time = 200;
+      widgets = [
+        "mpris"
+        "title"
+        "dnd"
+        "notifications"
+        "volume"
+      ];
+      widget-config = {
+        title.button-text = " 󰎟 ";
+        volume.label = "";
+      };
     };
     style = ctp-mocha-fc;
   };
