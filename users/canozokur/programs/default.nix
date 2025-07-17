@@ -36,7 +36,6 @@
     htop
     ripgrep
     watch
-    globalprotect-openconnect
     kubectl
     kubectx
     zoom-us
