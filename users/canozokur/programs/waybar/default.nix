@@ -164,7 +164,7 @@ in
         };
 
         battery = {
-          format = "{capacity}% {icon}";
+          format = "{icon}";
           format-icons = {
             charging = [
               "󰢜" "󰂆" "󰂇" "󰂈" "󰢝" "󰂉" "󰢞" "󰂊" "󰂋" "󰂅"
@@ -179,7 +179,8 @@ in
             warning = 20;
             critical = 10;
           };
-          tooltip = false;
+          tooltip = true;
+          tooltip-format = "{capacity}%";
         };
 
         mpris = {
