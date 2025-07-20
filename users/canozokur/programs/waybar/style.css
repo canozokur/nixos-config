@@ -113,11 +113,13 @@ window#waybar > box {
 
 #battery.critical,
 #battery.urgent {
-  color: @red;
+  color: @surface0;
+  background-color: @red;
 }
 
 #battery.charging {
-  color: @teal;
+  color: @surface0;
+  background-color: @green;
 }
 
 #clock {
