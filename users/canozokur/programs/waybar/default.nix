@@ -200,8 +200,8 @@ in
         "hyprland/workspaces" = {
           sort-by-name = true;
           format = "{icon}";
-          on-scroll-up = "hyprctl dispatch workspace e+1";
-          on-scroll-down = "hyprctl dispatch workspace e-1";
+          on-scroll-up = "hyprctl dispatch workspace e-1";
+          on-scroll-down = "hyprctl dispatch workspace e+1";
         };
 
         "sway/workspaces" = {
