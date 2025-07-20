@@ -21,15 +21,16 @@ in
     settings = {
       transition-time = 200;
       widgets = [
-        "mpris"
         "title"
         "dnd"
         "notifications"
+        "mpris"
         "volume"
       ];
       widget-config = {
         title.button-text = " 󰎟 ";
         volume.label = "";
+        mpris.blacklist = ["playerctld"];
       };
     };
     style = ctp-mocha-fc;

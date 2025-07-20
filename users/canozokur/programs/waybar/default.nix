@@ -180,7 +180,7 @@ in
             critical = 10;
           };
           tooltip = true;
-          tooltip-format = "{capacity}%";
+          tooltip-format = "cap: {capacity}%\n{timeTo}\nhealth: {health}";
         };
 
         mpris = {
