@@ -67,7 +67,7 @@ window#waybar > box {
 #custom-swaync,
 .not-power,
 #tray {
-  font-size: 18;
+  font-size: 18px;
   border-radius: 4px;
   margin: 6px 6px;
   padding: 6px 6px;
@@ -77,7 +77,7 @@ window#waybar > box {
 
 #clock,
 #mpris {
-  font-size: 16;
+  font-size: 16px;
 }
 
 #mpris {
