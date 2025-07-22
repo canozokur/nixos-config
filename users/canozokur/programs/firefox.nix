@@ -19,6 +19,7 @@
           "browser.firefox-view.feature-tour" = { "message" = "FIREFOX_VIEW_FEATURE_TOUR"; "screen" = ""; "complete" = true; };
           "browser.toolbars.bookmarks.visibility" = "never";
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          "browser.ml.chat.enabled" = false;
         };
         search = {
           force = true;
