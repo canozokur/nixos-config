@@ -2,6 +2,10 @@
 {
   programs.firefox = {
     enable = true;
+    policies = {
+      PasswordManagerEnabled = false;
+      OfferToSaveLoginsDefault = false;
+    };
     profiles = {
       default = {
         id = 0;
