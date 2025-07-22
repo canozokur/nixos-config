@@ -1,8 +1,8 @@
-{ nixvim, sops-nix, ... }:
+{ inputs, ... }:
 {
   imports = [
-    nixvim.homeManagerModules.nixvim
-    sops-nix.homeManagerModules.sops
+    inputs.nixvim.homeManagerModules.nixvim
+    inputs.sops-nix.homeManagerModules.sops
     ./nixvim
     ./programs
     ./sops.nix

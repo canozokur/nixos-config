@@ -1,6 +1,6 @@
-{ config, nix-secrets, ... }:
+{ config, inputs, ... }:
 let
-  secretsPath = builtins.toString nix-secrets;
+  secretsPath = builtins.toString inputs.nix-secrets;
   homeDir = config.home.homeDirectory;
   cfgHome = config.xdg.configHome;
 in

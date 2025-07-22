@@ -7,9 +7,8 @@ let
     ({ config, inputs, ... }: {
       imports = [ home-manager.nixosModules.home-manager ];
       home-manager.extraSpecialArgs = {
-        inherit (inputs) nixvim;
-        inherit (inputs) sops-nix;
-        inherit (inputs) nix-secrets;
+        inherit inputs;
+        inherit system;
       };
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
