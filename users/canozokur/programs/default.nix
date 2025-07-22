@@ -27,6 +27,7 @@
     ./wpaperd.nix
     ./playerctld.nix
     ./hyprlock.nix
+    ./xdg-portal.nix
   ];
 
   home.packages = with pkgs; [
@@ -38,7 +39,7 @@
     watch
     kubectl
     kubectx
-    zoom-us
+    (zoom-us.override { hyprlandXdgDesktopPortalSupport = true; })
     slack
     devenv
     obsidian
@@ -46,6 +47,7 @@
     slurp
     grim
     satty
+    obs-studio
   ];
 
   # enable bluetooth by default

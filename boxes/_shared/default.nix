@@ -79,6 +79,8 @@ in
   # swaync & i3status-rs requires dconf to pause notifications
   programs.dconf.enable = true;
 
+  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+
   # TODO: this could be moved to a library function to create the secrets config
   # i.e. makeNMProfile "conn-id" { .. other config ... }
   sops.secrets."network/secrets/home-wifi/psk" = {};
