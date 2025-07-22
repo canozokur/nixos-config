@@ -99,7 +99,8 @@
         #"ignorealpha 0.5, swaync-control-center"
       ];
       windowrule = [
-        "stayfocused, class:zoom, title:menu window"
+        "stayfocused, class:^(Zoom.*), title:^(meeting bottombar.*)$"
+        "float, class:^(Zoom.*)"
       ];
       binds = {
         workspace_back_and_forth = true;
