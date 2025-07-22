@@ -47,6 +47,12 @@ in
 
   home.packages = [ pkgs.pavucontrol ];
 
+  systemd.user.services.waybar = {
+    Service = {
+      ExecStart = lib.mkForce "${pkgs.waybar}/bin/waybar -l error";
+    };
+  };
+
   programs.waybar = {
     enable = true;
     systemd.enable = true;
