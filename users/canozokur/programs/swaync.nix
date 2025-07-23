@@ -1,15 +1,7 @@
 { pkgs, ... }:
-let
-  ctp-mocha = pkgs.fetchurl {
-    url = "https://github.com/catppuccin/swaync/releases/download/v0.2.3/mocha.css";
-    hash = "sha256-Hie/vDt15nGCy4XWERGy1tUIecROw17GOoasT97kIfc=";
-  };
-in
 {
   # this is required for proper icons i.e. "no notifications" icon
   home.packages = [ pkgs.adwaita-icon-theme ];
-
-  xdg.configFile."swaync/catppuccin-mocha.css".source = ctp-mocha;
 
   services.swaync = {
     enable = true;
@@ -33,6 +25,8 @@ in
         mpris.blacklist = ["playerctld"];
       };
     };
+    # style taken from https://github.com/r4ppz19/Arch-dotfiles/blob/gruvbox/swaync/style.css
+    # and adapted with catppuccin mocha colors
     style = ''
       :root {
         --bg-primary: #1e1e2e;
