@@ -22,7 +22,9 @@
           show-per-app-icon = true;
           show-per-app-label = true;
         };
-        mpris.blacklist = ["playerctld"];
+        mpris = {
+          blacklist = ["playerctld"];
+        };
       };
     };
     # style taken from https://github.com/r4ppz19/Arch-dotfiles/blob/gruvbox/swaync/style.css
@@ -37,7 +39,7 @@
         --text-disabled: #a6adc8;
         --border-color: #b4befe;
         --priority-low: #89dceb;
-        --priority-normal: #89b4fa;
+        --priority-normal: #a6e3a1;
         --priority-critical: #f38ba8;
         --transition-standard: 0.15s ease-in-out;
       }
@@ -116,15 +118,15 @@
 
       /* Priority-based notification styles */
       .notification-row .notification-background .notification.low {
-        border-left: 3px solid var(--priority-low);
+        border-left: 15px solid var(--priority-low);
       }
 
       .notification-row .notification-background .notification.normal {
-        border-left: 3px solid var(--priority-normal);
+        border-left: 15px solid var(--priority-normal);
       }
 
       .notification-row .notification-background .notification.critical {
-        border-left: 3px solid var(--priority-critical);
+        border-left: 15px solid var(--priority-critical);
       }
 
       /* Notification default action */
@@ -178,7 +180,7 @@
       .notification-content .text-box .summary,
       .notification-content .text-box .time,
       .notification-content .text-box .body {
-        font-size: 14px;
+        font-size: 15px;
         background: transparent;
         color: var(--text-primary);
         text-shadow: none;
@@ -357,7 +359,7 @@
       .widget-title>label {
         margin: 8px;
         font-weight: 700;
-        font-size: 12px;
+        font-size: 16px;
       }
 
       .widget-title>button {
@@ -382,7 +384,7 @@
       .widget-dnd label,
       .widget-label>label {
         color: var(--text-primary);
-        font-size: 14px;
+        font-size: 13px;
       }
 
       .widget-dnd label {
@@ -434,11 +436,11 @@
 
       .widget-mpris .widget-mpris-player .mpris-overlay .widget-mpris-title {
         font-weight: bold;
-        font-size: 14px;
+        font-size: 15px;
       }
 
       .widget-mpris .widget-mpris-player .mpris-overlay .widget-mpris-subtitle {
-        font-size: 14px;
+        font-size: 13px;
       }
 
       .widget-mpris .widget-mpris-player .mpris-overlay>box>button {
@@ -498,7 +500,7 @@
       }
 
       .widget-volume row image {
-        -gtk-icon-size: 24px;
+        -gtk-icon-size: 14px;
       }
 
       .per-app-volume {
@@ -506,6 +508,7 @@
         padding: 4px 8px 8px 8px;
         margin: 0px 8px 8px 8px;
         border-radius: 2px;
+        color: var(--text-primary)
       }
 
       /* Slider widget */
