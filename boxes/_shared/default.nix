@@ -48,6 +48,8 @@ in
     binutils
   ];
 
+  environment.enableAllTerminfo = true;
+
   services.greetd = {
     enable = true;
     restart = true;
