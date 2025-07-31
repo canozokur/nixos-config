@@ -47,9 +47,9 @@ in
           outputs = [
             { criteria = "Sharp Corporation 0x14D0 Unknown"; status = "disable"; }
             {
-              criteria = "ASUSTek COMPUTER INC PG279QE K7LMQS096556";
+              criteria = "Philips Consumer Electronics Company 34B2U6603 UK02509028957";
               status = "enable";
-              mode = "2560x1440@60Hz";
+              mode = "3440x1440@120Hz";
             }
           ];
         };
