@@ -18,7 +18,6 @@
     ./kanshi.nix
     ./nix.nix
     ./swaync.nix
-    ./spotify-player.nix
     ./wezterm.nix
     ./hyprland.nix
     ./waybar
@@ -43,6 +42,7 @@
     slack
     devenv
     obsidian
+    spotify
     # slurp, grim and satty are required for screenshots
     slurp
     grim
