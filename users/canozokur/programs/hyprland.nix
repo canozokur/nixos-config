@@ -108,6 +108,9 @@
         "stayfocused, class:^(Zoom.*), title:^(meeting bottombar.*)$"
         "float, class:^(Zoom.*)"
       ];
+      workspace = [
+        "1, layoutopt:orientation:top"
+      ];
       binds = {
         workspace_back_and_forth = true;
       };
