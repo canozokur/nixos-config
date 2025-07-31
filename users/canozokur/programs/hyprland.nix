@@ -47,6 +47,12 @@
       "$mod" = "SUPER";
       "$terminal" = "${pkgs.wezterm}/bin/wezterm";
       "$launcher" = "${pkgs.rofi-wayland}/bin/rofi -show-icons -matching fuzzy";
+      general.layout = "dwindle";
+      master = {
+        orientation = "center";
+        slave_count_for_center_master = 0;
+        smart_resizing = false;
+      };
       bind = [
         "$mod, Return, exec, $terminal"
         "$mod, q, killactive,"
@@ -124,11 +130,6 @@
           passes = 1;
           new_optimizations = true;
         };
-      };
-      render = {
-        # wpaperd and hyprland does not agree on vertical screens
-        # https://github.com/hyprwm/Hyprland/issues/9408#issuecomment-2661608482
-        expand_undersized_textures = false;
       };
     };
   };

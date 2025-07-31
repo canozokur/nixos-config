@@ -52,6 +52,7 @@ in
               mode = "3440x1440@120Hz";
             }
           ];
+          exec = "hyprctl keyword general:layout master";
         };
       }
     ];
