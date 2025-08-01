@@ -1,4 +1,4 @@
-{ config, ... }:
+{ inputs, ... }:
 {
   services.wpaperd = {
     enable = true;
@@ -6,7 +6,7 @@
       default = {
         duration = "15m";
         mode = "center";
-        path = "${config.home.homeDirectory}/Pictures/Desktoppr";
+        path = "${inputs.wallpapers}";
       };
     };
   };

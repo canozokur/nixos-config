@@ -36,6 +36,11 @@
     zjstatus = {
       url = "github:dj95/zjstatus";
     };
+
+    wallpapers = {
+      url = "github:canozokur/wallpapers";
+      flake = false;
+    };
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }:

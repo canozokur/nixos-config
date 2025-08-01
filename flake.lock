@@ -280,6 +280,7 @@
         "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim",
         "sops-nix": "sops-nix",
+        "wallpapers": "wallpapers",
         "zjstatus": "zjstatus"
       }
     },
@@ -366,6 +367,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "wallpapers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1754087323,
+        "narHash": "sha256-640CztWgGSTjgzREvvgDdKRLl9WtMoXQ4gbRymL0aCQ=",
+        "owner": "canozokur",
+        "repo": "wallpapers",
+        "rev": "182c7698bb7492bddf4a72a93e8a2ac1ead82e54",
+        "type": "github"
+      },
+      "original": {
+        "owner": "canozokur",
+        "repo": "wallpapers",
         "type": "github"
       }
     },
