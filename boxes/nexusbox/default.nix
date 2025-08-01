@@ -11,5 +11,6 @@
     ./falcon-sensor.nix
     ./undervolt.nix
     ./netbird.nix
+    ../_shared/bazecor.nix
   ];
 }
