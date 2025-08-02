@@ -45,7 +45,7 @@ in
 {
   xdg.configFile."waybar/ctp-mocha.css".source = ctp-mocha;
 
-  home.packages = [ pkgs.pavucontrol ];
+  home.packages = [ pkgs.wiremix ];
 
   systemd.user.services.waybar = {
     Service = {
@@ -118,7 +118,7 @@ in
             default = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
           };
           scroll-step = 1;
-          on-click = "pavucontrol";
+          on-click = "${pkgs.wezterm}/bin/wezterm start -- wiremix";
           on-click-right = "wpctl set-mute @DEFAULT_SINK@ toggle";
           ignored-sinks = ["Easy Effects Sink"];
         };
