@@ -27,6 +27,7 @@
     networkmanager = {
       enable = true;
       dns = "none";
+      wifi.powersave = false;
       ensureProfiles.profiles = {
         wired = {
           connection = {
