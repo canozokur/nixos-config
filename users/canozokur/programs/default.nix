@@ -48,6 +48,7 @@
     grim
     satty
     obs-studio
+    aider-chat
   ];
 
   # enable bluetooth by default
