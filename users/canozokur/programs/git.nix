@@ -25,5 +25,8 @@
       enable = true;
       enableAsDifftool = true;
     };
+    ignores = [
+      ".aider*"
+    ];
   };
 }
