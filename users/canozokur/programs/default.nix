@@ -27,6 +27,7 @@
     ./playerctld.nix
     ./hyprlock.nix
     ./xdg-portal.nix
+    ./aider.nix
   ];
 
   home.packages = with pkgs; [
@@ -48,7 +49,6 @@
     grim
     satty
     obs-studio
-    aider-chat
   ];
 
   # enable bluetooth by default
