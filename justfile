@@ -19,6 +19,10 @@ update-secrets:
 update-all:
   nix flake update
 
+update-all-and-switch:
+  nix flake update
+  nixos-rebuild --sudo switch --profile-name update-`date "+%D@%T"` --flake .
+
 _rebuild-boot:
   nixos-rebuild --sudo boot --flake .
 
