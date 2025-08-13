@@ -141,6 +141,8 @@
           { key = "p", mods = "ALT", action = disabled },
           { key = "p", mods = "CTRL|SHIFT", action = disabled },
           { key = "v", mods = "CTRL|SHIFT", action = act.PasteFrom "Clipboard" },
+          { key = '=', mods = 'CTRL', action = wezterm.action.IncreaseFontSize },
+          { key = '-', mods = 'CTRL', action = wezterm.action.DecreaseFontSize },
         },
       }
     '';
