@@ -49,6 +49,7 @@
     grim
     satty
     obs-studio
+    cameractrls-gtk4
   ];
 
   # enable bluetooth by default
