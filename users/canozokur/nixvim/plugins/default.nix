@@ -14,5 +14,6 @@
     ./lsp-zero.nix
     ./lazy-lsp.nix
     ./lualine.nix
+    ./quicker.nix
   ];
 }
