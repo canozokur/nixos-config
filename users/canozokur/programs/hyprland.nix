@@ -57,7 +57,8 @@
         "$mod, Return, exec, $terminal"
         "$mod, q, killactive,"
         "$mod SHIFT, q, exit"
-        "$mod, f, fullscreen,"
+        "$mod, f, fullscreen, 1" # keep the gaps
+        "$mod SHIFT, f, fullscreen, 0" # don't keep the gaps
         "$mod, h, movefocus, l"
         "$mod, l, movefocus, r"
         "$mod, k, movefocus, u"
