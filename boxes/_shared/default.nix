@@ -7,6 +7,7 @@ in
     inputs.sops-nix.nixosModules.sops
     ../../modules
     ./overlays
+    ./printing.nix
   ];
 
   sops = {
