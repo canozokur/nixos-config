@@ -110,7 +110,7 @@
         "float, class:^(Zoom.*)"
       ];
       workspace = [
-        "1, layoutopt:orientation:top"
+        "1, layoutopt:orientation:left"
       ];
       binds = {
         workspace_back_and_forth = true;
