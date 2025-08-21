@@ -4,7 +4,7 @@
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
-      timeout = 1;
+      timeout = 10; # large t/o to make sure we get a screen on boot at home
     };
     initrd = {
       luks.devices = {
