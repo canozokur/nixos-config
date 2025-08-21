@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
-  services.netbird.enable = true;
+  services.netbird = {
+    enable = true;
+    useRoutingFeatures = "client";
+    ui.enable = true;
+  };
   environment.systemPackages = [ pkgs.netbird-ui ];
 }
