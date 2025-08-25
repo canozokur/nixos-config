@@ -8,6 +8,7 @@
       "wheel"
       "networkmanager"
       "docker"
+      "dialout"
     ];
     createHome = true;
     hashedPasswordFile = config.sops.secrets."passwords/canozokur".path;
