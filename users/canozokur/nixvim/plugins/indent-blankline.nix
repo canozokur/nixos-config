@@ -18,7 +18,7 @@
     listchars = {
         multispace = "·";
         eol        = "↲";
-        tab        = "→ ";
+        tab        = "│ ";
         trail      = "·";
     };
   };
