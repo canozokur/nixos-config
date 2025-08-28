@@ -2,9 +2,22 @@
 {
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
-    serverAliveInterval = 10;
-    extraConfig = "SetEnv TERM=xterm";
-    matchBlocks = inputs.nix-secrets.ssh.matchBlocks;
+    enableDefaultConfig = false;
+    matchBlocks = {
+      "*" = {
+        addKeysToAgent = "yes";
+        serverAliveInterval = 10;
+        serverAliveCountMax = 3;
+        compression = false;
+        hashKnownHosts = false;
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "no";
+        forwardAgent = false;
+        extraOptions = {
+          SetEnv = "TERM=xterm";
+        };
+      };
+    } // inputs.nix-secrets.ssh.matchBlocks;
   };
 }
