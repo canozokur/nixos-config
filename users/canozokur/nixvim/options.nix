@@ -23,5 +23,6 @@
     mouse = "";
     cursorline = true;
     cursorlineopt = "number";
+    winborder = "rounded";
   };
 }
