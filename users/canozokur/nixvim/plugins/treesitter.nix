@@ -6,6 +6,8 @@
       settings = {
         auto_install = true;
         ensure_installed = [
+          "go"
+          "python"
           "javascript"
           "typescript"
           "c"
