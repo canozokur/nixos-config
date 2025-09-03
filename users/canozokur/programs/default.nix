@@ -28,6 +28,7 @@
     ./hyprlock.nix
     ./xdg-portal.nix
     ./aider.nix
+    ./lazygit.nix
   ];
 
   home.packages = with pkgs; [
