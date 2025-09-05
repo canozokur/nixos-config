@@ -28,7 +28,7 @@
       local disabled = wezterm.action.DisableDefaultAssignment
 
       return {
-        color_scheme = "Catppuccin Mocha",
+        color_scheme = "catppuccin-mocha",
         term = "wezterm",
         font = wezterm.font({family="CaskaydiaCove Nerd Font Mono", weight="Regular"}),
         font_rules = {
@@ -141,8 +141,9 @@
           { key = "p", mods = "ALT", action = disabled },
           { key = "p", mods = "CTRL|SHIFT", action = disabled },
           { key = "v", mods = "CTRL|SHIFT", action = act.PasteFrom "Clipboard" },
-          { key = '=', mods = 'CTRL', action = wezterm.action.IncreaseFontSize },
-          { key = '-', mods = 'CTRL', action = wezterm.action.DecreaseFontSize },
+          { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
+          { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
+          { key = 'L', mods = 'CTRL|SHIFT', action = act.ShowDebugOverlay },
         },
       }
     '';
