@@ -57,7 +57,7 @@
 
   programs.nixvim.plugins.lz-n.keymaps = [
     {
-      key = "<C-o>";
+      key = "<leader><space>";
       action.__raw = "function() require'telescope.builtin'.find_files({ hidden = true, file_ignore_patterns = { 'node_modules', '.git/', '.venv' }}) end";
       mode = "n";
       plugin = "telescope.nvim";
