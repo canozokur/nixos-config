@@ -29,6 +29,7 @@
     ./xdg-portal.nix
     ./aider.nix
     ./lazygit.nix
+    ./vault.nix
   ];
 
   home.packages = with pkgs; [

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   # we need this for alias completion in bash
   home.packages = with pkgs; [
@@ -63,6 +63,8 @@
         function unsetp() {
           unset AWS_PROFILE
         }
+
+        export VAULT_ADDR=${inputs.nixos-secrets.bash_env.vault_addr}
       '';
     };
 
