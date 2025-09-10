@@ -45,7 +45,7 @@
         # base64 decode helper
         b64d() {
           local secret="$1"
-          echo -n "$${secret}" | base64 -d
+          echo -n "''${secret}" | base64 -d
         }
         # git clone helper
         gitclone(){ pushd ~/data/git; git clone "$@" "$(echo "$@" | sed -E 's#^.*([:/])([^/]+/[^/]+)$#\2#' | sed -E 's#\.git$##')"; popd;}
