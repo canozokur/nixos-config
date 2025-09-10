@@ -64,7 +64,7 @@
           unset AWS_PROFILE
         }
 
-        export VAULT_ADDR=${inputs.nixos-secrets.bash_env.vault_addr}
+        export VAULT_ADDR=${inputs.nix-secrets.bash_env.vault_addr}
       '';
     };
 
