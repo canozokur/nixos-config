@@ -4,7 +4,6 @@ let
 in
 {
   programs.rofi = {
-    package = pkgs.rofi-wayland;
     enable = true;
     terminal = "${pkgs.wezterm}";
     font = "CaskaydiaCove Nerd Font Mono 11";

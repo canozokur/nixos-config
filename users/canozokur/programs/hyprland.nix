@@ -46,7 +46,7 @@
     settings = {
       "$mod" = "SUPER";
       "$terminal" = "${pkgs.wezterm}/bin/wezterm";
-      "$launcher" = "${pkgs.rofi-wayland}/bin/rofi -show-icons -matching fuzzy";
+      "$launcher" = "${pkgs.rofi}/bin/rofi -show-icons -matching fuzzy";
       general.layout = "dwindle";
       master = {
         orientation = "center";
