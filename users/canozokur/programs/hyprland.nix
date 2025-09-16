@@ -116,9 +116,9 @@
         workspace_back_and_forth = true;
       };
       animations.enabled = false;
-      gestures = {
-        workspace_swipe = true;
-      };
+      gesture = [
+        "3, horizontal, workspace"
+      ];
       cursor = {
         inactive_timeout = 10;
         hide_on_key_press = true;
