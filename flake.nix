@@ -47,7 +47,6 @@
   let
     mkBox = import ./lib/mkbox.nix {
       inherit inputs;
-      inherit nixpkgs;
       inherit home-manager;
     };
 

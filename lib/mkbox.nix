@@ -1,4 +1,4 @@
-{ inputs, nixpkgs, home-manager }:
+{ inputs, home-manager }:
 { box, system, users }:
 let
   mkUser = user: [
@@ -24,7 +24,7 @@ let
     })
   ];
 in
-nixpkgs.lib.nixosSystem {
+inputs.nixpkgs.lib.nixosSystem {
   inherit system;
 
   specialArgs = {
