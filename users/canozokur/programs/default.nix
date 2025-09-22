@@ -30,6 +30,7 @@
     ./aider.nix
     ./lazygit.nix
     ./vault.nix
+    ./qemu.nix
   ];
 
   home.packages = with pkgs; [
