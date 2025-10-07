@@ -20,6 +20,7 @@
           "browser.toolbars.bookmarks.visibility" = "never";
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
           "browser.ml.chat.enabled" = false;
+          "media.setsinkid.enabled" = true; # enumerate all audio sources, don't just show the default device
         };
         search = {
           force = true;
