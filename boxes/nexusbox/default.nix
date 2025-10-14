@@ -12,6 +12,7 @@
     ./undervolt.nix
     ./netbird.nix
     ./power.nix
+    ./gpclient.nix
     ../_shared/bazecor.nix
   ];
 }
