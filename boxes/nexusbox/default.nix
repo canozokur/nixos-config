@@ -9,7 +9,6 @@
     ./overlays
     ./kolide.nix
     ./falcon-sensor.nix
-    ./undervolt.nix
     ./netbird.nix
     ./power.nix
     ./gpclient.nix
