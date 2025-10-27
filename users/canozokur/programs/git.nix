@@ -3,14 +3,11 @@
   programs.git = {
     enable = true;
     lfs.enable = true;
-    userEmail = "13416785+canozokur@users.noreply.github.com";
-    userName = "canozokur";
-    signing = {
-      key = "${config.home.homeDirectory}/.ssh/id_ed25519";
-      format = "ssh";
-      signByDefault = true;
-    };
-    extraConfig = {
+    settings = {
+      user = {
+        email = "13416785+canozokur@users.noreply.github.com";
+        name = "canozokur";
+      };
       pull = { ff = "only"; };
       init = { defaultbranch = "main"; };
       push = { autosetupremote = true; };
@@ -21,12 +18,21 @@
         logallrefupdates = true;
       };
     };
-    difftastic = {
-      enable = true;
-      enableAsDifftool = true;
+    signing = {
+      key = "${config.home.homeDirectory}/.ssh/id_ed25519";
+      format = "ssh";
+      signByDefault = true;
     };
     ignores = [
       ".aider*"
     ];
+  };
+
+  programs.difftastic = {
+    enable = true;
+    git = {
+      enable = true;
+      diffToolMode = true;
+    };
   };
 }
