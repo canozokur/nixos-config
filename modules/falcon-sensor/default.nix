@@ -13,7 +13,6 @@ let
 
   startPreScript = pkgs.writeScript "init-falcon" ''
     #! ${pkgs.bash}/bin/sh
-    /run/current-system/sw/bin/mkdir -p /opt/CrowdStrike
     ln -sf ${falcon}/opt/CrowdStrike/* /opt/CrowdStrike
     ${falcon}/bin/fs-bash -c "${falcon}/opt/CrowdStrike/falconctl -s --cid=$(cat ${cfg.cid})"
     ${falcon}/bin/fs-bash -c "${falcon}/opt/CrowdStrike/falconctl -g --cid"
@@ -55,7 +54,7 @@ with lib;
       enable = true;
       description = "CrowdStrike Falcon Sensor";
       unitConfig.DefaultDependencies = false;
-      after = [ "local-fs.target" ];
+      after = [ "local-fs.target" "systemd-tmpfiles-setup.service" ];
       conflicts = [ "shutdown.target" ];
       before = [
         "sysinit.target"
@@ -71,6 +70,18 @@ with lib;
         KillMode = "process";
       };
       wantedBy = [ "multi-user.target" ];
+    };
+
+    systemd.tmpfiles.settings = {
+      "10-crowdstrike" = {
+        "/opt/CrowdStrike" = {
+          d = {
+            group = "root";
+            user = "root";
+            mode = "0770";
+          };
+        };
+      };
     };
   };
 }
