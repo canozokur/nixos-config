@@ -46,6 +46,7 @@
   hardware.graphics.enable = true;
   # bluetooth config
   hardware.bluetooth.enable = true;
+  hardware.bluetooth.settings.General.FastConnectable = true;
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
   # don't go to sleep on lid events
