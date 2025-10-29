@@ -9,14 +9,26 @@
           event = ["VimEnter"];
         };
       };
-      settings.options = {
-        component_separators = {
-          left = "\\";
-          right = "/";
+      settings = {
+        options = {
+          component_separators = {
+            left = "\\";
+            right = "/";
+          };
+          section_separators = {
+            left = "";
+            right = "";
+          };
         };
-        section_separators = {
-          left = "";
-          right = "";
+        sections = {
+          lualine_c = [
+          {
+            __unkeyed = "filename";
+            file_status = true;
+            newfile_status = true;
+            path = 4;
+          }
+          ];
         };
       };
     };
