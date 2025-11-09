@@ -142,7 +142,7 @@ in
         connection = {
           id = "home-wifi";
           type = "wifi";
-          autoconnect = "true";
+          autoconnect = "false";
         };
         wifi = {
           mode = "infrastructure";
