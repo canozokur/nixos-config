@@ -100,16 +100,8 @@ in
   # TODO: this could be moved to a library function to create the secrets config
   # i.e. makeNMProfile "conn-id" { .. other config ... }
   sops.secrets."network/secrets/home-wifi/psk" = {};
-  sops.secrets."network/secrets/home-wifi-5g/psk" = {};
   networking.networkmanager.ensureProfiles = {
     secrets.entries = [
-      {
-        file = config.sops.secrets."network/secrets/home-wifi-5g/psk".path;
-        key = "psk";
-        matchId = "home-wifi-5g";
-        matchSetting = "802-11-wireless-security";
-        matchType = "802-11-wireless";
-      }
       {
         file = config.sops.secrets."network/secrets/home-wifi/psk".path;
         key = "psk";
@@ -119,25 +111,6 @@ in
       }
     ];
     profiles = {
-      home-wifi-5g = {
-        connection = {
-          id = "home-wifi-5g";
-          type = "wifi";
-          autoconnect = true;
-        };
-        ipv6 = {
-          addr-gen-mode = "stable-privacy";
-          method = "disabled";
-        };
-        wifi = {
-          mode = "infrastructure";
-          ssid = inputs.nix-secrets.network.home-wifi-5g.ssid;
-        };
-        wifi-security = {
-          auth-alg = "open";
-          key-mgmt = "wpa-psk";
-        };
-      };
       home-wifi = {
         connection = {
           id = "home-wifi";
