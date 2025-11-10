@@ -31,7 +31,6 @@
         '';
         k = "kubectl";
         ky = "kubectl -o yaml";
-        lg = "lazygit";
       };
       initExtra = ''
         bind '"\e[A":history-search-backward'
