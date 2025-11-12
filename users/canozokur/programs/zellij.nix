@@ -264,7 +264,6 @@ in
     load_plugins {
     }
     pane_frames false
-    scrollback_editor "/usr/bin/nvim"
     show_startup_tips false
   '';
   xdg.configFile."zellij/layouts/default.kdl".text = ''
