@@ -145,6 +145,8 @@
           { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
           { key = 'L', mods = 'CTRL|SHIFT', action = act.ShowDebugOverlay },
         },
+
+        mux_enable_ssh_agent = false,
       }
     '';
   };
