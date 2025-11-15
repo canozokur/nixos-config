@@ -68,6 +68,12 @@
       users = [ "canozokur" ];
     };
 
+    nixosConfigurations.homebox = mkBox {
+      box = "homebox";
+      system = "x86_64-linux";
+      users = [ "canozokur" ];
+    };
+
     devShells = forAllSystems (system: 
       let
         pkgs = nixpkgs.legacyPackages.${system};
