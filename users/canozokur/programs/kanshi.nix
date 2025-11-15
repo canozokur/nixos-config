@@ -55,6 +55,19 @@ in
           exec = "hyprctl keyword general:layout master";
         };
       }
+      {
+        profile = {
+          name = "homebox_single";
+          outputs = [
+            {
+              criteria = "Philips Consumer Electronics Company 34B2U6603 UK02509028957";
+              status = "enable";
+              mode = "3440x1440@120Hz";
+            }
+          ];
+          exec = "hyprctl keyword general:layout master";
+        };
+      }
     ];
   };
 }
