@@ -18,6 +18,9 @@
       fsType = "ext4";
     };
 
+  boot.initrd.luks.devices."luks-e0761007-487f-448c-a637-1db4be9f46d9".device = "/dev/disk/by-uuid/e0761007-487f-448c-a637-1db4be9f46d9";
+  boot.initrd.luks.devices."luks-5727599b-0858-4f2f-ba0c-9ca9f8921758".device = "/dev/disk/by-uuid/5727599b-0858-4f2f-ba0c-9ca9f8921758";
+
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/0785-06D2";
       fsType = "vfat";
@@ -33,8 +36,9 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp0s13f0u3u1c2.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
+  # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp15s0f4u1u5.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp11s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
