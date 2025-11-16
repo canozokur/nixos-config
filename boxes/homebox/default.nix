@@ -6,5 +6,6 @@
     ./configuration-overrides
     ./overlays
     ../_shared/bazecor.nix
+    ./steam.nix
   ];
 }
