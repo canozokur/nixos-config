@@ -10,6 +10,7 @@
   # for power_scheme explanation see:
   # https://wiki.debian.org/iwlwifi#WiFi interruptions on Intel AX
   boot.extraModprobeConfig = ''
-    options iwlwifi power_save=true power_level=5 power_scheme=1 bt_coex_active=false
+    options iwlwifi power_save=true power_level=5 bt_coex_active=false
+    options iwlmvm power_scheme=1
   '';
 }
