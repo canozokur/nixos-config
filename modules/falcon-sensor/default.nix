@@ -66,7 +66,7 @@ with lib;
         Type = "forking";
         PIDFile = "/run/falcond.pid";
         Restart = "no";
-        TimeoutStopSec = "60s";
+        TimeoutStopSec = "1s";
         KillMode = "process";
       };
       wantedBy = [ "multi-user.target" ];
