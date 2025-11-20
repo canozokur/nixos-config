@@ -32,6 +32,7 @@
     ./vault.nix
     ./qemu.nix
     ./yazi.nix
+    ./udiskie.nix
   ];
 
   home.packages = with pkgs; [
