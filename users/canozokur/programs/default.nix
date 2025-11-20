@@ -31,6 +31,7 @@
     ./lazygit.nix
     ./vault.nix
     ./qemu.nix
+    ./yazi.nix
   ];
 
   home.packages = with pkgs; [
