@@ -3,11 +3,6 @@
   programs.nixvim.globals.mapleader = " ";
   programs.nixvim.keymaps = [
     {
-      key = "<leader>pv";
-      action = ":Ex<cr>";
-      mode = "n";
-    }
-    {
       key = "J";
       action = ":m '>+1<CR>gv=gv";
       mode = "v";

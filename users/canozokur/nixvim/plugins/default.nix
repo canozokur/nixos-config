@@ -15,5 +15,6 @@
     ./lazy-lsp.nix
     ./lualine.nix
     ./quicker.nix
+    ./yazi.nix
   ];
 }
