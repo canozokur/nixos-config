@@ -2,6 +2,7 @@
 { box, system, users, profiles }:
 let
   lib = inputs.nixpkgs.lib;
+
   mkUser = user: [
     ../users/${user}/nixos.nix
     # inline module to merge the host overrides for home-manager configuration
@@ -24,7 +25,18 @@ let
   ];
 
   mkProfile = profile: 
-    lib.optionals (builtins.pathExists ../profiles/${profile}.nix) ../profiles/${profile}.nix;
+  let
+    profilePath = ../profiles/${profile}.nix;
+    profileExists = builtins.pathExists profilePath;
+  in
+  {
+    imports = lib.optionals profileExists [ profilePath ];
+    config = {
+      warnings = lib.mkIf (!profileExists) [
+        "The specified profile does not exist: ${profile}"
+      ];
+    };
+  };
 in
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
@@ -45,5 +57,5 @@ inputs.nixpkgs.lib.nixosSystem {
     ../boxes/_shared
     ../boxes/${box}
   ] ++ builtins.concatLists (builtins.map mkUser users)
-    ++ builtins.concatLists (builtins.map mkProfile profiles);
+    ++ builtins.map mkProfile profiles;
 }
