@@ -1,6 +1,7 @@
 { inputs, home-manager }:
-{ box, system, users }:
+{ box, system, users, profiles }:
 let
+  lib = inputs.nixpkgs.lib;
   mkUser = user: [
     ../users/${user}/nixos.nix
     # inline module to merge the host overrides for home-manager configuration
@@ -21,6 +22,9 @@ let
       };
     })
   ];
+
+  mkProfile = profile: 
+    lib.optionals (builtins.pathExists ../profiles/${profile}.nix) ../profiles/${profile}.nix;
 in
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
@@ -40,5 +44,6 @@ inputs.nixpkgs.lib.nixosSystem {
     })
     ../boxes/_shared
     ../boxes/${box}
-  ] ++ builtins.concatLists (builtins.map mkUser users);
+  ] ++ builtins.concatLists (builtins.map mkUser users)
+    ++ builtins.concatLists (builtins.map mkProfile profiles);
 }

@@ -60,19 +60,43 @@
       box = "virtnixbox";
       system = "x86_64-linux";
       users = [ "canozokur" ];
+      profiles = [ "virtual" "desktop" "coding" "gaming" ];
     };
 
     nixosConfigurations.nexusbox = mkBox {
       box = "nexusbox";
       system = "x86_64-linux";
       users = [ "canozokur" ];
+      profiles = [ "desktop" "coding" "work" ];
     };
 
     nixosConfigurations.homebox = mkBox {
       box = "homebox";
       system = "x86_64-linux";
       users = [ "canozokur" ];
-    };
+      profiles = [ "desktop" "coding" "gaming" ];
+     };
+
+    nixosConfigurations.rpi01 = mkBox {
+      box = "rpi01";
+      system = "x86_64-linux";
+      users = [ "canozokur" ];
+      profiles = [ "server" "coding" "dns" ];
+     };
+
+    nixosConfigurations.rpi02 = mkBox {
+      box = "rpi02";
+      system = "x86_64-linux";
+      users = [ "canozokur" ];
+      profiles = [ "server" "coding" "postgres" ];
+     };
+    
+    nixosConfigurations.rpi03 = mkBox {
+      box = "rpi03";
+      system = "x86_64-linux";
+      users = [ "canozokur" ];
+      profiles = [ "server" "coding" "nextcloud" ];
+     };
 
     devShells = forAllSystems (system: 
       let
