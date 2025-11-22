@@ -24,16 +24,16 @@ let
     })
   ];
 
-  mkProfile = profile: 
+  mkProfile = pathPrefix: profile: 
   let
-    profilePath = ../profiles/${profile}.nix;
+    profilePath = pathPrefix + "/${profile}.nix";
     profileExists = builtins.pathExists profilePath;
   in
   {
     imports = lib.optionals profileExists [ profilePath ];
     config = {
       warnings = lib.mkIf (!profileExists) [
-        "The specified profile does not exist: ${profile}"
+        "The specified profile does not exist: ${pathPrefix}/${profile}"
       ];
     };
   };
@@ -57,5 +57,5 @@ inputs.nixpkgs.lib.nixosSystem {
     ../boxes/_shared
     ../boxes/${box}
   ] ++ builtins.concatLists (builtins.map mkUser users)
-    ++ builtins.map mkProfile profiles;
+    ++ builtins.map (mkProfile ../profiles) profiles;
 }
