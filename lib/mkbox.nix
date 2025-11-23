@@ -18,7 +18,7 @@ let
       home-manager.users.${user} = {
         imports = [
           ../users/${user}/home-manager.nix
-        ];
+        ] ++ builtins.map (mkProfile ../users/${user}/profiles) profiles;
         config = config.hostOverridesForPrograms or {};
       };
     })
