@@ -67,7 +67,7 @@
       box = "nexusbox";
       system = "x86_64-linux";
       users = [ "canozokur" ];
-      profiles = [ "desktop" "coding" "work" ];
+      profiles = [ "laptop" "desktop" "coding" "work" ];
     };
 
     nixosConfigurations.homebox = mkBox {
