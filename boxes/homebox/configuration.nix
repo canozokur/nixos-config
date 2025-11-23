@@ -30,24 +30,16 @@
     };
   };
 
-  time.timeZone = "Europe/Helsinki";
-
   hardware.graphics.enable = true;
   # bluetooth config
   hardware.bluetooth.enable = true;
   hardware.bluetooth.settings.General.FastConnectable = true;
   hardware.bluetooth.powerOnBoot = true;
-  services.blueman.enable = true;
-  # don't go to sleep on lid events
-  services.logind.settings.Login.HandleLidSwitch = "ignore";
-  services.logind.settings.Login.HandleLidSwitchDocked = "ignore";
-  services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
 
   security.pam.loginLimits = [
     { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
   ];
 
-  services.openssh.enable = true;
   system.stateVersion = "25.05";
 }
 
