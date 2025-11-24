@@ -56,12 +56,11 @@
     { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
   ];
 
-  # power_save=true actually disables power saving config for some reason
-  # and power_level=5 should max it out (hopefully?)
-  # for power_scheme explanation see:
-  # https://wiki.debian.org/iwlwifi#WiFi interruptions on Intel AX
+  # power_save:enable WiFi power management
+  # so this looks like power_save=0 will disable power management
+  # this is such a mess..
   boot.extraModprobeConfig = ''
-    options iwlwifi power_save=true power_level=5
+    options iwlwifi power_save=0
     options iwlmvm power_scheme=1
   '';
 
