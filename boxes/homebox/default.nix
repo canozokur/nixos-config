@@ -38,7 +38,11 @@
   hardware.graphics.enable = true;
   # bluetooth config
   hardware.bluetooth.enable = true;
-  hardware.bluetooth.settings.General.FastConnectable = true;
+  hardware.bluetooth.settings.General = {
+    FastConnectable = true;
+    Experimental = true;
+    KernelExperimental = true;
+  };
   hardware.bluetooth.powerOnBoot = true;
 
   security.pam.loginLimits = [
