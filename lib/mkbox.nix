@@ -4,8 +4,8 @@ let
   lib = inputs.nixpkgs.lib;
 
   mkUser = user: [
-    ../users/${user}/nixos.nix
     # inline module to merge the host overrides for home-manager configuration
+    ../users/${user}/default.nix
     ({ config, inputs, ... }: {
       imports = [ home-manager.nixosModules.home-manager ];
       home-manager.extraSpecialArgs = {
@@ -17,7 +17,6 @@ let
       home-manager.backupFileExtension = "hm-backup";
       home-manager.users.${user} = {
         imports = [
-          ../users/${user}/home-manager.nix
           ../users/${user}/profiles/common.nix
         ] ++ builtins.map (mkProfile ../users/${user}/profiles) profiles;
         config = config.hostOverridesForPrograms or {};

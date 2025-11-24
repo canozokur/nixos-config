@@ -1,10 +1,14 @@
-{ config, inputs, ... }:
+{ inputs, config, ... }:
 let
-  secretsPath = builtins.toString inputs.nix-secrets;
   homeDir = config.home.homeDirectory;
+  secretsPath = builtins.toString inputs.nix-secrets;
   cfgHome = config.xdg.configHome;
 in
 {
+  imports = [
+    inputs.sops-nix.homeManagerModules.sops
+  ];
+
   sops = {
     defaultSopsFile = "${secretsPath}/secrets.yaml";
     validateSopsFiles = false;
@@ -14,7 +18,6 @@ in
       sshKeyPaths = [ "${homeDir}/.ssh/id_ed25519" ];
     };
     gnupg.sshKeyPaths = [];
-
     secrets = {
       "ssh/keys/default" = {
         path = "${homeDir}/.ssh/id_ed25519";
@@ -24,4 +27,9 @@ in
       };
     };
   };
+
+  # allow unfree in our shell
+  xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
+
+  home.stateVersion = "24.05";
 }

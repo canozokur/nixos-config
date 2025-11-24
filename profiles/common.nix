@@ -17,6 +17,11 @@ in
       generateKey = true;
       sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     };
+    secrets = {
+      "network/secrets/home-wifi/psk" = {};
+      "network/secrets/home-wifi-5g/psk" = {};
+      "passwords/canozokur".neededForUsers = true;
+    };
   };
   # enable all firmware regardless of license
   hardware.enableAllFirmware = true;
@@ -65,8 +70,6 @@ in
 
   # TODO: this could be moved to a library function to create the secrets config
   # i.e. makeNMProfile "conn-id" { .. other config ... }
-  sops.secrets."network/secrets/home-wifi/psk" = {};
-  sops.secrets."network/secrets/home-wifi-5g/psk" = {};
   networking.networkmanager.ensureProfiles = {
     secrets.entries = [
       {
