@@ -1,4 +1,0 @@
-{ ... }:
-{
-  programs.bazecor.enable = true;
-}
