@@ -1,4 +1,4 @@
-{ inputs, config, ... }:
+{ inputs, config, pkgs, ... }:
 let
   homeDir = config.home.homeDirectory;
   secretsPath = builtins.toString inputs.nix-secrets;
@@ -7,6 +7,23 @@ in
 {
   imports = [
     inputs.sops-nix.homeManagerModules.sops
+    ../programs/shell-config.nix
+    ../programs/git.nix
+    ../programs/zellij.nix
+    ../programs/ssh-agent.nix
+    ../programs/ssh.nix
+    ../programs/nix.nix
+    ../programs/lazygit.nix
+    ../programs/yazi.nix
+  ];
+
+  home.packages = with pkgs; [
+    fzf
+    tree
+    jq
+    htop
+    ripgrep
+    watch
   ];
 
   sops = {
