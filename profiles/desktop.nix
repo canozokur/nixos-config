@@ -1,10 +1,5 @@
 { lib, config, pkgs, inputs, ... }:
 {
-  imports = [
-    # import common settings for all profiles
-    ./common.nix
-  ];
-
   nixpkgs.overlays = [
     (final: prev: {
       zjstatus = inputs.zjstatus.packages.${prev.system}.default;

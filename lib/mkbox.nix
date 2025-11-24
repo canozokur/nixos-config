@@ -33,7 +33,7 @@ let
     imports = lib.optionals profileExists [ profilePath ];
     config = {
       warnings = lib.mkIf (!profileExists) [
-        "The specified profile does not exist: ${pathPrefix}/${profile}"
+        "The specified profile does not exist: ${profile}"
       ];
     };
   };
@@ -55,6 +55,8 @@ inputs.nixpkgs.lib.nixosSystem {
       };
     })
     ../boxes/${box}
+    # import common profile
+    ../profiles/common.nix
   ] ++ builtins.concatLists (builtins.map mkUser users)
     ++ builtins.map (mkProfile ../profiles) profiles;
 }
