@@ -26,7 +26,7 @@
   };
 
   # enable builds for aarch64
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   systemd.services.nix-daemon.serviceConfig = {
     MemoryAccounting = true;
