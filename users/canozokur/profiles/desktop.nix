@@ -29,7 +29,9 @@
     satty
     obs-studio
     cameractrls-gtk4
-  ] ++ lib.optionals (system != "aarch64-linux") spotify;
+  ] ++ lib.optionals (system != "aarch64-linux") [
+    spotify
+  ];
 
   # enable bluetooth by default
   services.blueman-applet.enable = true;
