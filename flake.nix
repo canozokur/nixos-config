@@ -84,20 +84,6 @@
       profiles = [ "server" "coding" "dns" ];
      };
 
-    nixosConfigurations.rpi02 = mkBox {
-      box = "rpi02";
-      system = "x86_64-linux";
-      users = [ "canozokur" ];
-      profiles = [ "server" "coding" "postgres" ];
-     };
-    
-    nixosConfigurations.rpi03 = mkBox {
-      box = "rpi03";
-      system = "x86_64-linux";
-      users = [ "canozokur" ];
-      profiles = [ "server" "coding" "nextcloud" ];
-     };
-
     devShells = forAllSystems (system: 
       let
         pkgs = nixpkgs.legacyPackages.${system};
