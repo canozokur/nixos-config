@@ -74,7 +74,12 @@
       box = "homebox";
       system = "x86_64-linux";
       users = [ "canozokur" ];
-      profiles = [ "desktop" "coding" "gaming" ];
+      profiles = [
+        "desktop"
+        "coding"
+        "gaming"
+        "remote-builder"
+      ];
      };
 
     nixosConfigurations.rpi01 = mkBox {
