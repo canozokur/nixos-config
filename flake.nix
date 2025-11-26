@@ -79,7 +79,7 @@
 
     nixosConfigurations.rpi01 = mkBox {
       box = "rpi01";
-      system = "x86_64-linux";
+      system = "aarch64-linux";
       users = [ "canozokur" ];
       profiles = [ "server" "coding" "dns" ];
      };
