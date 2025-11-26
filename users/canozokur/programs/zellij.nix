@@ -56,7 +56,7 @@ let
   zellijColors = formatPaddedAttrSet prefixedColors 1;
 in
 {
-  home.packages = [ pkgs.zjstatus ];
+ home.packages = [ pkgs.zjstatus ];
 
   programs.zellij = {
     enable = true;

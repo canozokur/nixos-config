@@ -9,6 +9,13 @@ in
     ../modules
   ];
 
+  # common overlays go here
+  nixpkgs.overlays = [
+    (final: prev: {
+      zjstatus = inputs.zjstatus.packages.${prev.system}.default;
+    })
+  ];
+
   sops = {
     defaultSopsFile = "${secretsPath}/secrets.yaml";
     validateSopsFiles = false;
