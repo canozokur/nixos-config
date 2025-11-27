@@ -15,6 +15,8 @@
         maxJobs = 8;
         speedFactor = 2;
         supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
+        systems = [ "x86_64-linux" "aarch64-linux" ];
+        sshUser = "remotebuild";
       }
     ];
 
