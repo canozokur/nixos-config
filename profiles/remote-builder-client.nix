@@ -17,6 +17,7 @@
         supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
         systems = [ "x86_64-linux" "aarch64-linux" ];
         sshUser = "remotebuild";
+        sshKey = "/root/.ssh/id_ed25519";
       }
     ];
 
