@@ -10,7 +10,6 @@
     buildMachines = [
       {
         hostName = "192.168.1.7";
-        system = "x86_64-linux";
         protocol = "ssh-ng";
         maxJobs = 8;
         speedFactor = 2;
