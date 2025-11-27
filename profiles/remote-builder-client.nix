@@ -39,7 +39,7 @@
       ];
 
       extra-substituters = [
-        "ssh-ng://192.168.1.7"
+        "ssh-ng://remotebuild@192.168.1.7"
       ];
 
       fallback = true;
