@@ -1,7 +1,8 @@
-{ ... }:
+{ lib, config, ... }:
 {
   users.users.remotebuild = {
-    isSystemUser = true;
+    isNormalUser = lib.mkIf config.virtualisation.docker.rootless.enable true;
+    isSystemUser = lib.mkIf (!config.virtualisation.docker.rootless.enable) true;
     group = "remotebuild";
     useDefaultShell = true;
 
