@@ -86,7 +86,12 @@
       box = "rpi01";
       system = "aarch64-linux";
       users = [ "canozokur" ];
-      profiles = [ "server" "coding" "dns" ];
+      profiles = [
+        "server"
+        "coding"
+        "dns"
+        "remote-builder-client"
+      ];
      };
 
     devShells = forAllSystems (system: 
