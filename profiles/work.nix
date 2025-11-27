@@ -22,7 +22,6 @@ in
 {
   imports = [
     inputs.kolide-launcher.nixosModules.kolide-launcher
-    inputs.nixos-hardware.nixosModules.dell-xps-15-9510
   ];
 
   environment.systemPackages = with pkgs; [
