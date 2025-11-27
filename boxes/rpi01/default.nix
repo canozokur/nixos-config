@@ -36,6 +36,8 @@
     KernelExperimental = true;
   };
   hardware.bluetooth.powerOnBoot = true;
+  # nixos-hardware options
+  hardware.raspberry-pi."4".fkms-3d.enable = true;
 
   security.pam.loginLimits = [
     { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
