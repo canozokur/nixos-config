@@ -88,7 +88,6 @@
       users = [ "canozokur" ];
       profiles = [
         "server"
-        "coding"
         "dns"
         "remote-builder-client"
       ];
