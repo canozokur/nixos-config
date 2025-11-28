@@ -1,6 +1,8 @@
 { pkgs, ... }:
 {
   imports = [
+    ../programs/shell-config.nix
+    ../programs/zellij.nix
     ../programs/ghostty.nix
     ../programs/fonts.nix
     ../programs/firefox.nix

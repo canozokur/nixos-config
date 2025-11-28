@@ -7,9 +7,7 @@ in
 {
   imports = [
     inputs.sops-nix.homeManagerModules.sops
-    ../programs/shell-config.nix
     ../programs/git.nix
-    ../programs/zellij.nix
     ../programs/ssh-agent.nix
     ../programs/ssh.nix
     ../programs/nix.nix
