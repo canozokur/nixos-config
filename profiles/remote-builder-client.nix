@@ -1,5 +1,15 @@
-{ ... }:
+{ inputs, config, ... }:
 {
+
+  # use a pre-generated ssh key for remotebuilds
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+  ];
+
+  sops.secrets."ssh/keys/remotebuild-client" = {
+    path = "/etc/ssh/remote_build_client_ed25519_key";
+  };
+
   nix = {
     gc = {
       automatic = true;
@@ -16,7 +26,7 @@
         supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
         systems = [ "x86_64-linux" "aarch64-linux" ];
         sshUser = "remotebuild";
-        sshKey = "/root/.ssh/id_ed25519";
+        sshKey = config.sops.secrets."ssh/keys/remotebuild-client".path;
       }
     ];
 

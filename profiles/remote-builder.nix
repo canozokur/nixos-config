@@ -5,9 +5,12 @@
     isSystemUser = lib.mkIf (!config.virtualisation.docker.rootless.enable) true;
     group = "remotebuild";
     useDefaultShell = true;
+    extraGroups = [
+      "docker"
+    ];
 
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxRZiGQpiVL+EVnfAEOozMLQXYCRBq7+xA2Sf7UcNtI root@nixos"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxRZiGQpiVL+EVnfAEOozMLQXYCRBq7+xA2Sf7UcNtI remotebuild-client@nixos"
     ];
   };
 
