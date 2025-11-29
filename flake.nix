@@ -88,7 +88,7 @@
       users = [ "canozokur" ];
       profiles = [
         "server"
-        "dns"
+        "pihole"
         "remote-builder-client"
       ];
      };
