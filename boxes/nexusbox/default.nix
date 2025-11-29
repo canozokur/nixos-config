@@ -27,12 +27,9 @@
 
   networking = {
     hostName = "nexusbox";
-    nameservers = [
-      "192.168.1.1"
-    ];
     networkmanager = {
       enable = true;
-      dns = "none";
+      dns = "default";
       wifi.powersave = false;
       ensureProfiles = {
         secrets.entries = [
@@ -52,25 +49,6 @@
           }
         ];
         profiles = {
-          home-wifi-5g = {
-            connection = {
-              id = "home-wifi-5g";
-              type = "wifi";
-              autoconnect = true;
-            };
-            ipv6 = {
-              addr-gen-mode = "stable-privacy";
-              method = "disabled";
-            };
-            wifi = {
-              mode = "infrastructure";
-              ssid = inputs.nix-secrets.network.home-wifi-5g.ssid;
-            };
-            wifi-security = {
-              auth-alg = "open";
-              key-mgmt = "wpa-psk";
-            };
-          };
           home-wifi = {
             connection = {
               id = "home-wifi";
