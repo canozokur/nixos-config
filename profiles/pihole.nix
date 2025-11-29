@@ -32,7 +32,6 @@
       { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/KADhosts/hosts"; }
       { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.Spam/hosts"; }
       { url = "https://v.firebog.net/hosts/static/w3kbl.txt"; }
-      { url = "http://sysctl.org/cameleon/hosts"; }
       { url = "https://www.joewein.net/dl/bl/dom-bl-base.txt"; }
       { url = "https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt"; }
       { url = "https://hostsfile.org/Downloads/hosts.txt"; }
