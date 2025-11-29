@@ -32,30 +32,11 @@
           }
         ];
         profiles = {
-          home-wifi-5g = {
-            connection = {
-              id = "home-wifi-5g";
-              type = "wifi";
-              autoconnect = true;
-            };
-            ipv6 = {
-              addr-gen-mode = "stable-privacy";
-              method = "disabled";
-            };
-            wifi = {
-              mode = "infrastructure";
-              ssid = inputs.nix-secrets.network.home-wifi-5g.ssid;
-            };
-            wifi-security = {
-              auth-alg = "open";
-              key-mgmt = "wpa-psk";
-            };
-          };
           home-wifi = {
             connection = {
               id = "home-wifi";
               type = "wifi";
-              autoconnect = "true";
+              autoconnect = "false";
             };
             wifi = {
               mode = "infrastructure";
@@ -69,35 +50,18 @@
               method = "auto";
             };
           };
-          office-wifi-enterprise = {
-            connection = {
-              id = "office-wifi-enterprise";
-              type = "wifi";
-            };
-            wifi = {
-              mode = "infrastructure";
-              ssid = inputs.nix-secrets.network.office-wifi-enterprise.ssid;
-            };
-            wifi-security = {
-              key-mgmt = "wpa-eap";
-            };
-            "802-1x" = {
-              eap = "peap";
-              identity = "dummy";
-              password = "dummy";
-              phase2-auth = "mschapv2";
-            };
-            ipv6 = {
-              addr-gen-mode = "stable-privacy";
-              method = "auto";
-            };
-          };
           wired = {
             connection = {
               id = "wired";
               permissions = "";
               type = "802-3-ethernet";
-              interface-name = "eno1";
+              interface-name = "end0";
+            };
+            ipv4 = {
+              method = "manual";
+              addresses = "192.168.1.3/24";
+              gateway = "192.168.1.1";
+              dns = "1.1.1.1";
             };
           };
         };
