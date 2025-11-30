@@ -7,22 +7,12 @@
 
   networking = {
     hostName = "rpi01";
-    nameservers = [
-      "192.168.1.1"
-    ];
     networkmanager = {
       enable = true;
-      dns = "none";
+      dns = "default";
       wifi.powersave = false;
       ensureProfiles = {
         secrets.entries = [
-          {
-            file = config.sops.secrets."network/secrets/home-wifi-5g/psk".path;
-            key = "psk";
-            matchId = "home-wifi-5g";
-            matchSetting = "802-11-wireless-security";
-            matchType = "802-11-wireless";
-          }
           {
             file = config.sops.secrets."network/secrets/home-wifi/psk".path;
             key = "psk";
