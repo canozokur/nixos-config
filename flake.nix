@@ -43,7 +43,7 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, self, ... }:
   let
     mkBox = import ./lib/mkbox.nix {
       inherit inputs;
@@ -80,7 +80,7 @@
         "gaming"
         "remote-builder"
       ];
-     };
+    };
 
     nixosConfigurations.rpi01 = mkBox {
       box = "rpi01";
@@ -90,8 +90,11 @@
         "server"
         "pihole"
         "remote-builder-client"
+        "pi-image"
       ];
-     };
+    };
+
+    images.rpi01 = self.nixosConfigurations.rpi01.config.system.build.sdImage;
 
     devShells = forAllSystems (system: 
       let
