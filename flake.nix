@@ -105,9 +105,21 @@
       ];
     };
 
+    nixosConfigurations.rpi03 = mkBox {
+      box = "rpi03";
+      system = "aarch64-linux";
+      users = [ "canozokur" ];
+      profiles = [
+        "server"
+        "remote-builder-client"
+        "pi-image"
+      ];
+    };
+
     images = {
       rpi01 = self.nixosConfigurations.rpi01.config.system.build.sdImage;
       rpi02 = self.nixosConfigurations.rpi02.config.system.build.sdImage;
+      rpi03 = self.nixosConfigurations.rpi03.config.system.build.sdImage;
     };
 
     devShells = forAllSystems (system: 
