@@ -146,11 +146,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1764335555,
+        "lastModified": 1764518661,
         "lfs": true,
-        "narHash": "sha256-m2f4EUDc/8lc7cO/i+TGC41Q3adWXuy/Y/ex5ZeS5gw=",
+        "narHash": "sha256-hNkxIiPnhGg2LEy9jvA2rDud/w3NXE5iX5b0noyJ7NI=",
         "ref": "main",
-        "rev": "27016f05dbb25748caa5be88a413abc667a6f0ec",
+        "rev": "5c3182fd2cd47c414e885d686ffba32662eaee02",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/canozokur/nix-secrets.git"
