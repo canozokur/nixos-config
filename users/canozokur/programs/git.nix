@@ -25,6 +25,8 @@
     };
     ignores = [
       ".aider*"
+      ".devenv*"
+      "devenv.local.nix"
     ];
   };
 
