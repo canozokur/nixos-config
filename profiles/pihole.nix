@@ -21,6 +21,7 @@
         router = "192.168.1.1";
         netmask = "255.255.255.0";
         leaseTime = "24h";
+        rapidCommit = true;
         hosts = [
           "14:cb:19:17:d7:4e,192.168.1.2,laserjet,24h"
           "d8:bb:c1:63:da:ff,192.168.1.129,truenas,24h"
