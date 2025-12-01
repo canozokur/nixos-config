@@ -19,7 +19,7 @@
 
     buildMachines = [
       {
-        hostName = "192.168.1.7";
+        hostName = "homebox";
         protocol = "ssh-ng";
         maxJobs = 8;
         speedFactor = 2;
@@ -49,7 +49,7 @@
       ];
 
       extra-substituters = [
-        "ssh-ng://remotebuild@192.168.1.7"
+        "ssh-ng://remotebuild@homebox"
       ];
 
       fallback = true;
