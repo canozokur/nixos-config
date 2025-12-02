@@ -54,86 +54,87 @@
       "aarch64-linux"
       "x86_64-linux"
     ];
+
+    boxes = {
+      virtnixbox = {
+        system = "x86_64-linux";
+        users = [ "canozokur" ];
+        profiles = [ "virtual" "desktop" "coding" "gaming" ];
+      };
+
+      nexusbox = {
+        system = "x86_64-linux";
+        users = [ "canozokur" ];
+        profiles = [ "laptop" "desktop" "coding" "work" ];
+      };
+
+      homebox = {
+        system = "x86_64-linux";
+        users = [ "canozokur" ];
+        profiles = [
+          "desktop"
+          "coding"
+          "gaming"
+          "remote-builder"
+        ];
+      };
+
+      rpi01 = {
+        system = "aarch64-linux";
+        users = [ "canozokur" ];
+        profiles = [
+          "server"
+          "pihole"
+          "remote-builder-client"
+          "pi-image"
+        ];
+      };
+
+      rpi02 = {
+        system = "aarch64-linux";
+        users = [ "canozokur" ];
+        profiles = [
+          "server"
+          "remote-builder-client"
+          "pi-image"
+          "iscsi-initiator"
+        ];
+      };
+
+      rpi03 = {
+        system = "aarch64-linux";
+        users = [ "canozokur" ];
+        profiles = [
+          "server"
+          "remote-builder-client"
+          "pi-image"
+        ];
+      };
+
+      rpi04 = {
+        system = "aarch64-linux";
+        users = [ "canozokur" ];
+        profiles = [
+          "server"
+          "remote-builder-client"
+          "pi-image"
+        ];
+      };
+    };
   in
   {
-    nixosConfigurations.virtnixbox = mkBox {
-      box = "virtnixbox";
-      system = "x86_64-linux";
-      users = [ "canozokur" ];
-      profiles = [ "virtual" "desktop" "coding" "gaming" ];
-    };
+    nixosConfigurations = nixpkgs.lib.mapAttrs (name: cfg: mkBox (cfg // { box = name; })) boxes;
 
-    nixosConfigurations.nexusbox = mkBox {
-      box = "nexusbox";
-      system = "x86_64-linux";
-      users = [ "canozokur" ];
-      profiles = [ "laptop" "desktop" "coding" "work" ];
-    };
-
-    nixosConfigurations.homebox = mkBox {
-      box = "homebox";
-      system = "x86_64-linux";
-      users = [ "canozokur" ];
-      profiles = [
-        "desktop"
-        "coding"
-        "gaming"
-        "remote-builder"
-      ];
-    };
-
-    nixosConfigurations.rpi01 = mkBox {
-      box = "rpi01";
-      system = "aarch64-linux";
-      users = [ "canozokur" ];
-      profiles = [
-        "server"
-        "pihole"
-        "remote-builder-client"
-        "pi-image"
-      ];
-    };
-
-    nixosConfigurations.rpi02 = mkBox {
-      box = "rpi02";
-      system = "aarch64-linux";
-      users = [ "canozokur" ];
-      profiles = [
-        "server"
-        "remote-builder-client"
-        "pi-image"
-      ];
-    };
-
-    nixosConfigurations.rpi03 = mkBox {
-      box = "rpi03";
-      system = "aarch64-linux";
-      users = [ "canozokur" ];
-      profiles = [
-        "server"
-        "remote-builder-client"
-        "pi-image"
-      ];
-    };
-
-    nixosConfigurations.rpi04 = mkBox {
-      box = "rpi04";
-      system = "aarch64-linux";
-      users = [ "canozokur" ];
-      profiles = [
-        "server"
-        "remote-builder-client"
-        "pi-image"
-      ];
-    };
-
-    # TODO: change this into a function eventually
-    images = {
-      rpi01 = self.nixosConfigurations.rpi01.config.system.build.sdImage;
-      rpi02 = self.nixosConfigurations.rpi02.config.system.build.sdImage;
-      rpi03 = self.nixosConfigurations.rpi03.config.system.build.sdImage;
-      rpi04 = self.nixosConfigurations.rpi04.config.system.build.sdImage;
-    };
+    images = nixpkgs.lib.pipe self.nixosConfigurations [
+      # based on the metadata exported from rpi-image profile ...
+      (nixpkgs.lib.filterAttrs (name: config: 
+        config.config._meta.buildImage or false
+      ))
+      # ... generate the image config
+      (nixpkgs.lib.mapAttrs (name: config: 
+        config.config.system.build.sdImage
+      ))
+    ];
 
     devShells = forAllSystems (system: 
       let

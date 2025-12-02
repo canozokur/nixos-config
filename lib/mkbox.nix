@@ -46,6 +46,15 @@ inputs.nixpkgs.lib.nixosSystem {
   };
 
   modules = [
+    # Define _meta options
+    ({ lib, ... }: {
+      options._meta = lib.mkOption {
+        type = lib.types.attrs;
+        default = {};
+        description = "Metadata about the configuration";
+      };
+    })
+
     # another inline module so we can define a "hostSpecificOverrides" config option and use it later
     ({ lib, ... }: {
       options.hostSpecificOverrides = lib.mkOption {
