@@ -3,7 +3,6 @@
   colorschemes = {
     catppuccin = {
       enable = true;
-      lazyLoad.enable = true;
       settings = {
         flavour = "mocha";
         transparent_background = true;
