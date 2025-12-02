@@ -1,6 +1,6 @@
 { ... }:
 {
-  programs.nixvim.filetype = {
+  filetype = {
     pattern = {
       ".*/templates/.*%.yaml" = "helm";
     };

@@ -1,6 +1,6 @@
 { ... }:
 {
-  programs.nixvim.opts = {
+  opts = {
     guicursor = "";
     number = true;
     relativenumber = true;

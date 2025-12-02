@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
-  programs.nixvim.extraPlugins = [pkgs.vimPlugins.lzn-auto-require];
-  programs.nixvim.extraConfigLuaPost = ''
+  extraPlugins = [pkgs.vimPlugins.lzn-auto-require];
+  extraConfigLuaPost = ''
     require('lzn-auto-require').enable()
   '';
 }

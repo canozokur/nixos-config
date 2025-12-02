@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  programs.nixvim.extraPlugins = [
+  extraPlugins = [
     (pkgs.vimUtils.buildVimPlugin {
       name = "nvim-startuptime";
       src = pkgs.fetchFromGitHub {
@@ -12,7 +12,7 @@
     })
   ];
 
-  programs.nixvim.globals = {
+  globals = {
     startuptime_exe_path = "nvim";
   };
 }

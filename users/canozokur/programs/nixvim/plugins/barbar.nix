@@ -1,6 +1,6 @@
 { ... }:
 {
-  programs.nixvim.plugins = {
+  plugins = {
     barbar = {
       enable = true;
       keymaps = {

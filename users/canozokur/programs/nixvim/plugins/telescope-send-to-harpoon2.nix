@@ -11,14 +11,14 @@ let
   };
 in
 {
-  programs.nixvim.extraPlugins = [
+  extraPlugins = [
     {
       plugin = telescope-send-to-harpoon2;
       optional = false;
     }
   ];
 
-  programs.nixvim.plugins = {
+  plugins = {
     lz-n = {
       plugins = [
         {
@@ -29,7 +29,7 @@ in
     };
   };
 
-  programs.nixvim.plugins.telescope = {
+  plugins.telescope = {
     enabledExtensions = [ "send_to_harpoon" ];
     settings.defaults.mappings.i = {
       "<C-e>" = {

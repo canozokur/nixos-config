@@ -1,6 +1,6 @@
 { ... }:
 {
-  programs.nixvim.plugins = {
+  plugins = {
     undotree = {
       enable = true;
       settings = {
@@ -11,7 +11,7 @@
     };
   };
 
-  programs.nixvim.keymaps = [
+  keymaps = [
     {
       key = "<leader>u";
       action = "<cmd>UndotreeToggle<cr><cmd>UndotreeFocus<cr>";

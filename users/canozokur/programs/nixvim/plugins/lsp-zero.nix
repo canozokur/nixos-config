@@ -1,10 +1,10 @@
 { pkgs, ... }:
 {
-  programs.nixvim.extraPlugins = [
+  extraPlugins = [
     pkgs.vimPlugins.lsp-zero-nvim
   ];
 
-  programs.nixvim.extraConfigLua = ''
+  extraConfigLua = ''
     local lsp_zero = require('lsp-zero')
 
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
@@ -29,7 +29,7 @@
     end)
   '';
 
-  programs.nixvim.plugins = {
+  plugins = {
     lsp.enable = true; # lsp-zero requires these two
     luasnip.enable = true;
   };

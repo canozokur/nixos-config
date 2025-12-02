@@ -1,13 +1,13 @@
 { ... }:
 {
-  programs.nixvim.plugins = {
+  plugins = {
     harpoon = {
       enable = true;
       enableTelescope = true;
     };
   };
 
-  programs.nixvim.plugins.lz-n.keymaps = [
+  plugins.lz-n.keymaps = [
     {
       key = "<C-e>";
       action.__raw = "function() require'harpoon'.ui:toggle_quick_menu(require'harpoon':list()) end";

@@ -1,6 +1,6 @@
 { ... }:
 {
-  programs.nixvim.plugins = {
+  plugins = {
     telescope = {
       enable = true;
       settings = {
@@ -52,10 +52,10 @@
 
   # needs to happen before all config to make this function available to
   # leader keymaps
-  programs.nixvim.extraConfigLuaPre = ''
+  extraConfigLuaPre = ''
   '';
 
-  programs.nixvim.plugins.lz-n.keymaps = [
+  plugins.lz-n.keymaps = [
     {
       key = "<leader><space>";
       action.__raw = "function() require'telescope.builtin'.find_files({ hidden = true, file_ignore_patterns = { 'node_modules', '.git/', '.venv' }}) end";

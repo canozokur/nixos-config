@@ -1,6 +1,6 @@
 { ... }:
 {
-  programs.nixvim.plugins = {
+  plugins = {
     quicker = {
       enable = true;
       lazyLoad.settings.event = "FileType qf";

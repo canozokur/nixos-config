@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  programs.nixvim.extraPlugins = [
+  extraPlugins = [
     (pkgs.vimUtils.buildVimPlugin {
       name = "nvim-hardline";
       src = pkgs.fetchFromGitHub {
@@ -12,7 +12,7 @@
     })
   ];
 
-  programs.nixvim.extraConfigLua = ''
+  extraConfigLua = ''
     require('hardline').setup {
       bufferline = false,         -- disable bufferline
       bufferline_settings = {

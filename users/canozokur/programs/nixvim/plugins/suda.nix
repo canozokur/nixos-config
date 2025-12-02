@@ -1,13 +1,13 @@
 { pkgs, ... }:
 {
-  programs.nixvim.extraPlugins = [
+  extraPlugins = [
     {
       plugin = pkgs.vimPlugins.vim-suda;
       optional = true;
     }
   ];
 
-  programs.nixvim.plugins = {
+  plugins = {
     lz-n = {
       plugins = [
         {

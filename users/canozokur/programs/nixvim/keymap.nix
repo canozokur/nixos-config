@@ -1,7 +1,7 @@
 { ... }:
 {
-  programs.nixvim.globals.mapleader = " ";
-  programs.nixvim.keymaps = [
+  globals.mapleader = " ";
+  keymaps = [
     {
       key = "J";
       action = ":m '>+1<CR>gv=gv";

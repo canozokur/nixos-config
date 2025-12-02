@@ -2,17 +2,16 @@
 {
   imports = [
     inputs.nixvim.homeModules.nixvim
-    ./options.nix
-    ./keymap.nix
-    ./filetype.nix
-    ./colorscheme.nix
-    ./plugins
   ];
 
   programs.nixvim = {
+    imports = [
+      ./nixvim.nix
+    ];
+
+    defaultEditor = true;
     enable = true;
     enableMan = false;
-    defaultEditor = true;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;

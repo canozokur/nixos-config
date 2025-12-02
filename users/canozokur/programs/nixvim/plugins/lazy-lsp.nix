@@ -1,10 +1,10 @@
 { pkgs, ... }:
 {
-  programs.nixvim.extraPlugins = [
+  extraPlugins = [
       pkgs.vimPlugins.lazy-lsp-nvim
   ];
 
-  programs.nixvim.extraConfigLua = ''
+  extraConfigLua = ''
     local lsp_zero = require("lsp-zero")
 
     lsp_zero.on_attach(function(client, bufnr)

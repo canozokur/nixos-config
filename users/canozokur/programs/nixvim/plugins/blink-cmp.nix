@@ -1,6 +1,6 @@
 { ... }:
 {
-  programs.nixvim.plugins = {
+  plugins = {
     blink-cmp = {
       enable = true;
       settings = {

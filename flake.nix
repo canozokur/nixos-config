@@ -151,5 +151,17 @@
         };
       }
     );
+
+    packages = forAllSystems (system: {
+      neovim =
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          nixvimLib = inputs.nixvim.legacyPackages.${system};
+        in
+        nixvimLib.makeNixvimWithModule {
+          inherit pkgs;
+          module = import ./users/canozokur/programs/nixvim/standalone.nix { inherit inputs; };
+        };
+    });
   };
 }
