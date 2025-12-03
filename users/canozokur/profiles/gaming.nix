@@ -1,11 +1,10 @@
-{ ... }:
+{ pkgs, ... }:
 {
-  programs.vesktop = {
-    enable = true;
-    vencord.settings = {
-      autoUpdate = false;
-      autoUpdateNotification = false;
-      notifyAboutUpdates = false;
-    };
-  };
+  imports = [
+    ../programs/vencord.nix
+  ];
+
+  home.packages = with pkgs; [
+    telegram-desktop
+  ];
 }
