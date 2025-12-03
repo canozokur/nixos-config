@@ -16,6 +16,8 @@
     end)
 
     require("lazy-lsp").setup {
+      --see https://github.com/dundalek/lazy-lsp.nvim/issues/63
+      use_vim_lsp_config = true,
       excluded_servers = {
         "ccls",                            -- prefer clangd
         "denols",                          -- prefer eslint and tsserver
