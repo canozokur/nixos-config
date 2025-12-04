@@ -54,12 +54,12 @@
     }
     {
       key = "<leader>Y";
-      action = ''[["+Y]]'';
+      action = ''"+Y'';
       mode = "n";
     }
     {
       key = "<leader>d";
-      action = ''[["_d]]'';
+      action = ''"_d'';
       mode = [ "n" "v" ];
     }
     {
@@ -89,7 +89,7 @@
     }
     {
       key = "<leader>s";
-      action = "[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]";
+      action = ":%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>";
       mode = "n";
     }
     {
