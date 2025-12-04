@@ -25,6 +25,12 @@
     };
   };
 
+  sops = {
+    secrets = {
+      "network/secrets/office-wifi-enterprise/psk" = {};
+    };
+  };
+
   networking = {
     hostName = "nexusbox";
     networkmanager = {
@@ -38,6 +44,13 @@
             key = "psk";
             matchId = "home-wifi";
             matchSetting = "802-11-wireless-security";
+            matchType = "802-11-wireless";
+          }
+          {
+            file = config.sops.secrets."network/secrets/office-wifi-enterprise/psk".path;
+            key = "password";
+            matchId = "office-wifi-enterprise";
+            matchSetting = "802-1x";
             matchType = "802-11-wireless";
           }
         ];
@@ -74,12 +87,13 @@
             };
             "802-1x" = {
               eap = "peap";
-              identity = "dummy";
-              password = "dummy";
+              identity = inputs.nix-secrets.network.office-wifi-enterprise.identity;
               phase2-auth = "mschapv2";
+              anonymous-identity = inputs.nix-secrets.network.office-wifi-enterprise.anonymous-identity;
+              domain-suffix-match = inputs.nix-secrets.network.office-wifi-enterprise.domain-suffix-match;
             };
             ipv6 = {
-              addr-gen-mode = "stable-privacy";
+              addr-gen-mode = "default";
               method = "auto";
             };
           };
