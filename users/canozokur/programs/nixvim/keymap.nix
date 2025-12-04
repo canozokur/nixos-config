@@ -89,7 +89,7 @@
     }
     {
       key = "<leader>s";
-      action = ":%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>";
+      action = ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>";
       mode = "n";
     }
     {
