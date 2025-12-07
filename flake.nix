@@ -118,6 +118,8 @@
           "server"
           "remote-builder-client"
           "pi-image"
+          "iscsi-initiator"
+          "monitoring"
         ];
       };
     };
