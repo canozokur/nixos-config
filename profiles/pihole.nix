@@ -35,7 +35,6 @@
       { url = "https://v.firebog.net/hosts/static/w3kbl.txt"; }
       { url = "https://www.joewein.net/dl/bl/dom-bl-base.txt"; }
       { url = "https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt"; }
-      { url = "https://hostsfile.org/Downloads/hosts.txt"; }
       { url = "https://someonewhocares.org/hosts/zero/hosts"; }
       { url = "https://raw.githubusercontent.com/Dawsey21/Lists/master/main-blacklist.txt"; }
       { url = "https://raw.githubusercontent.com/vokins/yhosts/master/hosts"; }
