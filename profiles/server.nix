@@ -8,6 +8,4 @@
       disabledCollectors = [ "zfs" ];
     };
   };
-
-  _meta.scrapeTarget = true;
 }
