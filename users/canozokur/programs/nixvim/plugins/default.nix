@@ -16,5 +16,6 @@
     ./lualine.nix
     ./quicker.nix
     ./yazi.nix
+    ./dap.nix
   ];
 }
