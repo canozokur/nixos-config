@@ -60,6 +60,7 @@
       { url = "https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt"; }
       { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.Risk/hosts"; }
       { url = "https://raw.githubusercontent.com/HorusTeknoloji/TR-PhishingList/master/url-lists.txt"; }
+      { url = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt"; }
       # allow lists (type = allow)
       {
         url = "https://raw.githubusercontent.com/GoodnessJSON/PiHole-Whitelist/master/lists/whitelist.txt";
