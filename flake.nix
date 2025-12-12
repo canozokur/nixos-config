@@ -129,12 +129,12 @@
 
     images = nixpkgs.lib.pipe self.nixosConfigurations [
       # based on the metadata exported from rpi-image profile ...
-      (nixpkgs.lib.filterAttrs (name: config: 
-        config.config._meta.buildImage or false
+      (nixpkgs.lib.filterAttrs (name: host: 
+        host.config._meta.buildImage or false
       ))
       # ... generate the image config
-      (nixpkgs.lib.mapAttrs (name: config: 
-        config.config.system.build.sdImage
+      (nixpkgs.lib.mapAttrs (name: host: 
+        host.config.system.build.sdImage
       ))
     ];
 
