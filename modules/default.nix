@@ -11,7 +11,7 @@
       default = [];
       type = types.listOf (types.submodule {
         options = {
-          externalIp = mkOption {
+          ip = mkOption {
             type = types.str;
             description = "The external IP address.";
           };
