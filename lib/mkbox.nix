@@ -1,4 +1,4 @@
-{ inputs, home-manager }:
+{ inputs, home-manager, helpers }:
 { box, system, users, profiles }:
 let
   lib = inputs.nixpkgs.lib;
@@ -43,6 +43,7 @@ inputs.nixpkgs.lib.nixosSystem {
 
   specialArgs = {
     inherit inputs;
+    inherit helpers;
   };
 
   modules = [
