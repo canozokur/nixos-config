@@ -59,6 +59,14 @@
     };
   };
 
+  # exported metadata to use in modules
+  _meta = {
+    networks = {
+      internalIP = "192.168.1.5";
+      externalIP = "192.168.1.5";
+    };
+  };
+
   hardware.graphics.enable = true;
   # bluetooth config
   hardware.bluetooth.enable = true;
