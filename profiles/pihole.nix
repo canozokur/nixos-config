@@ -1,4 +1,20 @@
-{ ... }:
+{ inputs, lib, helpers, ... }:
+let
+  allHosts = inputs.self.nixosConfigurations;
+
+  localHosts = helpers.getHostsWith allHosts [ "networks" "internalIP" ];
+  localDns = lib.mapAttrsToList (n: h: "${h.config._meta.networks.internalIP} ${n}.lan") localHosts;
+
+  customDnsHosts = helpers.getHostsWith allHosts "dnsConfigurations";
+  customDnsEntries = lib.flatten (lib.mapAttrsToList
+    (_: host:
+      let
+        configs = host.config._meta.dnsConfigurations;
+      in
+      builtins.map (entry: "${entry.ip} ${entry.domain}") configs
+    )
+    customDnsHosts);
+in
 {
   services.pihole-web = {
     enable = true;
@@ -13,6 +29,7 @@
     settings = {
       dns = {
         upstreams = [ "1.1.1.1" "1.0.0.1" ];
+        hosts = localDns ++ customDnsEntries;
       };
       dhcp = {
         active = true;
