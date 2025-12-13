@@ -45,9 +45,11 @@
 
   outputs = inputs@{ nixpkgs, home-manager, self, ... }:
   let
+    helpers = import ./lib/helpers.nix { inherit (nixpkgs) lib; };
     mkBox = import ./lib/mkbox.nix {
       inherit inputs;
       inherit home-manager;
+      inherit helpers;
     };
 
     forAllSystems = nixpkgs.lib.genAttrs [
@@ -98,6 +100,7 @@
           "remote-builder-client"
           "pi-image"
           "iscsi-initiator"
+          "consul"
         ];
       };
 
