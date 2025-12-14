@@ -1,3 +1,7 @@
+| `main ws` | `single window` |
+|---------------|----------------|
+| ![wrap](https://github.com/user-attachments/assets/1dc616c5-73b7-4ff5-829e-40c6d89ca5bd) | ![nowrap](https://github.com/user-attachments/assets/df65dd13-558e-4446-a91b-671405924824) |
+
 # ❄️Personal NixOS Configuration
 
 This repository contains the declarative configuration for my personal infrastructure, ranging from my workstations to Raspberry Pi servers at home. It is built on Nix Flakes and I kinda use a twisted dependency injection system.
