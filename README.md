@@ -23,6 +23,10 @@ This repository contains the declarative configuration for my personal infrastru
 └── flake.nix       # Entry point
 ```
 
+## Development tools
+
+There's a `devShells` definition in the flake so you can do `nix develop` and you should get a shell with sops, age, ssh-to-age and just tools available.
+
 ## The "_meta" attributes
 
 Nodes declare their properties via a custom `_meta` option, and the modules will adapt using those.
