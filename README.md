@@ -23,7 +23,6 @@ This repository contains the declarative configuration for my personal infrastru
 ├── lib/            # Custom helpers
 │   ├── mkbox.nix   # The system builder wrapper
 │   └── helpers.nix # Node filtering logic
-├── secrets/        # Encrypted secrets (sops)
 └── flake.nix       # Entry point
 ```
 
@@ -138,7 +137,7 @@ just build-image rpi01  # Build SD card image for rpi01
 
 ## Secrets
 
-Secrets are managed via **sops-nix**.
+Secrets are managed via **sops-nix** in a private repo.
 
 ## License
 
