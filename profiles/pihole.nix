@@ -35,7 +35,7 @@ in
       dhcp = {
         active = true;
         start = "192.168.1.50";
-        end = "192.168.1.254";
+        end = "192.168.1.253"; # reserve 254 for external connections, not 255 for broadcast (just in case)
         router = "192.168.1.1";
         netmask = "255.255.255.0";
         leaseTime = "24h";
