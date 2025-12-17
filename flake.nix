@@ -58,12 +58,6 @@
     ];
 
     boxes = {
-      virtnixbox = {
-        system = "x86_64-linux";
-        users = [ "canozokur" ];
-        profiles = [ "virtual" "desktop" "coding" "gaming" ];
-      };
-
       nexusbox = {
         system = "x86_64-linux";
         users = [ "canozokur" ];
