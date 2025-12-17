@@ -64,6 +64,10 @@
     networks = {
       internalIP = "192.168.1.4";
       externalIP = "192.168.1.4";
+      internalInterface = "end0";
+    };
+    services = {
+      consulServer = true;
     };
   };
 
