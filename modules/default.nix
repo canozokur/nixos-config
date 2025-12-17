@@ -35,7 +35,18 @@
       };
     };
 
+    services = {
+      consulServer = lib.mkEnableOption "This host is a Consul Server";
+    };
+
     # Image payload
     buildImage = lib.mkEnableOption "This host exports an image to build";
+  };
+
+  # consul services
+  options.services.consul.agentServices = lib.mkOption {
+    type = lib.types.listOf lib.types.attrs;
+    default = [];
+    description = "List of services to register with the local Consul agent.";
   };
 }
