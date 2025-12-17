@@ -3,6 +3,7 @@
   services.prometheus = {
     enable = true;
     globalConfig.scrape_interval = "10s";
+    retentionTime = "2y";
     scrapeConfigs = [
       {
         job_name = "self";
