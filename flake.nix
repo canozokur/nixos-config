@@ -89,6 +89,7 @@
           "pihole"
           "remote-builder-client"
           "pi-image"
+          "consul"
         ];
       };
 
@@ -111,6 +112,8 @@
           "server"
           "remote-builder-client"
           "pi-image"
+          "consul"
+          "node-exporter"
         ];
       };
 
@@ -123,6 +126,7 @@
           "pi-image"
           "iscsi-initiator"
           "monitoring"
+          "consul"
         ];
       };
     };
