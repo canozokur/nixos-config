@@ -5,6 +5,12 @@
     globalConfig.scrape_interval = "10s";
     scrapeConfigs = [
       {
+        job_name = "self";
+        static_configs = [{
+          targets = ["localhost:9090"];
+        }];
+      }
+      {
         job_name = "consul";
         consul_sd_configs = [{
           server = "consul.lan:8500";
