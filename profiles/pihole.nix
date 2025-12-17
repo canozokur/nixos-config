@@ -1,4 +1,4 @@
-{ inputs, lib, helpers, ... }:
+{ inputs, lib, helpers, config, ... }:
 let
   allHosts = inputs.self.nixosConfigurations;
 
@@ -45,6 +45,7 @@ in
           "d8:bb:c1:63:da:ff,192.168.1.129,truenas,24h"
         ];
       };
+      misc.dnsmasq_lines = lib.mkIf (config.services.consul.enable == true) [ "server=/consul/127.0.0.1#8600" ];
     };
     lists = [
       { url = "https://reddestdream.github.io/Projects/MinimalHosts/etc/MinimalHostsBlocker/minimalhosts"; }
