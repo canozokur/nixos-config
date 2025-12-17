@@ -26,6 +26,7 @@ in
     openFirewallDNS = true;
     openFirewallDHCP = true;
     openFirewallWebserver = true;
+    queryLogDeleter.enable = true; # deletes logs weekly by default
     settings = {
       dns = {
         upstreams = [ "1.1.1.1" "1.0.0.1" ];
