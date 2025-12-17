@@ -1,9 +1,10 @@
 { ... }:
 {
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
-  };
+  imports = [
+    ./capabilities/desktop.nix
+    ./capabilities/consul.nix
+    ./capabilities/gaming.nix
+    ./capabilities/remote-builder.nix
+    ./capabilities/node-exporter.nix
+  ];
 }

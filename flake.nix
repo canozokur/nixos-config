@@ -67,68 +67,37 @@
       nexusbox = {
         system = "x86_64-linux";
         users = [ "canozokur" ];
-        profiles = [ "laptop" "desktop" "coding" "work" ];
+        profiles = [ "capabilities/laptop" "workstation" ];
       };
 
       homebox = {
         system = "x86_64-linux";
         users = [ "canozokur" ];
-        profiles = [
-          "desktop"
-          "node-exporter"
-          "coding"
-          "gaming"
-          "remote-builder"
-        ];
+        profiles = [ "gaming" ];
       };
 
       rpi01 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [
-          "node-exporter"
-          "pihole"
-          "remote-builder-client"
-          "pi-image"
-          "consul"
-        ];
+        profiles =[ "pi" "pihole" "server" ];
       };
 
       rpi02 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [
-          "node-exporter"
-          "remote-builder-client"
-          "pi-image"
-          "iscsi-initiator"
-          "consul"
-        ];
+        profiles = [ "pi" "pihole" "server" ];
       };
 
       rpi03 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [
-          "node-exporter"
-          "remote-builder-client"
-          "pi-image"
-          "consul"
-          "node-exporter"
-        ];
+        profiles = [ "pi" "pihole" "server" ];
       };
 
       rpi04 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [
-          "node-exporter"
-          "remote-builder-client"
-          "pi-image"
-          "iscsi-initiator"
-          "monitoring"
-          "consul"
-        ];
+        profiles = [ "pi" "pihole" "server" "monitoring" ];
       };
     };
   in

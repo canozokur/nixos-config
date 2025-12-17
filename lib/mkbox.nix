@@ -57,7 +57,7 @@ inputs.nixpkgs.lib.nixosSystem {
     })
     ../boxes/${box}
     # import common profile
-    ../profiles/common.nix
+    ../profiles/core/common.nix
   ] ++ builtins.concatLists (builtins.map mkUser users)
     ++ builtins.map (mkProfile ../profiles) profiles;
 }

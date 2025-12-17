@@ -1,6 +1,8 @@
 { pkgs, ... }:
 {
   imports = [
+    ./capabilities/desktop.nix
+    ./capabilities/coding.nix
     ../programs/vault.nix
   ];
 

@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, ... }:
+{ inputs, pkgs, ... }:
 let
   secretsPath = builtins.toString inputs.nix-secrets;
 in
@@ -6,7 +6,7 @@ in
   imports = [
     inputs.sops-nix.nixosModules.sops
     # custom modules
-    ../modules
+    ../../modules
   ];
 
   # common overlays go here
