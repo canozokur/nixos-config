@@ -52,6 +52,16 @@
         };
       };
     };
+
+    prometheus = mkOption {
+      description = "Consul configuration";
+      default = {};
+      type = types.submodule {
+        options = {
+          enabledCollectors = mkOption { type = types.listOf types.str; default = [ "systemd" ]; description = "Enabled node-exporter collectors"; };
+        };
+      };
+    };
   };
 
   # consul services

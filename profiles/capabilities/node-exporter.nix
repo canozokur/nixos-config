@@ -4,7 +4,7 @@
     node = {
       enable = true;
       openFirewall = true;
-      enabledCollectors = [ "systemd" ];
+      enabledCollectors = config._meta.prometheus.enabledCollectors;
       disabledCollectors = [ "zfs" ];
     };
   };

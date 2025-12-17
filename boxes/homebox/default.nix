@@ -72,6 +72,7 @@
       hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card1:/dev/dri/card0" ];
       waybarTemperaturePath = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon2/temp1_input";
     };
+    prometheus.enabledCollectors = [ "systemd" "drm" ];
   };
 
   hardware.graphics.enable = true;
