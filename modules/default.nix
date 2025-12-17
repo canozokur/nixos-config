@@ -41,6 +41,17 @@
 
     # Image payload
     buildImage = lib.mkEnableOption "This host exports an image to build";
+
+    desktop = mkOption {
+      description = "Desktop related settings";
+      default = {};
+      type = types.submodule {
+        options = {
+          hyprlandGPU = mkOption { type = types.listOf types.str; default = []; description = "Environment variables for Hyprland GPU settings"; };
+          waybarTemperaturePath = mkOption { type = types.str; default = ""; description = "HWMon path in /sys/devices for waybar to display the temp"; };
+        };
+      };
+    };
   };
 
   # consul services

@@ -6,22 +6,18 @@ let
   mkUser = user: [
     # inline module to merge the host overrides for home-manager configuration
     ../users/${user}/default.nix
-    ({ config, inputs, ... }: {
-      imports = [ home-manager.nixosModules.home-manager ];
+    home-manager.nixosModules.home-manager {
       home-manager.extraSpecialArgs = {
-        inherit inputs;
-        inherit system;
+        inherit inputs system;
       };
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.backupFileExtension = "hm-backup";
       home-manager.users.${user} = {
         imports = [
           ../users/${user}/profiles/common.nix
         ] ++ builtins.map (mkProfile ../users/${user}/profiles) profiles;
-        config = config.hostOverridesForPrograms or {};
       };
-    })
+    }
   ];
 
   mkProfile = pathPrefix: profile: 

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, osConfig, ... }:
 {
   home.packages = [
     pkgs.wl-clipboard
@@ -135,6 +135,7 @@
           new_optimizations = true;
         };
       };
+      env = osConfig._meta.desktop.hyprlandGPU;
     };
   };
 }

@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, osConfig, ... }:
 let
   ctp-mocha = pkgs.fetchurl {
     url = "https://github.com/catppuccin/waybar/releases/download/v1.1/mocha.css";
@@ -107,7 +107,7 @@ in
         };
 
         temperature = {
-          hwmon-path = lib.mkDefault "";
+          hwmon-path = osConfig._meta.desktop.waybarTemperaturePath;
         };
 
         pulseaudio = {
