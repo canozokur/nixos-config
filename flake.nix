@@ -156,6 +156,7 @@
             age
             ssh-to-age
             just
+            dnsutils
           ];
         };
       }
