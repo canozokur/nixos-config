@@ -18,7 +18,7 @@ This repository contains the declarative configuration for my personal infrastru
 │   └── ...
 ├── profiles/       # Reusable system layers
 ├── modules/        # Custom NixOS modules
-│   ├── meta.nix    # The schema for exported metadata from boxes
+│   ├── default.nix # The schema for exported metadata from boxes
 │   └── ...
 ├── lib/            # Custom helpers
 │   ├── mkbox.nix   # The system builder wrapper
