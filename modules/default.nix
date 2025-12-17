@@ -30,6 +30,7 @@
         options = {
           externalIP = with types; mkOption { type = str; default = ""; description = "The primary external address of this host"; };
           internalIP = with types; mkOption { type = str; default = ""; description = "The primary internal address of this host"; };
+          internalInterface = with types; mkOption { type = str; default = ""; description = "The primary internal network interface of this host"; };
         };
       };
     };
