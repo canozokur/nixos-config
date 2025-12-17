@@ -75,6 +75,7 @@
         users = [ "canozokur" ];
         profiles = [
           "desktop"
+          "node-exporter"
           "coding"
           "gaming"
           "remote-builder"
@@ -85,7 +86,7 @@
         system = "aarch64-linux";
         users = [ "canozokur" ];
         profiles = [
-          "server"
+          "node-exporter"
           "pihole"
           "remote-builder-client"
           "pi-image"
@@ -97,7 +98,7 @@
         system = "aarch64-linux";
         users = [ "canozokur" ];
         profiles = [
-          "server"
+          "node-exporter"
           "remote-builder-client"
           "pi-image"
           "iscsi-initiator"
@@ -109,7 +110,7 @@
         system = "aarch64-linux";
         users = [ "canozokur" ];
         profiles = [
-          "server"
+          "node-exporter"
           "remote-builder-client"
           "pi-image"
           "consul"
@@ -121,7 +122,7 @@
         system = "aarch64-linux";
         users = [ "canozokur" ];
         profiles = [
-          "server"
+          "node-exporter"
           "remote-builder-client"
           "pi-image"
           "iscsi-initiator"
