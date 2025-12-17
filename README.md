@@ -9,21 +9,23 @@ This repository contains the declarative configuration for my personal infrastru
 ## Folder Structure
 
 ```graphql
-├── boxes/          # Machine definitions (Hardware + Role)
-│   ├── nexusbox/   # Workstation (Dell XPS)
-│   ├── rpi01/      # Cluster Node 1
+├── boxes/            # Machine definitions (Hardware + Role)
+│   ├── nexusbox/     # Workstation (Dell XPS)
+│   ├── rpi01/        # Cluster Node 1
 │   └── ...
-├── users/          # User definitions & Home Manager profiles
-│   ├── canozokur/  # Main user environment
+├── users/            # User definitions & Home Manager profiles
+│   ├── canozokur/    # Main user environment
 │   └── ...
-├── profiles/       # Reusable system layers
-├── modules/        # Custom NixOS modules
-│   ├── default.nix # The schema for exported metadata from boxes
+├── profiles/         # Reusable system roles that collects capabilities
+│   ├── core/         # Core module(s) that is common to all nodes
+│   └── capabilities/ # Atomic module configurations
+├── modules/          # Custom NixOS modules
+│   ├── default.nix   # The schema for exported metadata from boxes
 │   └── ...
-├── lib/            # Custom helpers
-│   ├── mkbox.nix   # The system builder wrapper
-│   └── helpers.nix # Node filtering logic
-└── flake.nix       # Entry point
+├── lib/              # Custom helpers
+│   ├── mkbox.nix     # The system builder wrapper
+│   └── helpers.nix   # Node filtering logic
+└── flake.nix         # Entry point
 ```
 
 ## Development tools
