@@ -79,19 +79,19 @@
       rpi02 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" ];
+        profiles = [ "pi" "server" ];
       };
 
       rpi03 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" ];
+        profiles = [ "pi" "server" ];
       };
 
       rpi04 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" "monitoring" ];
+        profiles = [ "pi" "server" "monitoring" ];
       };
     };
   in
