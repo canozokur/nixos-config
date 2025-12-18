@@ -70,8 +70,10 @@
     options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
   };
 
+  # wait for the mount to be available to start
+  systemd.services.prometheus.unitConfig = { RequiresMountsFor = "/mnt/prometheus-data"; };
+
   systemd.tmpfiles.rules = lib.optionals (config.services.openiscsi.enable == true) [
-    "D /mnt/prometheus-data 0751 prometheus prometheus - -"
     "L+ /var/lib/${config.services.prometheus.stateDir}/data - - - - /mnt/prometheus-data"
   ];
 }
