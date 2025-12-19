@@ -68,6 +68,8 @@
     };
     services = {
       consulServer = false;
+      dnsServer = true;
+      dhcpServer = true;
     };
   };
 

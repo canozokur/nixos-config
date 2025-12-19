@@ -68,6 +68,7 @@
     };
     services = {
       consulServer = true;
+      dnsServer = true;
     };
   };
 

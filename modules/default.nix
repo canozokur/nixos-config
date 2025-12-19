@@ -37,6 +37,8 @@
 
     services = {
       consulServer = lib.mkEnableOption "This host is a Consul Server";
+      dnsServer = lib.mkEnableOption "This host is a DNS server";
+      dhcpServer = lib.mkEnableOption "This host is a DHCP server";
     };
 
     # Image payload

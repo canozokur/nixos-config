@@ -14,6 +14,10 @@ let
       builtins.map (entry: "${entry.ip} ${entry.domain}") configs
     )
     customDnsHosts);
+
+  piholeHosts = helpers.getHostsWith allHosts [ "services" "dnsServer" ];
+  dnsServersList = lib.mapAttrsToList (n: h: "${h.config._meta.networks.internalIP}") piholeHosts;
+  dnsServers = builtins.concatStringsSep "," dnsServersList;
 in
 {
   services.pihole-web = {
@@ -33,7 +37,7 @@ in
         hosts = localDns ++ customDnsEntries;
       };
       dhcp = {
-        active = true;
+        active = lib.mkIf config._meta.services.dhcpServer true;
         start = "192.168.1.50";
         end = "192.168.1.253"; # reserve 254 for external connections, not 255 for broadcast (just in case)
         router = "192.168.1.1";
@@ -45,7 +49,8 @@ in
           "d8:bb:c1:63:da:ff,192.168.1.129,truenas,24h"
         ];
       };
-      misc.dnsmasq_lines = lib.mkIf (config.services.consul.enable == true) [ "server=/consul/127.0.0.1#8600" ];
+      misc.dnsmasq_lines = [ "dhcp-option=option:dns-server,${dnsServers}" ]
+        ++ lib.optionals config.services.consul.enable [ "server=/consul/127.0.0.1#8600" ];
     };
     lists = [
       { url = "https://reddestdream.github.io/Projects/MinimalHosts/etc/MinimalHostsBlocker/minimalhosts"; }
