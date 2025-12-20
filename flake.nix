@@ -100,16 +100,16 @@
 
     images = nixpkgs.lib.pipe self.nixosConfigurations [
       # based on the metadata exported from rpi-image profile ...
-      (nixpkgs.lib.filterAttrs (name: host: 
+      (nixpkgs.lib.filterAttrs (name: host:
         host.config._meta.buildImage or false
       ))
       # ... generate the image config
-      (nixpkgs.lib.mapAttrs (name: host: 
+      (nixpkgs.lib.mapAttrs (name: host:
         host.config.system.build.sdImage
       ))
     ];
 
-    devShells = forAllSystems (system: 
+    devShells = forAllSystems (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
       in
