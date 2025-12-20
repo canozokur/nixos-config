@@ -104,6 +104,11 @@
       mode = "n";
     }
     {
+      key = "<leader>nmo";
+      action = "o{ ... }:<CR>{<CR>}<Esc>Oimports = [<CR>];<Esc>";
+      mode = "n";
+    }
+    {
       key = "<leader>spv";
       action = "<cmd>vsplit<CR><C-W>w";
       mode = "n"; 
