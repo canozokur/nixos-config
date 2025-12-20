@@ -73,19 +73,19 @@
       rpi01 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" ];
+        profiles = [ "pi" "pihole" "server" "galera-node" ];
       };
 
       rpi02 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" ];
+        profiles = [ "pi" "pihole" "server" "galera-node" ];
       };
 
       rpi03 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "server" ];
+        profiles = [ "pi" "server" "galera-node" ];
       };
 
       rpi04 = {

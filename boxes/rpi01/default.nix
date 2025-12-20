@@ -79,6 +79,7 @@ in
       consulServer = false;
       dnsServer = true;
       dhcpServer = true;
+      galera.clusterName = "home";
     };
   };
 

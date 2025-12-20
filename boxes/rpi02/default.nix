@@ -78,6 +78,7 @@ in
     services = {
       consulServer = true;
       dnsServer = true;
+      galera.clusterName = "home";
     };
   };
 

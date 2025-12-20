@@ -39,6 +39,11 @@
       consulServer = lib.mkEnableOption "This host is a Consul Server";
       dnsServer = lib.mkEnableOption "This host is a DNS server";
       dhcpServer = lib.mkEnableOption "This host is a DHCP server";
+      galera.clusterName = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        description = "A unique Galera cluster name.";
+      };
     };
 
     # Image payload

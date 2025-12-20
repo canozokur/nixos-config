@@ -77,6 +77,7 @@ in
     };
     services = {
       consulServer = true;
+      galera.clusterName = "home";
     };
   };
 
