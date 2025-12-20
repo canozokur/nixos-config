@@ -1,4 +1,7 @@
 { config, lib, ... }:
+let
+  isIscsi = (config.services.openiscsi.enable == true);
+in
 {
   services.prometheus = {
     enable = true;
@@ -64,16 +67,10 @@
     };
   };
 
-  fileSystems."/mnt/prometheus-data" = lib.mkIf (config.services.openiscsi.enable == true) {
-    device = "/dev/disk/by-uuid/301a494c-6b1a-4bc6-9b43-2a33870fda3e";
-    fsType = "ext4";
-    options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
-  };
-
   # wait for the mount to be available to start
-  systemd.services.prometheus.unitConfig = { RequiresMountsFor = "/mnt/prometheus-data"; };
+  systemd.services.prometheus.unitConfig = lib.mkIf isIscsi { RequiresMountsFor = "/mnt/prometheus-data"; };
 
-  systemd.tmpfiles.rules = lib.optionals (config.services.openiscsi.enable == true) [
+  systemd.tmpfiles.rules = lib.optionals isIscsi [
     "L+ /var/lib/${config.services.prometheus.stateDir}/data - - - - /mnt/prometheus-data"
   ];
 }
