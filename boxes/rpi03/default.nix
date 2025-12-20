@@ -62,12 +62,6 @@ in
     };
   };
 
-  fileSystems."/var/lib/mysql" = lib.mkIf isIscsi {
-    device = "/dev/disk/by-uuid/24e9a5d6-a22a-4940-8ce8-8adff3ecca59";
-    fsType = "xfs";
-    options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
-  };
-
   # exported metadata to use in modules
   _meta = {
     networks = {

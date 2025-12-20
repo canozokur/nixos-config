@@ -67,25 +67,25 @@
       homebox = {
         system = "x86_64-linux";
         users = [ "canozokur" ];
-        profiles = [ "gaming" ];
+        profiles = [ "gaming" "capabilities/iscsi-initiator" ];
       };
 
       rpi01 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" "galera-node" ];
+        profiles = [ "pi" "pihole" "server" ];
       };
 
       rpi02 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" "galera-node" ];
+        profiles = [ "pi" "pihole" "server" "capabilities/mysql" ];
       };
 
       rpi03 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "server" "galera-node" ];
+        profiles = [ "pi" "server" ];
       };
 
       rpi04 = {

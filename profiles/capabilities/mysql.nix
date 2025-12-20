@@ -32,7 +32,8 @@ in
 
   services.consul.agentServices = [{
     name = "mysql";
-    tags = lib.optionals isGalera ["galera-${clusterName}"];
+    tags = lib.optionals isGalera ["galera-${clusterName}"] ++
+      lib.optionals (config._meta.services.mysql.instanceName != "") ["instance-${config._meta.services.mysql.instanceName}"];
     address = config._meta.networks.internalIP;
     port = config.services.mysql.settings.mysqld.port;
     checks = [

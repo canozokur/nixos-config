@@ -44,6 +44,11 @@
         default = "";
         description = "A unique Galera cluster name.";
       };
+      mysql.instanceName = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        description = "Instance name of this MariaDB standalone server.";
+      };
     };
 
     # Image payload
