@@ -1,4 +1,7 @@
-{ inputs, config, ... }:
+{ inputs, config, lib, ... }:
+let
+  isIscsi = (config.services.openiscsi.enable == true);
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -57,6 +60,12 @@
         };
       };
     };
+  };
+
+  fileSystems."/var/lib/mysql" = lib.mkIf isIscsi {
+    device = "/dev/disk/by-uuid/bb1c3289-d975-4cd7-81ba-32568114c200";
+    fsType = "xfs";
+    options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
   };
 
   # exported metadata to use in modules
