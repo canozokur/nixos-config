@@ -21,6 +21,7 @@
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
           "browser.ml.chat.enabled" = false;
           "media.setsinkid.enabled" = true; # enumerate all audio sources, don't just show the default device
+          "browser.fixup.domainsuffixwhitelist.lan" = true; # exclude .lan tld from searches
         };
         search = {
           force = true;
