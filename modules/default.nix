@@ -23,6 +23,12 @@
       });
     };
 
+    virtualHosts = mkOption {
+      description = "Nginx virtualhosts exported by this machine";
+      default = {};
+      type = types.attrsOf types.attrs;
+    };
+
     networks = mkOption {
       description = "External and internal IP addresses of this host";
       default = {};
@@ -49,6 +55,7 @@
         default = "";
         description = "Instance name of this MariaDB standalone server.";
       };
+      elb = lib.mkEnableOption "This host is host to an nginx external load balancer.";
     };
 
     # Image payload
