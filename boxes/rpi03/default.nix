@@ -1,7 +1,4 @@
-{ inputs, config, lib, ... }:
-let
-  isIscsi = (config.services.openiscsi.enable == true);
-in
+{ inputs, config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -72,6 +69,7 @@ in
     services = {
       consulServer = true;
       galera.clusterName = "home";
+      elb = true;
     };
   };
 
