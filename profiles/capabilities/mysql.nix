@@ -54,6 +54,7 @@ in
   networking.firewall = {
     allowedTCPPorts = [
       config.services.mysql.settings.mysqld.port
+    ] ++ lib.optionals isGalera [
       4567 # galera port
       4568 # galera ist
       4444 # galera sst
