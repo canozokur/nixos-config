@@ -1,13 +1,20 @@
 { helpers, lib, inputs, config, ... }:
 let
-  allVhosts = helpers.getHostsWith inputs.self.nixosConfigurations "virtualHosts";
-  listVhosts = lib.mapAttrsToList (_: host: host.config._meta.virtualHosts) allVhosts;
-  mergedVhosts = lib.foldl' (acc: set: acc // set) {} listVhosts;
+  allExternalVhosts = helpers.getHostsWith inputs.self.nixosConfigurations [ "nginx" "externalVhosts" ];
+  allInternalVhosts = helpers.getHostsWith inputs.self.nixosConfigurations [ "nginx" "internalVhosts" ];
+  allUpstreams = helpers.getHostsWith inputs.self.nixosConfigurations [ "nginx" "upstreams" ];
+  extList = lib.mapAttrsToList (_: host: host.config._meta.nginx.externalVhosts) allExternalVhosts;
+  intList = lib.mapAttrsToList (_: host: host.config._meta.nginx.internalVhosts) allInternalVhosts;
+  mergedVhosts = lib.foldl' (acc: set: acc // set) {} (extList ++ intList);
 in
 {
   services.nginx = {
     enable = true;
+    defaultListen = [ { addr = "0.0.0.0"; port = 80; } { addr = "0.0.0.0"; port = 443; ssl = true; } ];
     virtualHosts = mergedVhosts;
+    upstreams = lib.mkMerge (
+      lib.mapAttrsToList (_: host: host.config._meta.nginx.upstreams) allUpstreams
+    );
   };
 
   services.consul.agentServices = [{
@@ -25,4 +32,12 @@ in
       }
     ];
   }];
+
+  networking.firewall = {
+    allowedTCPPorts = [
+      config.services.nginx.defaultHTTPListenPort
+      config.services.nginx.defaultSSLListenPort
+    ];
+  };
+
 }
