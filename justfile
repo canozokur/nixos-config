@@ -8,8 +8,8 @@ switch:
 push-build host uri=host:
   nixos-rebuild --sudo switch --flake .#{{host}} --target-host {{uri}}
 
-dry-build:
-  nixos-rebuild dry-build --flake .
+dry-build host="":
+  nixos-rebuild dry-build --flake .#{{host}}
 
 dry-activate:
   nixos-rebuild --sudo dry-activate --flake .
