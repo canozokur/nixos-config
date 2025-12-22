@@ -6,7 +6,7 @@ switch:
 
 # usage: push-build rpi01 canozokur@192.168.1.60
 push-build host uri=host:
-  nixos-rebuild --ask-sudo-password switch --flake .#{{host}} --target-host {{uri}}
+  nixos-rebuild --sudo switch --flake .#{{host}} --target-host {{uri}}
 
 dry-build:
   nixos-rebuild dry-build --flake .

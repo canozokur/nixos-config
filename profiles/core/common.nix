@@ -50,6 +50,7 @@ in
     extraConfig = ''
       Defaults timestamp_timeout=30
     '';
+    wheelNeedsPassword = false;
   };
 
   services.openssh.enable = true;
