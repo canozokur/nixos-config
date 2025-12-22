@@ -51,6 +51,7 @@
               method = "manual";
               address1 = "192.168.1.5/24,192.168.1.1";
               address2 = "192.168.0.5/24";
+              address3 = "192.168.1.254/24,192.168.1.1";
               dns = "192.168.1.3";
             };
           };
@@ -60,10 +61,10 @@
   };
 
   # exported metadata to use in modules
-  _meta = {
+  _meta = rec {
     networks = {
       internalIP = "192.168.1.5";
-      externalIP = "192.168.1.5";
+      externalIP = "192.168.1.254";
       internalInterface = "end0";
     };
     services = {
