@@ -64,7 +64,7 @@ in
   };
 
   # exported metadata to use in modules
-  _meta = {
+  _meta = rec {
     networks = {
       internalIP = "192.168.1.6";
       externalIP = "192.168.1.6";
@@ -72,6 +72,24 @@ in
     };
     services = {
       consulServer = true;
+    };
+
+    nginx = {
+      upstreams = {
+        grafana = {
+          servers."${networks.internalIP}:2324" = {};
+        };
+      };
+      externalVhosts = {
+        "grafana.lan" = {
+          locations = {
+            "/" = {
+              proxyPass = "http://grafana";
+              recommendedProxySettings = true;
+            };
+          };
+        };
+      };
     };
   };
 
