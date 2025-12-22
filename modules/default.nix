@@ -23,10 +23,24 @@
       });
     };
 
-    virtualHosts = mkOption {
-      description = "Nginx virtualhosts exported by this machine";
-      default = {};
-      type = types.attrsOf types.attrs;
+    nginx = {
+      externalVhosts = mkOption {
+        description = "Nginx vhosts that are exposed to the outside world by this machine";
+        default = {};
+        type = types.attrs;
+      };
+
+      internalVhosts = mkOption {
+        description = "Nginx vhosts that are exposed to the internal network";
+        default = {};
+        type = types.attrs;
+      };
+
+      upstreams = mkOption {
+        description = "Nginx upstreams";
+        default = {};
+        type = types.attrs;
+      };
     };
 
     networks = mkOption {
