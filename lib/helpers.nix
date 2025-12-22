@@ -12,6 +12,6 @@
         val = lib.attrByPath ([ "config" "_meta" ] ++ keyPath) null host;
       in
         # The Validity Checks
-        val != null && val != "" && val != [] && val != false
+        val != null && val != "" && val != [] && val != false && val != {}
     ) hosts;
 }
