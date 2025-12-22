@@ -109,6 +109,9 @@
         "stayfocused, class:^(Zoom.*), title:^(meeting bottombar.*)$"
         "float, class:^(Zoom.*)"
       ];
+      windowrulev2 = [
+        "bordercolor rgb(50fa7b),fullscreen:1"
+      ];
       workspace = [
         "1, layoutopt:orientation:left"
       ];
