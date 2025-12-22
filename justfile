@@ -1,6 +1,9 @@
 alias rebuild := switch
 alias r := switch
 alias b := switch
+alias dry := dry-build
+alias push := push-build
+
 switch:
   nixos-rebuild --sudo switch --flake .
 
