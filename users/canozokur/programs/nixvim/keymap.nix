@@ -105,7 +105,7 @@
     }
     {
       key = "<leader>nmo";
-      action = "o{ ... }:<CR>{<CR>}<Esc>Oimports = [<CR>];<Esc>";
+      action = "i{ ... }:<CR>{<CR>}<Esc>Oimports = [<CR>];<Esc>";
       mode = "n";
     }
     {
