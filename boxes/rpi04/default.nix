@@ -73,24 +73,6 @@ in
     services = {
       consulServer = true;
     };
-
-    nginx = {
-      upstreams = {
-        grafana = {
-          servers."${networks.internalIP}:2324" = {};
-        };
-      };
-      externalVhosts = {
-        "grafana.lan" = {
-          locations = {
-            "/" = {
-              proxyPass = "http://grafana";
-              recommendedProxySettings = true;
-            };
-          };
-        };
-      };
-    };
   };
 
   fileSystems."/mnt/prometheus-data" = lib.mkIf isIscsi {

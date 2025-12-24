@@ -61,7 +61,7 @@
   };
 
   # exported metadata to use in modules
-  _meta = rec {
+  _meta = {
     networks = {
       internalIP = "192.168.1.5";
       externalIP = "192.168.1.254";
