@@ -39,7 +39,7 @@ in
       dhcp = {
         active = lib.mkIf config._meta.services.dhcpServer true;
         start = "192.168.1.50";
-        end = "192.168.1.253"; # reserve 254 for external connections, not 255 for broadcast (just in case)
+        end = "192.168.1.252"; # reserve 253 for internal connections, 254 for external and 255 for broadcast (just in case)
         router = "192.168.1.1";
         netmask = "255.255.255.0";
         leaseTime = "24h";
