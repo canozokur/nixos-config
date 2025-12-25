@@ -13,7 +13,7 @@ in
     upstreams = {
       prowlarr = { servers."${addr}:${toString port}" = {}; };
     };
-    internalVhosts = {
+    vhosts = {
       "prowlarr.lan" = {
         listen = [{ addr = "192.168.1.253"; port = 80; }];
         locations = {

@@ -24,14 +24,8 @@
     };
 
     nginx = {
-      externalVhosts = mkOption {
-        description = "Nginx vhosts that are exposed to the outside world by this machine";
-        default = {};
-        type = types.attrs;
-      };
-
-      internalVhosts = mkOption {
-        description = "Nginx vhosts that are exposed to the internal network";
+      vhosts = mkOption {
+        description = "Nginx vhosts that will be configured on the reverse proxy";
         default = {};
         type = types.attrs;
       };

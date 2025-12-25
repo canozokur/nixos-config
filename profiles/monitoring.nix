@@ -15,7 +15,7 @@ in
           servers."${_m.networks.internalIP}:2324" = {};
         };
       };
-      externalVhosts = {
+      vhosts = {
         "grafana.lan" = {
           listen = [{ addr = "192.168.1.254"; port = 80; }];
           locations = {

@@ -2,15 +2,7 @@
 let
   externalIP = "192.168.1.254";
   internalIP = "192.168.1.253";
-  get = helpers.getHostsWith inputs.self.nixosConfigurations;
-  listExtVhosts = lib.mapAttrsToList
-    (_: host: host.config._meta.nginx.externalVhosts)
-    (get ["nginx" "externalVhosts"]);
-  listIntVhosts = lib.mapAttrsToList
-    (_: host: host.config._meta.nginx.internalVhosts)
-    (get ["nginx" "internalVhosts"]);
-  externalVhosts = lib.flatten (lib.map (k: lib.attrNames k) listExtVhosts);
-  internalVhosts = lib.flatten (lib.map (k: lib.attrNames k) listIntVhosts);
+  vhostConfigurations = helpers.getHostsWith inputs.self.nixosConfigurations ["nginx" "vhosts"];
 in
 {
   imports = [
@@ -19,10 +11,24 @@ in
   ];
 
   _meta = {
-    dnsConfigurations = 
-      (builtins.map (d: { ip = externalIP; domain = d; }) externalVhosts)
-      ++
-      (builtins.map (d: { ip = internalIP; domain = d; }) internalVhosts);
+    dnsConfigurations = lib.flatten (
+      lib.mapAttrsToList (name: node:
+        let
+          vhosts = node.config._meta.nginx.vhosts;
+        in
+        lib.mapAttrsToList (d: c:
+          let
+            listenList = c.listen or [];
+            customIps = builtins.filter (x: x != null)
+              (builtins.map (e: e.addr or null) listenList);
+            finalIps = if customIps != [] then customIps else [ internalIP ];
+          in
+          builtins.map (ip:
+            { domain = d; ip = ip; }
+          ) finalIps
+        ) vhosts
+      ) vhostConfigurations
+    );
 
     networks.wiredAddresses = [
       externalIP
