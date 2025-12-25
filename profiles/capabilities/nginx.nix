@@ -10,7 +10,7 @@ in
 {
   services.nginx = {
     enable = true;
-    defaultListen = [ { addr = "0.0.0.0"; port = 80; } { addr = "0.0.0.0"; port = 443; ssl = true; } ];
+    defaultListen = [ { addr = "${config._meta.networks.internalIP}"; port = 80; } { addr = "${config._meta.networks.internalIP}"; port = 443; ssl = true; } ];
     virtualHosts = mergedVhosts;
     upstreams = lib.mkMerge (
       lib.mapAttrsToList (_: host: host.config._meta.nginx.upstreams) allUpstreams
