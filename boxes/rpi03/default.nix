@@ -50,7 +50,6 @@
             ipv4 =
             let
               ipList = config._meta.networks.wiredAddresses;
-              # Generate { address1=...; address2=...; }
               numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
             in
             numberedAddresses // {

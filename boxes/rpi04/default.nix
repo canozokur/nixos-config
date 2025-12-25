@@ -1,4 +1,4 @@
-{ inputs, config, lib, ... }:
+{ inputs, config, lib, helpers, ... }:
 let
   isIscsi = (config.services.openiscsi.enable == true);
 in
@@ -50,11 +50,13 @@ in
               type = "802-3-ethernet";
               interface-name = "end0";
             };
-            ipv4 = {
+            ipv4 =
+            let
+              ipList = config._meta.networks.wiredAddresses;
+              numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
+            in
+            numberedAddresses // {
               method = "manual";
-              address1 = "192.168.1.6/24,192.168.1.1";
-              address2 = "192.168.0.6/24";
-              address3 = "192.168.1.49/24,192.168.1.1"; # external
               dns = "192.168.1.3";
             };
           };
@@ -64,11 +66,12 @@ in
   };
 
   # exported metadata to use in modules
-  _meta = rec {
+  _meta = {
     networks = {
       internalIP = "192.168.1.6";
       externalIP = "192.168.1.6";
       internalInterface = "end0";
+      wiredAddresses = [ "192.168.1.6/24,192.168.1.1" "192.168.0.6/24" ];
     };
     services = {
       consulServer = true;
