@@ -17,6 +17,7 @@ in
       };
       externalVhosts = {
         "grafana.lan" = {
+          listen = [{ addr = "192.168.1.254"; port = 80; }];
           locations = {
             "/" = {
               proxyPass = "http://grafana";

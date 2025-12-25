@@ -1,7 +1,7 @@
-{ helpers, inputs, lib, config, ... }:
+{ helpers, inputs, lib, ... }:
 let
-  externalIP = config._meta.networks.externalIP;
-  internalIP = config._meta.networks.internalIP;
+  externalIP = "192.168.1.254";
+  internalIP = "192.168.1.253";
   get = helpers.getHostsWith inputs.self.nixosConfigurations;
   listExtVhosts = lib.mapAttrsToList
     (_: host: host.config._meta.nginx.externalVhosts)
@@ -25,8 +25,8 @@ in
       (builtins.map (d: { ip = internalIP; domain = d; }) internalVhosts);
 
     networks.wiredAddresses = [
-      "192.168.1.254" # externalIP
-      "192.168.1.253" # internalIP
+      externalIP
+      internalIP
     ];
   };
 }

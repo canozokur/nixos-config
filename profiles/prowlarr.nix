@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, ... }:
 let
   port = config.services.prowlarr.settings.server.port;
   addr = config._meta.networks.internalIP;
@@ -15,6 +15,7 @@ in
     };
     internalVhosts = {
       "prowlarr.lan" = {
+        listen = [{ addr = "192.168.1.253"; port = 80; }];
         locations = {
           "/" = {
             proxyPass = "http://prowlarr";
