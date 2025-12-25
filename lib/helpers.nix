@@ -14,4 +14,11 @@
         # The Validity Checks
         val != null && val != "" && val != [] && val != false && val != {}
     ) hosts;
+
+  # Converts a list [ "a" "b" ] -> { prefix1="a"; prefix2="b"; }
+  listToNumberedAttrs = prefix: list:
+    lib.listToAttrs (lib.imap1 (i: v: {
+      name = "${prefix}${toString i}";
+      value = v;
+    }) list);
 }
