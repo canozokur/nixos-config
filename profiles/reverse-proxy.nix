@@ -18,14 +18,15 @@ in
     ./capabilities/consul.nix
   ];
 
-  _meta.dnsConfigurations = 
-    (builtins.map (d: {
-      ip = externalIP;
-      domain = d;
-    }) externalVhosts)
-    ++
-    (builtins.map (d: {
-      ip = internalIP;
-      domain = d;
-    }) internalVhosts);
+  _meta = {
+    dnsConfigurations = 
+      (builtins.map (d: { ip = externalIP; domain = d; }) externalVhosts)
+      ++
+      (builtins.map (d: { ip = internalIP; domain = d; }) internalVhosts);
+
+    networks.wiredAddresses = [
+      "192.168.1.254" # externalIP
+      "192.168.1.253" # internalIP
+    ];
+  };
 }
