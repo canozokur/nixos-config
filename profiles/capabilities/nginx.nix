@@ -1,17 +1,15 @@
 { helpers, lib, inputs, config, ... }:
 let
-  allExternalVhosts = helpers.getHostsWith inputs.self.nixosConfigurations [ "nginx" "externalVhosts" ];
-  allInternalVhosts = helpers.getHostsWith inputs.self.nixosConfigurations [ "nginx" "internalVhosts" ];
+  vhostConfigs = helpers.getHostsWith inputs.self.nixosConfigurations [ "nginx" "vhosts" ];
   allUpstreams = helpers.getHostsWith inputs.self.nixosConfigurations [ "nginx" "upstreams" ];
-  extList = lib.mapAttrsToList (_: host: host.config._meta.nginx.externalVhosts) allExternalVhosts;
-  intList = lib.mapAttrsToList (_: host: host.config._meta.nginx.internalVhosts) allInternalVhosts;
-  mergedVhosts = lib.foldl' (acc: set: acc // set) {} (extList ++ intList);
+  vhostList = lib.mapAttrsToList (_: host: host.config._meta.nginx.vhosts) vhostConfigs;
+  vhosts = lib.foldl' (acc: set: acc // set) {} vhostList;
 in
 {
   services.nginx = {
     enable = true;
     defaultListen = [ { addr = "${config._meta.networks.internalIP}"; port = 80; } { addr = "${config._meta.networks.internalIP}"; port = 443; ssl = true; } ];
-    virtualHosts = mergedVhosts;
+    virtualHosts = vhosts;
     upstreams = lib.mkMerge (
       lib.mapAttrsToList (_: host: host.config._meta.nginx.upstreams) allUpstreams
     );
