@@ -1,7 +1,4 @@
-{ config, lib, ... }:
-let
-  isIscsi = (config.services.openiscsi.enable == true);
-in
+{ ... }:
 {
   services.prometheus = {
     enable = true;
@@ -45,32 +42,4 @@ in
       }
     ];
   };
-
-  services.grafana = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      server.http_addr = "0.0.0.0";
-      server.http_port = 2324;
-    };
-    provision = {
-      datasources.settings = {
-        prune = true;
-        datasources = [
-          {
-            name = "local prom";
-            type = "prometheus";
-            url = "http://localhost:${toString config.services.prometheus.port}";
-          }
-        ];
-      };
-    };
-  };
-
-  # wait for the mount to be available to start
-  systemd.services.prometheus.unitConfig = lib.mkIf isIscsi { RequiresMountsFor = "/mnt/prometheus-data"; };
-
-  systemd.tmpfiles.rules = lib.optionals isIscsi [
-    "L+ /var/lib/${config.services.prometheus.stateDir}/data - - - - /mnt/prometheus-data"
-  ];
 }

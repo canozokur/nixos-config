@@ -78,12 +78,6 @@ in
     };
   };
 
-  fileSystems."/mnt/prometheus-data" = lib.mkIf isIscsi {
-    device = "/dev/disk/by-uuid/301a494c-6b1a-4bc6-9b43-2a33870fda3e";
-    fsType = "ext4";
-    options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
-  };
-
   hardware.graphics.enable = true;
   # bluetooth config
   hardware.bluetooth.enable = true;
