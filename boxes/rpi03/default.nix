@@ -1,4 +1,4 @@
-{ inputs, config, ... }:
+{ inputs, config, helpers, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -47,11 +47,14 @@
               type = "802-3-ethernet";
               interface-name = "end0";
             };
-            ipv4 = {
+            ipv4 =
+            let
+              ipList = config._meta.networks.wiredAddresses;
+              # Generate { address1=...; address2=...; }
+              numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
+            in
+            numberedAddresses // {
               method = "manual";
-              address1 = "192.168.1.5/24,192.168.1.1";
-              address2 = "192.168.0.5/24";
-              address3 = "192.168.1.254/24,192.168.1.1";
               dns = "192.168.1.3";
             };
           };
@@ -66,6 +69,7 @@
       internalIP = "192.168.1.5";
       externalIP = "192.168.1.254";
       internalInterface = "end0";
+      wiredAddresses = [ "192.168.1.5/24,192.168.1.1" "192.168.0.5/24" ];
     };
     services = {
       consulServer = true;
