@@ -2,6 +2,7 @@
 let
   port = config.services.prowlarr.settings.server.port;
   addr = config._meta.networks.internalIP;
+  mountPoint = "/mnt/prowlarr-data";
 in
 {
   imports = [
@@ -29,12 +30,12 @@ in
   services.prowlarr = {
     enable = true;
     openFirewall = true;
-    dataDir = "/mnt/prowlarr-data";
+    dataDir = mountPoint;
   };
 
-  systemd.services.prowlarr.unitConfig = { RequiresMountsFor = "/mnt/prowlarr-data"; };
+  systemd.services.prowlarr.unitConfig = { RequiresMountsFor = mountPoint; };
 
-  fileSystems."/mnt/prowlarr-data" = {
+  fileSystems."${mountPoint}" = {
     device = "/dev/disk/by-uuid/c7b9c1ad-557a-49ea-bef1-656829c3b529";
     fsType = "xfs";
     options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
