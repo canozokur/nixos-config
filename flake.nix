@@ -73,7 +73,7 @@
       rpi01 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" "prowlarr" "radarr" ];
+        profiles = [ "pi" "pihole" "server" "prowlarr" "radarr" "sonarr" ];
       };
 
       rpi02 = {
