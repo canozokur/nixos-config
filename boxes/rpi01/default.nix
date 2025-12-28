@@ -76,6 +76,28 @@
       dhcpServer = true;
       galera.clusterName = "home";
     };
+    nginx = {
+      upstreams = {
+        nzbget.servers."192.168.1.129:6789" = {};
+      };
+      vhosts = {
+        "nzbget.lan" = {
+          extraConfig = ''
+            client_max_body_size 0; # disable max upload size for nzbs
+          '';
+          listen = [{ addr = "192.168.1.253"; port = 80; }];
+          locations."/" = {
+            proxyPass = "http://nzbget";
+            recommendedProxySettings = true;
+          };
+        };
+      };
+    };
+    # static IP configurations, defined here to prevent double entries
+    dnsConfigurations = [
+      { ip = "192.168.1.129"; domain = "truenas.lan"; }
+      { ip = "192.168.1.129"; domain = "qbit.lan"; }
+    ];
   };
 
   hardware.graphics.enable = true;
