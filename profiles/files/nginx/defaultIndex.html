@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P & C | pco.pink</title>
+    <meta name="description" content="Welcome to the digital home of P & C.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #fff0f3; /* Very pale pink background */
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --accent-pink: #e84393;
+            --hover-pink: #d63084;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(at 0% 0%, hsla(340,82%,94%,1) 0, transparent 50%), 
+                              radial-gradient(at 100% 100%, hsla(329,80%,92%,1) 0, transparent 50%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: var(--card-bg);
+            padding: 3rem 4rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(232, 67, 147, 0.1);
+            max-width: 90%;
+            width: 450px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        /* The Initials Circle */
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff9ff3 0%, #f368e0 100%);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 10px 20px rgba(243, 104, 224, 0.3);
+        }
+
+        h1 {
+            font-weight: 600;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-weight: 300;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--accent-pink);
+            border: 2px solid var(--accent-pink);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background-color: var(--accent-pink);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(232, 67, 147, 0.2);
+        }
+
+        /* Footer small text */
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #b2bec3;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">P&C</div>
+
+        <h1>Welcome Home</h1>
+
+        <p>
+            You've reached the personal landing page of <strong>P & C</strong>. 
+            <br>
+            We live here on the web at <em>pco.pink</em>.
+        </p>
+
+        <a href="mailto:hello@pco.pink" class="contact-btn">Say Hello</a>
+
+        <div class="footer">
+            EST. 2025
+        </div>
+    </div>
+
+</body>
+</html>

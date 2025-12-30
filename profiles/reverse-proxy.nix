@@ -1,7 +1,8 @@
-{ helpers, inputs, lib, ... }:
+{ helpers, inputs, lib, pkgs, ... }:
 let
   externalIP = "192.168.1.254";
   internalIP = "192.168.1.253";
+  defaultIndex = pkgs.writeTextDir "defaultVhost/index.html" (builtins.readFile ./files/nginx/defaultIndex.html);
   serversWithVhosts = helpers.getHostsWith inputs.self.nixosConfigurations ["nginx" "vhosts"];
   buildDnsCfg = lib.mapAttrsToList (name: node:
     lib.mapAttrsToList (d: c:
@@ -30,5 +31,17 @@ in
       externalIP
       internalIP
     ];
+
+    # default vhosts
+    nginx = {
+      vhosts = {
+        "pco.pink" = {
+          listen = [{ addr = "192.168.1.254"; port = 80; }];
+          default = true;
+          root = "${defaultIndex}/defaultVhost";
+          locations."/".index = "index.html";
+        };
+      };
+    };
   };
 }
