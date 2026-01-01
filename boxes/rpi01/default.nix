@@ -81,8 +81,50 @@
         nzbget.servers."192.168.1.129:6789" = {};
         qbit.servers."192.168.1.129:8080" = {};
         bazarr.servers."192.168.1.129:30046" = {};
+        emby.servers."192.168.1.129:8096" = {};
       };
       vhosts = {
+        "emby.pco.pink" = {
+          listen = [{ addr = "192.168.1.253"; port = 80; }];
+          # configuration from https://emby.media/community/index.php?/topic/93074-how-to-emby-with-nginx-with-csp-options/
+          extraConfig = ''
+            gzip on;
+            gzip_disable "msie6";
+            gzip_comp_level 6;
+            gzip_min_length 1100;
+            gzip_buffers 16 8k;
+            gzip_proxied any;
+            gzip_types
+              text/plain
+              text/css
+              text/js
+              text/xml
+              text/javascript
+              application/javascript
+              application/x-javascript
+              application/json
+              application/xml
+              application/rss+xml
+              image/svg+xml;
+
+            proxy_connect_timeout 1h;
+            proxy_send_timeout 1h;
+            proxy_read_timeout 1h;
+            tcp_nodelay on;
+          '';
+          locations = {
+            "^~ /swagger".return = 404;
+            "/" = {
+              proxyPass = "http://emby";
+              recommendedProxySettings = true;
+              extraConfig = ''
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection $http_connection;
+              '';
+            };
+          };
+        };
         "nzbget.lan" = {
           extraConfig = ''
             client_max_body_size 0; # disable max upload size for nzbs
