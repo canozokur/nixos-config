@@ -9,6 +9,11 @@ in
   services.nginx = {
     enable = true;
     defaultListen = [ { addr = "${config._meta.networks.internalIP}"; port = 80; } { addr = "${config._meta.networks.internalIP}"; port = 443; ssl = true; } ];
+    commonHttpConfig = ''
+      log_format vhost '$host - $remote_addr - $remote_user [$time_local] "$request" '
+        '$status $body_bytes_sent "$http_referer" ' '"$http_user_agent" $request_time';
+      access_log /var/log/nginx/access.log vhost;
+    '';
     virtualHosts = vhosts;
     upstreams = lib.mkMerge (
       lib.mapAttrsToList (_: host: host.config._meta.nginx.upstreams) allUpstreams
