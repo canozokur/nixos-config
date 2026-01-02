@@ -68,10 +68,10 @@ in
   security.acme = {
     acceptTerms = true;
     defaults.email = "ssladmin@pco.pink";
+    defaults.reloadServices = [ "nginx" ];
     certs = lib.genAttrs forSslDomains (domain: {
       dnsProvider = "cloudflare"; # it might require more configuration options to support different providers.
       environmentFile = config.sops.secrets."cloudflare".path;
-      postRun = "systemctl reload nginx";
       group = "nginx";
     });
   };
