@@ -1,4 +1,4 @@
-{ helpers, inputs, lib, pkgs, ... }:
+{ helpers, inputs, lib, pkgs, config, ... }:
 let
   externalIP = "192.168.1.254";
   internalIP = "192.168.1.253";
@@ -17,6 +17,18 @@ let
       ) finalIps
     ) node.config._meta.nginx.vhosts
   );
+
+  sslDomains = [ "pco.pink" ];
+  forSslDomains = lib.pipe serversWithVhosts [
+    (lib.mapAttrsToList (_: node:
+      builtins.attrNames node.config._meta.nginx.vhosts
+    ))
+    lib.flatten
+    (builtins.filter (d:
+      lib.any (suffix: lib.hasSuffix suffix d) sslDomains
+    ))
+    lib.unique
+  ];
 in
 {
   imports = [
@@ -46,5 +58,21 @@ in
         };
       };
     };
+  };
+
+  sops.secrets."cloudflare" = {
+    owner = config.systemd.services.acme-setup.serviceConfig.User;
+    group = config.systemd.services.acme-setup.serviceConfig.Group;
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "ssladmin@pco.pink";
+    certs = lib.genAttrs forSslDomains (domain: {
+      dnsProvider = "cloudflare"; # it might require more configuration options to support different providers.
+      environmentFile = config.sops.secrets."cloudflare".path;
+      postRun = "systemctl reload nginx";
+      group = "nginx";
+    });
   };
 }
