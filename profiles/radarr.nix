@@ -17,8 +17,11 @@ in
       radarr = { servers."${addr}:${toString port}" = {}; };
     };
     vhosts = {
-      "radarr.lan" = {
-        listen = [{ addr = "192.168.1.253"; port = 80; }];
+      "radarr.pco.pink" = {
+        listen = [{ addr = "192.168.1.253"; port = 443; ssl = true; }];
+        enableACME = true;
+        acmeRoot = null;
+        forceSSL = true;
         locations = {
           "/" = {
             proxyPass = "http://radarr";

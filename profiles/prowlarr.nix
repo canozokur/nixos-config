@@ -15,8 +15,11 @@ in
       prowlarr = { servers."${addr}:${toString port}" = {}; };
     };
     vhosts = {
-      "prowlarr.lan" = {
-        listen = [{ addr = "192.168.1.253"; port = 80; }];
+      "prowlarr.pco.pink" = {
+        listen = [{ addr = "192.168.1.253"; port = 443; ssl = true; }];
+        enableACME = true;
+        acmeRoot = null;
+        forceSSL = true;
         locations = {
           "/" = {
             proxyPass = "http://prowlarr";

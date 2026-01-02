@@ -17,8 +17,11 @@ in
       sonarr = { servers."${addr}:${toString port}" = {}; };
     };
     vhosts = {
-      "sonarr.lan" = {
-        listen = [{ addr = "192.168.1.253"; port = 80; }];
+      "sonarr.pco.pink" = {
+        listen = [{ addr = "192.168.1.253"; port = 443; ssl = true; }];
+        enableACME = true;
+        acmeRoot = null;
+        forceSSL = true;
         locations = {
           "/" = {
             proxyPass = "http://sonarr";

@@ -86,7 +86,6 @@
       vhosts = {
         "emby.pco.pink" = {
           listen = [
-            { addr = "192.168.1.253"; port = 80; }
             { addr = "192.168.1.253"; port = 443; ssl = true; }
           ];
           enableACME = true;
@@ -131,31 +130,46 @@
             };
           };
         };
-        "nzbget.lan" = {
+        "nzbget.pco.pink" = {
           extraConfig = ''
             client_max_body_size 0; # disable max upload size for nzbs
           '';
-          listen = [{ addr = "192.168.1.253"; port = 80; }];
+          listen = [
+            { addr = "192.168.1.253"; port = 443; ssl = true; }
+          ];
+          enableACME = true;
+          acmeRoot = null;
+          forceSSL = true;
           locations."/" = {
             proxyPass = "http://nzbget";
             recommendedProxySettings = true;
           };
         };
-        "qbit.lan" = {
+        "qbit.pco.pink" = {
           extraConfig = ''
             client_max_body_size 0; # disable max upload size for nzbs
             '';
-          listen = [{ addr = "192.168.1.253"; port = 80; }];
+          listen = [
+            { addr = "192.168.1.253"; port = 443; ssl = true; }
+          ];
+          enableACME = true;
+          acmeRoot = null;
+          forceSSL = true;
           locations."/" = {
             proxyPass = "http://qbit";
             recommendedProxySettings = true;
           };
         };
-        "bazarr.lan" = {
+        "bazarr.pco.pink" = {
           extraConfig = ''
             client_max_body_size 0; # disable max upload size for nzbs
             '';
-          listen = [{ addr = "192.168.1.253"; port = 80; }];
+          listen = [
+            { addr = "192.168.1.253"; port = 443; ssl = true; }
+          ];
+          enableACME = true;
+          acmeRoot = null;
+          forceSSL = true;
           locations."/" = {
             proxyPass = "http://bazarr";
             recommendedProxySettings = true;
