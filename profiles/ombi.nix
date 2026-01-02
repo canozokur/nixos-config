@@ -41,6 +41,14 @@ in
         enableACME = true;
         acmeRoot = null;
         forceSSL = true;
+        extraConfig = ''
+          gzip on;
+          gzip_vary on;
+          gzip_min_length 1000;
+          gzip_proxied any;
+          gzip_types text/plain text/css text/xml application/xml text/javascript application/x-javascript image/svg+xml;
+          gzip_disable "MSIE [1-6]\.";
+        '';
         locations = {
           "/" = {
             proxyPass = "http://ombi";
