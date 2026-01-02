@@ -17,8 +17,11 @@ in
       };
     };
     vhosts = {
-      "grafana.lan" = {
-        listen = [{ addr = "192.168.1.254"; port = 80; }];
+      "grafana.pco.pink" = {
+        listen = [{ addr = "192.168.1.254"; port = 443; ssl = true; }];
+        enableACME = true;
+        forceSSL = true;
+        acmeRoot = null;
         locations = {
           "/" = {
             proxyPass = "http://grafana";

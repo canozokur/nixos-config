@@ -85,7 +85,13 @@
       };
       vhosts = {
         "emby.pco.pink" = {
-          listen = [{ addr = "192.168.1.253"; port = 80; }];
+          listen = [
+            { addr = "192.168.1.253"; port = 80; }
+            { addr = "192.168.1.253"; port = 443; ssl = true; }
+          ];
+          enableACME = true;
+          acmeRoot = null;
+          forceSSL = true;
           # configuration from https://emby.media/community/index.php?/topic/93074-how-to-emby-with-nginx-with-csp-options/
           extraConfig = ''
             gzip on;
