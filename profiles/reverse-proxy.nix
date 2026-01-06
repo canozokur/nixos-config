@@ -19,15 +19,23 @@ let
   );
 
   sslDomains = [ "pco.pink" ];
-  forSslDomains = lib.pipe serversWithVhosts [
-    (lib.mapAttrsToList (_: node:
-      builtins.attrNames node.config._meta.nginx.vhosts
+  acmeCerts = lib.pipe serversWithVhosts [
+    (lib.mapAttrsToList (_: node: node.config._meta.nginx.vhosts))
+    (lib.foldl' (acc: set: acc // set) {})
+    lib.attrsToList
+    (builtins.filter (item:
+      lib.any (suffix: lib.hasSuffix suffix item.name) sslDomains
     ))
-    lib.flatten
-    (builtins.filter (d:
-      lib.any (suffix: lib.hasSuffix suffix d) sslDomains
-    ))
-    lib.unique
+    (map (item: {
+      name = item.name;
+      value = {
+        dnsProvider = "cloudflare";
+        environmentFile = config.sops.secrets."cloudflare".path;
+        group = "nginx";
+        extraDomainNames = item.value.serverAliases or [];
+      };
+    }))
+    lib.listToAttrs
   ];
 in
 {
@@ -69,10 +77,6 @@ in
     acceptTerms = true;
     defaults.email = "ssladmin@pco.pink";
     defaults.reloadServices = [ "nginx" ];
-    certs = lib.genAttrs forSslDomains (domain: {
-      dnsProvider = "cloudflare"; # it might require more configuration options to support different providers.
-      environmentFile = config.sops.secrets."cloudflare".path;
-      group = "nginx";
-    });
+    certs = acmeCerts;
   };
 }
