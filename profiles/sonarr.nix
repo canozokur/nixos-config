@@ -47,7 +47,10 @@ in
     dataDir = mountPoint;
   };
 
-  systemd.services.sonarr.unitConfig = { RequiresMountsFor = mountPoint; };
+  systemd.services.sonarr = {
+    unitConfig.RequiresMountsFor = mountPoint;
+    serviceConfig.UMask = 0002;
+  };
 
   fileSystems."${mountPoint}" = {
     device = "/dev/disk/by-uuid/9b9cea9d-b9a0-4115-ab64-40b53859f800";

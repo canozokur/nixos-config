@@ -47,7 +47,10 @@ in
     dataDir = mountPoint;
   };
 
-  systemd.services.radarr.unitConfig = { RequiresMountsFor = mountPoint; };
+  systemd.services.radarr = {
+    unitConfig.RequiresMountsFor = mountPoint;
+    serviceConfig.UMask = 0002;
+  };
 
   fileSystems."${mountPoint}" = {
     device = "/dev/disk/by-uuid/1c44502d-eda8-4c27-9bac-b891618f52bf";
