@@ -58,8 +58,14 @@ in
         "pco.pink" = {
           listen = [
             { addr = "192.168.1.253"; port = 80; }
+            { addr = "192.168.1.253"; port = 443; ssl = true; }
             { addr = "192.168.1.254"; port = 80; }
+            { addr = "192.168.1.254"; port = 443; ssl = true; }
           ];
+          serverAliases = [ "www.pco.pink" ];
+          enableACME = true;
+          acmeRoot = null;
+          forceSSL = true;
           default = true;
           root = "${defaultIndex}/defaultVhost";
           locations."/".index = "index.html";
