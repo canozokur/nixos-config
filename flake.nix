@@ -85,7 +85,7 @@
       rpi03 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "server" "reverse-proxy" "ombi" ];
+        profiles = [ "pi" "server" "reverse-proxy" "ombi" "syncthing" ];
       };
 
       rpi04 = {
