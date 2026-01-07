@@ -44,6 +44,12 @@ in
         enabled = true;
         user = "admin";
       };
+      # to get all the options we can use this (and get the apikey from syncthing's settings if needed)
+      # curl -H "X-API-Key: <apikey>" -X GET http://ip.add.re.ss:8384/rest/config
+      options = {
+        listenAddresses = let uri = "${addr}:22000"; in [ "quic://${uri}" "tcp://${uri}" ];
+        urAccepted = -1;
+      };
     };
   };
 
