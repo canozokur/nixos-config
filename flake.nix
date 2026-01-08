@@ -67,7 +67,7 @@
       homebox = {
         system = "x86_64-linux";
         users = [ "canozokur" ];
-        profiles = [ "gaming" "capabilities/iscsi-initiator" ];
+        profiles = [ "gaming" ];
       };
 
       rpi01 = {
