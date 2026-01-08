@@ -8,10 +8,6 @@ let
   port = 8384;
 in
 {
-  imports = [
-  ];
-
-
   fileSystems."${mountPoint}" = {
     device = "/dev/disk/by-uuid/4464b8f3-9551-40cb-879d-b12170ad1c59";
     fsType = "xfs";
@@ -37,6 +33,10 @@ in
     enable = true;
     dataDir = mountPoint;
     openDefaultPorts = true;
+    # since this is shared with non-nixos users I cba to declare everything here
+    # maybe someday..
+    overrideFolders = false;
+    overrideDevices = false;
     guiPasswordFile = config.sops.secrets."syncthing/gui".path;
     guiAddress = "${addr}:${toString port}";
     settings = {
