@@ -100,14 +100,14 @@
         "$mod, mouse:273, resizewindow"
       ];
       layerrule = [
-        "blur, waybar"
+        "blur on, match:namespace waybar"
         #"blur, swaync-control-center"
         #"ignorezero, swaync-control-center"
         #"ignorealpha 0.5, swaync-control-center"
       ];
       windowrule = [
-        "stayfocused, class:^(Zoom.*), title:^(meeting bottombar.*)$"
-        "float, class:^(Zoom.*)"
+        "match:class ^(Zoom.*), match:title ^(meeting bottombar.*)$, stay_focused on"
+        "match:class ^(Zoom.*), float on"
       ];
       windowrulev2 = [
         "bordercolor rgb(50fa7b),fullscreen:1"
