@@ -121,6 +121,7 @@
             ssh-to-age
             just
             dnsutils
+            nixfmt
           ];
         };
       }
