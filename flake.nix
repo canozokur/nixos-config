@@ -79,7 +79,7 @@
       rpi02 = {
         system = "aarch64-linux";
         users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" "capabilities/mysql" ];
+        profiles = [ "pi" "pihole" "server" "mysql-node" ];
       };
 
       rpi03 = {

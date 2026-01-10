@@ -47,10 +47,6 @@ in
     ];
   }];
 
-  systemd.tmpfiles.rules = lib.optionals isIscsi [
-    "D ${config.services.mysql.dataDir} 0700 mysql mysql - -"
-  ];
-
   networking.firewall = {
     allowedTCPPorts = [
       config.services.mysql.settings.mysqld.port
