@@ -1,7 +1,6 @@
 { config, pkgs, inputs, helpers, lib, ... }:
 let
   isGalera = (config._meta.services.galera.clusterName != "");
-  isIscsi = (config.services.openiscsi.enable == true);
 
   clusterName = config._meta.services.galera.clusterName;
 
