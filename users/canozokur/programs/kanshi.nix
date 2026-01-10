@@ -1,8 +1,16 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   swayMsg = "${pkgs.sway}/bin/swaymsg";
-  assignWorkspace = ws: monitor: "${swayMsg} workspace ${toString ws}, workspace ${toString ws} output '\"${monitor}\"'";
-  moveWorkspace = ws: monitor: "${swayMsg} [workspace=${toString ws}] move workspace to '\"${monitor}\"'";
+  assignWorkspace =
+    ws: monitor:
+    "${swayMsg} workspace ${toString ws}, workspace ${toString ws} output '\"${monitor}\"'";
+  moveWorkspace =
+    ws: monitor: "${swayMsg} [workspace=${toString ws}] move workspace to '\"${monitor}\"'";
 in
 {
   services.kanshi = {
@@ -12,7 +20,10 @@ in
         profile = {
           name = "laptop";
           outputs = [
-            { criteria = "Sharp Corporation 0x14D0 Unknown"; status = "enable"; }
+            {
+              criteria = "Sharp Corporation 0x14D0 Unknown";
+              status = "enable";
+            }
           ];
         };
       }
@@ -20,7 +31,10 @@ in
         profile = {
           name = "home_dual";
           outputs = [
-            { criteria = "Sharp Corporation 0x14D0 Unknown"; status = "disable"; }
+            {
+              criteria = "Sharp Corporation 0x14D0 Unknown";
+              status = "disable";
+            }
             {
               criteria = "ASUSTek COMPUTER INC VG27B LALMQS275717";
               status = "enable";
@@ -35,17 +49,22 @@ in
               position = "1440,0";
             }
           ];
-          exec = lib.mkIf config.wayland.windowManager.sway.enable (builtins.map (ws: assignWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
+          exec = lib.mkIf config.wayland.windowManager.sway.enable (
+            builtins.map (ws: assignWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
             ++ builtins.map (ws: assignWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9)
             ++ builtins.map (ws: moveWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
-            ++ builtins.map (ws: moveWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9));
+            ++ builtins.map (ws: moveWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9)
+          );
         };
       }
       {
         profile = {
           name = "home_single";
           outputs = [
-            { criteria = "Sharp Corporation 0x14D0 Unknown"; status = "disable"; }
+            {
+              criteria = "Sharp Corporation 0x14D0 Unknown";
+              status = "disable";
+            }
             {
               criteria = "Philips Consumer Electronics Company 34B2U6603 UK02509028957";
               status = "enable";

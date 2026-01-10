@@ -30,14 +30,17 @@ let
     crust = "#11111b";
   };
 
-  formatPaddedAttrSet = attrset: paddingSize:
+  formatPaddedAttrSet =
+    attrset: paddingSize:
     let
       keyNames = builtins.attrNames attrset;
-      findMaxLength = maxLengthSoFar: currentKey: lib.max (builtins.stringLength currentKey) maxLengthSoFar;
+      findMaxLength =
+        maxLengthSoFar: currentKey: lib.max (builtins.stringLength currentKey) maxLengthSoFar;
       maxKeyLength = lib.foldl' findMaxLength 0 keyNames;
       totalWidth = maxKeyLength + paddingSize;
 
-      formatLine = key:
+      formatLine =
+        key:
         let
           value = attrset.${key};
           spacesToAdd = totalWidth - (builtins.stringLength key);
@@ -45,18 +48,17 @@ let
           paddedKey = "${key}${paddingString}";
         in
         "${paddedKey}\"${value}\"";
-        sortedKeys = lib.sort builtins.lessThan keyNames;
-        formattedLines = lib.map formatLine sortedKeys;
-    in builtins.concatStringsSep "\n" formattedLines;
+      sortedKeys = lib.sort builtins.lessThan keyNames;
+      formattedLines = lib.map formatLine sortedKeys;
+    in
+    builtins.concatStringsSep "\n" formattedLines;
 
-  prefixedColors = lib.mapAttrs'
-    (k: v: lib.nameValuePair ("color_" + k) v)
-    colors;
+  prefixedColors = lib.mapAttrs' (k: v: lib.nameValuePair ("color_" + k) v) colors;
 
   zellijColors = formatPaddedAttrSet prefixedColors 1;
 in
 {
- home.packages = [ pkgs.zjstatus ];
+  home.packages = [ pkgs.zjstatus ];
 
   programs.zellij = {
     enable = true;

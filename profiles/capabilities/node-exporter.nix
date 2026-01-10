@@ -12,19 +12,21 @@ in
     };
   };
 
-  services.consul.agentServices = [{
-    name = "node-exporter";
-    tags = ["server"];
-    address = config._meta.networks.internalIP;
-    port = exporterPort;
-    checks = [
-      {
-        id = "node-exporter-check";
-        name = "HTTP on port ${toString exporterPort}";
-        http = "http://localhost:${toString exporterPort}";
-        interval = "10s";
-        timeout = "1s";
-      }
-    ];
-  }];
+  services.consul.agentServices = [
+    {
+      name = "node-exporter";
+      tags = [ "server" ];
+      address = config._meta.networks.internalIP;
+      port = exporterPort;
+      checks = [
+        {
+          id = "node-exporter-check";
+          name = "HTTP on port ${toString exporterPort}";
+          http = "http://localhost:${toString exporterPort}";
+          interval = "10s";
+          timeout = "1s";
+        }
+      ];
+    }
+  ];
 }

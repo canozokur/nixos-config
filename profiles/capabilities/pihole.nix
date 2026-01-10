@@ -1,21 +1,34 @@
-{ inputs, lib, helpers, config, ... }:
+{
+  inputs,
+  lib,
+  helpers,
+  config,
+  ...
+}:
 let
   allHosts = inputs.self.nixosConfigurations;
 
-  localHosts = helpers.getHostsWith allHosts [ "networks" "internalIP" ];
+  localHosts = helpers.getHostsWith allHosts [
+    "networks"
+    "internalIP"
+  ];
   localDns = lib.mapAttrsToList (n: h: "${h.config._meta.networks.internalIP} ${n}.lan") localHosts;
 
   customDnsHosts = helpers.getHostsWith allHosts "dnsConfigurations";
-  customDnsEntries = lib.flatten (lib.mapAttrsToList
-    (_: host:
+  customDnsEntries = lib.flatten (
+    lib.mapAttrsToList (
+      _: host:
       let
         configs = host.config._meta.dnsConfigurations;
       in
       builtins.map (entry: "${entry.ip} ${entry.domain}") configs
-    )
-    customDnsHosts);
+    ) customDnsHosts
+  );
 
-  piholeHosts = helpers.getHostsWith allHosts [ "services" "dnsServer" ];
+  piholeHosts = helpers.getHostsWith allHosts [
+    "services"
+    "dnsServer"
+  ];
   dnsServersList = lib.mapAttrsToList (n: h: "${h.config._meta.networks.internalIP}") piholeHosts;
   dnsServers = builtins.concatStringsSep "," dnsServersList;
 in
@@ -23,7 +36,10 @@ in
   services.pihole-web = {
     enable = true;
     hostName = "pihole.pco.pink";
-    ports = [ "1080r" "1443s" ];
+    ports = [
+      "1080r"
+      "1443s"
+    ];
   };
   services.pihole-ftl = {
     enable = true;
@@ -33,7 +49,10 @@ in
     queryLogDeleter.enable = true; # deletes logs weekly by default
     settings = {
       dns = {
-        upstreams = [ "1.1.1.1" "1.0.0.1" ];
+        upstreams = [
+          "1.1.1.1"
+          "1.0.0.1"
+        ];
         hosts = localDns ++ customDnsEntries;
       };
       dhcp = {
@@ -49,16 +68,22 @@ in
           "d8:bb:c1:63:da:ff,192.168.1.129,truenas,24h"
         ];
       };
-      misc.dnsmasq_lines = [ "dhcp-option=option:dns-server,${dnsServers}" ]
-        ++ lib.optionals config.services.consul.enable [ "server=/consul/127.0.0.1#8600" ];
+      misc.dnsmasq_lines = [
+        "dhcp-option=option:dns-server,${dnsServers}"
+      ]
+      ++ lib.optionals config.services.consul.enable [ "server=/consul/127.0.0.1#8600" ];
     };
     lists = [
-      { url = "https://reddestdream.github.io/Projects/MinimalHosts/etc/MinimalHostsBlocker/minimalhosts"; }
+      {
+        url = "https://reddestdream.github.io/Projects/MinimalHosts/etc/MinimalHostsBlocker/minimalhosts";
+      }
       { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/KADhosts/hosts"; }
       { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.Spam/hosts"; }
       { url = "https://v.firebog.net/hosts/static/w3kbl.txt"; }
       { url = "https://www.joewein.net/dl/bl/dom-bl-base.txt"; }
-      { url = "https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt"; }
+      {
+        url = "https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt";
+      }
       { url = "https://someonewhocares.org/hosts/zero/hosts"; }
       { url = "https://raw.githubusercontent.com/Dawsey21/Lists/master/main-blacklist.txt"; }
       { url = "https://raw.githubusercontent.com/vokins/yhosts/master/hosts"; }
@@ -78,7 +103,9 @@ in
       { url = "https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt"; }
       { url = "https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt"; }
       { url = "https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt"; }
-      { url = "https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt"; }
+      {
+        url = "https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt";
+      }
       { url = "https://v.firebog.net/hosts/Prigent-Malware.txt"; }
       { url = "https://phishing.army/download/phishing_army_blocklist_extended.txt"; }
       { url = "https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt"; }

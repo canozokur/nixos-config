@@ -23,7 +23,7 @@ in
       plugins = [
         {
           __unkeyed-1 = "telescope-send-to-harpoon2";
-          event = ["VimEnter"];
+          event = [ "VimEnter" ];
         }
       ];
     };

@@ -1,14 +1,36 @@
-{ helpers, lib, inputs, config, ... }:
+{
+  helpers,
+  lib,
+  inputs,
+  config,
+  ...
+}:
 let
-  vhostConfigs = helpers.getHostsWith inputs.self.nixosConfigurations [ "nginx" "vhosts" ];
-  allUpstreams = helpers.getHostsWith inputs.self.nixosConfigurations [ "nginx" "upstreams" ];
+  vhostConfigs = helpers.getHostsWith inputs.self.nixosConfigurations [
+    "nginx"
+    "vhosts"
+  ];
+  allUpstreams = helpers.getHostsWith inputs.self.nixosConfigurations [
+    "nginx"
+    "upstreams"
+  ];
   vhostList = lib.mapAttrsToList (_: host: host.config._meta.nginx.vhosts) vhostConfigs;
-  vhosts = lib.foldl' (acc: set: acc // set) {} vhostList;
+  vhosts = lib.foldl' (acc: set: acc // set) { } vhostList;
 in
 {
   services.nginx = {
     enable = true;
-    defaultListen = [ { addr = "${config._meta.networks.internalIP}"; port = 80; } { addr = "${config._meta.networks.internalIP}"; port = 443; ssl = true; } ];
+    defaultListen = [
+      {
+        addr = "${config._meta.networks.internalIP}";
+        port = 80;
+      }
+      {
+        addr = "${config._meta.networks.internalIP}";
+        port = 443;
+        ssl = true;
+      }
+    ];
     commonHttpConfig = ''
       log_format vhost '$host - $remote_addr - $remote_user [$time_local] "$request" '
         '$status $body_bytes_sent "$http_referer" ' '"$http_user_agent" $request_time';
@@ -20,21 +42,23 @@ in
     );
   };
 
-  services.consul.agentServices = [{
-    name = "nginx";
-    tags = lib.optionals (config._meta.services.elb == true) [ "elb" ];
-    address = config._meta.networks.internalIP;
-    port = config.services.nginx.defaultHTTPListenPort;
-    checks = [
-      {
-        id = "nginx-check";
-        name = "Nginx on port ${toString config.services.nginx.defaultHTTPListenPort}";
-        tcp = "localhost:${toString config.services.nginx.defaultHTTPListenPort}";
-        interval = "10s";
-        timeout = "1s";
-      }
-    ];
-  }];
+  services.consul.agentServices = [
+    {
+      name = "nginx";
+      tags = lib.optionals (config._meta.services.elb == true) [ "elb" ];
+      address = config._meta.networks.internalIP;
+      port = config.services.nginx.defaultHTTPListenPort;
+      checks = [
+        {
+          id = "nginx-check";
+          name = "Nginx on port ${toString config.services.nginx.defaultHTTPListenPort}";
+          tcp = "localhost:${toString config.services.nginx.defaultHTTPListenPort}";
+          interval = "10s";
+          timeout = "1s";
+        }
+      ];
+    }
+  ];
 
   networking.firewall = {
     allowedTCPPorts = [

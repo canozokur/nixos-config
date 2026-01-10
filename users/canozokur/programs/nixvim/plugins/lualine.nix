@@ -6,7 +6,7 @@
       lazyLoad = {
         enable = true;
         settings = {
-          event = ["VimEnter"];
+          event = [ "VimEnter" ];
         };
       };
       settings = {
@@ -22,12 +22,12 @@
         };
         sections = {
           lualine_c = [
-          {
-            __unkeyed = "filename";
-            file_status = true;
-            newfile_status = true;
-            path = 4;
-          }
+            {
+              __unkeyed = "filename";
+              file_status = true;
+              newfile_status = true;
+              path = 4;
+            }
           ];
         };
       };

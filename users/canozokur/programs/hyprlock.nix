@@ -44,24 +44,26 @@
         valign = "center";
       };
 
-      label = [{
-        text = "$TIME";
-        font_size = 90;
-        font_family = "$font";
+      label = [
+        {
+          text = "$TIME";
+          font_size = 90;
+          font_family = "$font";
 
-        position = "-30, 0";
-        halign = "right";
-        valign = "top";
-      }
-      {
-        text = "cmd[update:60000] date +\"%A, %d %B %Y\"";
-        font_size = 25;
-        font_family = "$font";
+          position = "-30, 0";
+          halign = "right";
+          valign = "top";
+        }
+        {
+          text = "cmd[update:60000] date +\"%A, %d %B %Y\"";
+          font_size = 25;
+          font_family = "$font";
 
-        position = "-30, -150";
-        halign = "right";
-        valign = "top";
-      }];
+          position = "-30, -150";
+          halign = "right";
+          valign = "top";
+        }
+      ];
     };
   };
 }

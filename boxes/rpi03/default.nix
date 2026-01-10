@@ -1,4 +1,9 @@
-{ inputs, config, helpers, ... }:
+{
+  inputs,
+  config,
+  helpers,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -48,14 +53,15 @@
               interface-name = "end0";
             };
             ipv4 =
-            let
-              ipList = config._meta.networks.wiredAddresses;
-              numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
-            in
-            numberedAddresses // {
-              method = "manual";
-              dns = "192.168.1.3";
-            };
+              let
+                ipList = config._meta.networks.wiredAddresses;
+                numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
+              in
+              numberedAddresses
+              // {
+                method = "manual";
+                dns = "192.168.1.3";
+              };
           };
         };
       };
@@ -68,7 +74,10 @@
       internalIP = "192.168.1.5";
       externalIP = "192.168.1.254";
       internalInterface = "end0";
-      wiredAddresses = [ "192.168.1.5/24,192.168.1.1" "192.168.0.5/24" ];
+      wiredAddresses = [
+        "192.168.1.5/24,192.168.1.1"
+        "192.168.0.5/24"
+      ];
     };
     services = {
       consulServer = true;
@@ -93,7 +102,12 @@
   };
 
   security.pam.loginLimits = [
-    { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+    {
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }
   ];
 
   system.stateVersion = "25.05";

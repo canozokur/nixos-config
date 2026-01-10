@@ -7,7 +7,9 @@
         settings = {
           theme = {
             theme = "ctp-mocha";
-            overrides = { separator = "<span font='15'></span>"; };
+            overrides = {
+              separator = "<span font='15'></span>";
+            };
           };
         };
         icons = "awesome6";

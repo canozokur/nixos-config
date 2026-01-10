@@ -50,7 +50,10 @@
     {
       key = "<leader>y";
       action = ''"+y'';
-      mode = [ "n" "v" ];
+      mode = [
+        "n"
+        "v"
+      ];
     }
     {
       key = "<leader>Y";
@@ -60,7 +63,10 @@
     {
       key = "<leader>d";
       action = ''"_d'';
-      mode = [ "n" "v" ];
+      mode = [
+        "n"
+        "v"
+      ];
     }
     {
       key = "Q";
@@ -96,7 +102,9 @@
       key = "<leader>x";
       action = "<cmd>!chmod +x %<CR>";
       mode = "n";
-      options = { silent = true; };
+      options = {
+        silent = true;
+      };
     }
     {
       key = "<leader>ee";
@@ -111,39 +119,43 @@
     {
       key = "<leader>spv";
       action = "<cmd>vsplit<CR><C-W>w";
-      mode = "n"; 
+      mode = "n";
     }
     {
       key = "<leader>sph";
       action = "<cmd>split<CR><C-W>w";
-      mode = "n"; 
+      mode = "n";
     }
     {
       key = "<leader>spc";
       action = "<C-W>q";
-      mode = "n"; 
+      mode = "n";
     }
     {
       key = "<leader>spn";
       action = "<C-W>w";
-      mode = "n"; 
+      mode = "n";
     }
     {
       key = "<leader>spN";
       action = "<C-W>W";
-      mode = "n"; 
+      mode = "n";
     }
     {
       key = "<leader><ESC>";
       action = "<C-\\><C-n>";
-      mode = "t"; 
-      options = { noremap = true; };
+      mode = "t";
+      options = {
+        noremap = true;
+      };
     }
     {
       key = "jl";
       action = "<ESC>";
       mode = "i";
-      options = { noremap = true; };
+      options = {
+        noremap = true;
+      };
     }
     {
       key = "<leader>q";

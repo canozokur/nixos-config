@@ -1,10 +1,10 @@
 { pkgs, config, ... }:
 {
   home.packages = with pkgs; [ aider-chat ];
-  
+
   sops.secrets = {
-    "unity-ai/api-key" = {};
-    "unity-ai/baseurl" = {};
+    "unity-ai/api-key" = { };
+    "unity-ai/baseurl" = { };
   };
 
   sops.templates.".aider.conf.yml" = {

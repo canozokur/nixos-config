@@ -7,7 +7,7 @@
       lazyLoad = {
         enable = true;
         settings = {
-          event = ["BufNew"];
+          event = [ "BufNew" ];
         };
       };
     };
@@ -16,10 +16,10 @@
   opts = {
     list = true;
     listchars = {
-        multispace = "·";
-        eol        = "↲";
-        tab        = "│ ";
-        trail      = "·";
+      multispace = "·";
+      eol = "↲";
+      tab = "│ ";
+      trail = "·";
     };
   };
 }

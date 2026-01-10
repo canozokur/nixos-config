@@ -23,7 +23,7 @@
           show-per-app-label = true;
         };
         mpris = {
-          blacklist = ["playerctld"];
+          blacklist = [ "playerctld" ];
         };
       };
     };

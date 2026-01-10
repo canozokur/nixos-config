@@ -8,9 +8,15 @@
         email = "13416785+canozokur@users.noreply.github.com";
         name = "canozokur";
       };
-      pull = { ff = "only"; };
-      init = { defaultbranch = "main"; };
-      push = { autosetupremote = true; };
+      pull = {
+        ff = "only";
+      };
+      init = {
+        defaultbranch = "main";
+      };
+      push = {
+        autosetupremote = true;
+      };
       url."git@github.com:".insteadOf = "https://github.com/";
       core = {
         filemode = true;

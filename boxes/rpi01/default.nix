@@ -1,4 +1,9 @@
-{ inputs, config, helpers, ... }:
+{
+  inputs,
+  config,
+  helpers,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -48,14 +53,15 @@
               interface-name = "end0";
             };
             ipv4 =
-            let
-              ipList = config._meta.networks.wiredAddresses;
-              numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
-            in
-            numberedAddresses // {
-              method = "manual";
-              dns = "192.168.1.3";
-            };
+              let
+                ipList = config._meta.networks.wiredAddresses;
+                numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
+              in
+              numberedAddresses
+              // {
+                method = "manual";
+                dns = "192.168.1.3";
+              };
           };
         };
       };
@@ -68,7 +74,10 @@
       internalIP = "192.168.1.3";
       externalIP = "192.168.1.3";
       internalInterface = "end0";
-      wiredAddresses = [ "192.168.1.3/24,192.168.1.1" "192.168.0.3/24" ];
+      wiredAddresses = [
+        "192.168.1.3/24,192.168.1.1"
+        "192.168.0.3/24"
+      ];
     };
     services = {
       consulServer = false;
@@ -78,15 +87,19 @@
     };
     nginx = {
       upstreams = {
-        nzbget.servers."192.168.1.129:6789" = {};
-        qbit.servers."192.168.1.129:8080" = {};
-        bazarr.servers."192.168.1.129:30046" = {};
-        emby.servers."192.168.1.129:8096" = {};
+        nzbget.servers."192.168.1.129:6789" = { };
+        qbit.servers."192.168.1.129:8080" = { };
+        bazarr.servers."192.168.1.129:30046" = { };
+        emby.servers."192.168.1.129:8096" = { };
       };
       vhosts = {
         "emby.pco.pink" = {
           listen = [
-            { addr = "192.168.1.253"; port = 443; ssl = true; }
+            {
+              addr = "192.168.1.253";
+              port = 443;
+              ssl = true;
+            }
           ];
           enableACME = true;
           acmeRoot = null;
@@ -135,7 +148,11 @@
             client_max_body_size 0; # disable max upload size for nzbs
           '';
           listen = [
-            { addr = "192.168.1.253"; port = 443; ssl = true; }
+            {
+              addr = "192.168.1.253";
+              port = 443;
+              ssl = true;
+            }
           ];
           enableACME = true;
           acmeRoot = null;
@@ -148,9 +165,13 @@
         "qbit.pco.pink" = {
           extraConfig = ''
             client_max_body_size 0; # disable max upload size for nzbs
-            '';
+          '';
           listen = [
-            { addr = "192.168.1.253"; port = 443; ssl = true; }
+            {
+              addr = "192.168.1.253";
+              port = 443;
+              ssl = true;
+            }
           ];
           enableACME = true;
           acmeRoot = null;
@@ -163,9 +184,13 @@
         "bazarr.pco.pink" = {
           extraConfig = ''
             client_max_body_size 0; # disable max upload size for nzbs
-            '';
+          '';
           listen = [
-            { addr = "192.168.1.253"; port = 443; ssl = true; }
+            {
+              addr = "192.168.1.253";
+              port = 443;
+              ssl = true;
+            }
           ];
           enableACME = true;
           acmeRoot = null;
@@ -185,7 +210,10 @@
     };
     # static IP configurations, defined here to prevent double entries
     dnsConfigurations = [
-      { ip = "192.168.1.129"; domain = "truenas.lan"; }
+      {
+        ip = "192.168.1.129";
+        domain = "truenas.lan";
+      }
     ];
   };
 
@@ -205,7 +233,12 @@
   };
 
   security.pam.loginLimits = [
-    { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+    {
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }
   ];
 
   system.stateVersion = "25.05";

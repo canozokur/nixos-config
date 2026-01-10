@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   satty = ''
     ${pkgs.satty}/bin/satty -f - --initial-tool=arrow \
@@ -18,7 +23,7 @@ in
       modifier = "Mod4";
       terminal = "${pkgs.wezterm}/bin/wezterm";
       fonts = {
-        names = ["Droid Sans"];
+        names = [ "Droid Sans" ];
         style = "Regular";
         size = "8";
       };
@@ -48,7 +53,10 @@ in
       bars = lib.optionals (config.programs.waybar.enable == false) [
         {
           fonts = {
-            names = [ "CaskaydiaCove NF" "Font Awesome 6 Free" ];
+            names = [
+              "CaskaydiaCove NF"
+              "Font Awesome 6 Free"
+            ];
             size = "10";
           };
           colors = {
@@ -141,7 +149,8 @@ in
         "${modifier}+Shift+8" = "move container to workspace 8";
         "${modifier}+Shift+9" = "move container to workspace 9";
         "${modifier}+minus" = "scratchpad show";
-        "${modifier}+Shift+minus" = "floating enable, resize set width 1366 height 675, move container to scratchpad";
+        "${modifier}+Shift+minus" =
+          "floating enable, resize set width 1366 height 675, move container to scratchpad";
         "${modifier}+Shift+p" = "mode screenshot";
 
         "${modifier}+d" = ''
@@ -169,4 +178,3 @@ in
     '';
   };
 }
-

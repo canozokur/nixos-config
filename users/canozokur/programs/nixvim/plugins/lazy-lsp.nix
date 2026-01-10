@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   extraPlugins = [
-      pkgs.vimPlugins.lazy-lsp-nvim
+    pkgs.vimPlugins.lazy-lsp-nvim
   ];
 
   extraConfigLua = ''

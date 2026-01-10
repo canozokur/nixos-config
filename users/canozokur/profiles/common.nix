@@ -1,4 +1,9 @@
-{ inputs, config, pkgs, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
 let
   homeDir = config.home.homeDirectory;
   secretsPath = builtins.toString inputs.nix-secrets;
@@ -32,7 +37,7 @@ in
       generateKey = false;
       sshKeyPaths = [ "${homeDir}/.ssh/id_ed25519" ];
     };
-    gnupg.sshKeyPaths = [];
+    gnupg.sshKeyPaths = [ ];
     secrets = {
       "ssh/keys/default" = {
         path = "${homeDir}/.ssh/id_ed25519";

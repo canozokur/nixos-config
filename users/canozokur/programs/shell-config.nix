@@ -15,8 +15,8 @@
       ];
       shellAliases = {
         ls = "ls --color=auto";
-        ll = "ls -lav --ignore=..";   # show long listing of all except ".."
-        l = "ls -lav --ignore=.?*";   # show long listing but no hidden dotfiles except "."
+        ll = "ls -lav --ignore=.."; # show long listing of all except ".."
+        l = "ls -lav --ignore=.?*"; # show long listing but no hidden dotfiles except "."
         apl = "ansible-playbook";
         cuti = ''
           curl -w '

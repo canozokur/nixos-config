@@ -23,7 +23,7 @@
 
     nix-secrets = {
       url = "git+ssh://git@github.com/canozokur/nix-secrets.git?ref=main&shallow=1&lfs=1";
-      inputs = {};
+      inputs = { };
     };
 
     kolide-launcher = {
@@ -43,100 +43,128 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, self, ... }:
-  let
-    helpers = import ./lib/helpers.nix { inherit (nixpkgs) lib; };
-    mkBox = import ./lib/mkbox.nix {
-      inherit inputs;
-      inherit home-manager;
-      inherit helpers;
-    };
-
-    forAllSystems = nixpkgs.lib.genAttrs [
-      "aarch64-linux"
-      "x86_64-linux"
-    ];
-
-    boxes = {
-      nexusbox = {
-        system = "x86_64-linux";
-        users = [ "canozokur" ];
-        profiles = [ "capabilities/laptop" "workstation" ];
+  outputs =
+    inputs@{
+      nixpkgs,
+      home-manager,
+      self,
+      ...
+    }:
+    let
+      helpers = import ./lib/helpers.nix { inherit (nixpkgs) lib; };
+      mkBox = import ./lib/mkbox.nix {
+        inherit inputs;
+        inherit home-manager;
+        inherit helpers;
       };
 
-      homebox = {
-        system = "x86_64-linux";
-        users = [ "canozokur" ];
-        profiles = [ "gaming" ];
-      };
+      forAllSystems = nixpkgs.lib.genAttrs [
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
 
-      rpi01 = {
-        system = "aarch64-linux";
-        users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" "prowlarr" "radarr" "sonarr" ];
-      };
-
-      rpi02 = {
-        system = "aarch64-linux";
-        users = [ "canozokur" ];
-        profiles = [ "pi" "pihole" "server" "mysql-node" ];
-      };
-
-      rpi03 = {
-        system = "aarch64-linux";
-        users = [ "canozokur" ];
-        profiles = [ "pi" "server" "reverse-proxy" "ombi" "syncthing" ];
-      };
-
-      rpi04 = {
-        system = "aarch64-linux";
-        users = [ "canozokur" ];
-        profiles = [ "pi" "server" "monitoring" ];
-      };
-    };
-  in
-  {
-    nixosConfigurations = nixpkgs.lib.mapAttrs (name: cfg: mkBox (cfg // { box = name; })) boxes;
-
-    images = nixpkgs.lib.pipe self.nixosConfigurations [
-      # based on the metadata exported from rpi-image profile ...
-      (nixpkgs.lib.filterAttrs (name: host:
-        host.config._meta.buildImage or false
-      ))
-      # ... generate the image config
-      (nixpkgs.lib.mapAttrs (name: host:
-        host.config.system.build.sdImage
-      ))
-    ];
-
-    devShells = forAllSystems (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-      {
-        default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            sops
-            age
-            ssh-to-age
-            just
-            dnsutils
-            nixfmt
+      boxes = {
+        nexusbox = {
+          system = "x86_64-linux";
+          users = [ "canozokur" ];
+          profiles = [
+            "capabilities/laptop"
+            "workstation"
           ];
         };
-      }
-    );
 
-    packages = forAllSystems (system: {
-      neovim =
+        homebox = {
+          system = "x86_64-linux";
+          users = [ "canozokur" ];
+          profiles = [ "gaming" ];
+        };
+
+        rpi01 = {
+          system = "aarch64-linux";
+          users = [ "canozokur" ];
+          profiles = [
+            "pi"
+            "pihole"
+            "server"
+            "prowlarr"
+            "radarr"
+            "sonarr"
+          ];
+        };
+
+        rpi02 = {
+          system = "aarch64-linux";
+          users = [ "canozokur" ];
+          profiles = [
+            "pi"
+            "pihole"
+            "server"
+            "mysql-node"
+          ];
+        };
+
+        rpi03 = {
+          system = "aarch64-linux";
+          users = [ "canozokur" ];
+          profiles = [
+            "pi"
+            "server"
+            "reverse-proxy"
+            "ombi"
+            "syncthing"
+          ];
+        };
+
+        rpi04 = {
+          system = "aarch64-linux";
+          users = [ "canozokur" ];
+          profiles = [
+            "pi"
+            "server"
+            "monitoring"
+          ];
+        };
+      };
+    in
+    {
+      nixosConfigurations = nixpkgs.lib.mapAttrs (name: cfg: mkBox (cfg // { box = name; })) boxes;
+
+      images = nixpkgs.lib.pipe self.nixosConfigurations [
+        # based on the metadata exported from rpi-image profile ...
+        (nixpkgs.lib.filterAttrs (name: host: host.config._meta.buildImage or false))
+        # ... generate the image config
+        (nixpkgs.lib.mapAttrs (name: host: host.config.system.build.sdImage))
+      ];
+
+      devShells = forAllSystems (
+        system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          nixvimLib = inputs.nixvim.legacyPackages.${system};
         in
-        nixvimLib.makeNixvimWithModule {
-          inherit pkgs;
-          module = import ./users/canozokur/programs/nixvim/standalone.nix { inherit inputs; };
-        };
-    });
-  };
+        {
+          default = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              sops
+              age
+              ssh-to-age
+              just
+              dnsutils
+              nixfmt
+            ];
+          };
+        }
+      );
+
+      packages = forAllSystems (system: {
+        neovim =
+          let
+            pkgs = nixpkgs.legacyPackages.${system};
+            nixvimLib = inputs.nixvim.legacyPackages.${system};
+          in
+          nixvimLib.makeNixvimWithModule {
+            inherit pkgs;
+            module = import ./users/canozokur/programs/nixvim/standalone.nix { inherit inputs; };
+          };
+      });
+    };
 }

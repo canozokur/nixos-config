@@ -23,8 +23,16 @@
         protocol = "ssh-ng";
         maxJobs = 8;
         speedFactor = 2;
-        supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
-        systems = [ "x86_64-linux" "aarch64-linux" ];
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
         sshUser = "remotebuild";
         sshKey = config.sops.secrets."ssh/keys/remotebuild-client".path;
       }

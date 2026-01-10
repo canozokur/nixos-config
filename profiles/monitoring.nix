@@ -13,12 +13,18 @@ in
   _meta.nginx = {
     upstreams = {
       grafana = {
-        servers."${_m.networks.internalIP}:2324" = {};
+        servers."${_m.networks.internalIP}:2324" = { };
       };
     };
     vhosts = {
       "grafana.pco.pink" = {
-        listen = [{ addr = "192.168.1.254"; port = 443; ssl = true; }];
+        listen = [
+          {
+            addr = "192.168.1.254";
+            port = 443;
+            ssl = true;
+          }
+        ];
         enableACME = true;
         forceSSL = true;
         acmeRoot = null;
@@ -35,11 +41,19 @@ in
   fileSystems."/mnt/prometheus-data" = {
     device = "/dev/disk/by-uuid/301a494c-6b1a-4bc6-9b43-2a33870fda3e";
     fsType = "ext4";
-    options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
+    options = [
+      "nofail"
+      "_netdev"
+      "auto"
+      "exec"
+      "defaults"
+    ];
   };
 
   # wait for the mount to be available to start
-  systemd.services.prometheus.unitConfig = { RequiresMountsFor = "/mnt/prometheus-data"; };
+  systemd.services.prometheus.unitConfig = {
+    RequiresMountsFor = "/mnt/prometheus-data";
+  };
 
   systemd.tmpfiles.rules = [
     "L+ /var/lib/${config.services.prometheus.stateDir}/data - - - - /mnt/prometheus-data"

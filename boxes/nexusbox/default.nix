@@ -27,7 +27,7 @@
 
   sops = {
     secrets = {
-      "network/secrets/office-wifi-enterprise/psk" = {};
+      "network/secrets/office-wifi-enterprise/psk" = { };
     };
   };
 
@@ -128,7 +128,12 @@
   hardware.bluetooth.powerOnBoot = true;
 
   security.pam.loginLimits = [
-    { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+    {
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }
   ];
 
   # power_save:enable WiFi power management

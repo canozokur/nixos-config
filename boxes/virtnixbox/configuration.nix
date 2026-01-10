@@ -17,7 +17,10 @@
         "cryptd"
       ];
     };
-    kernelModules = [ "hv_vmbus" "hv_storvsc" ];
+    kernelModules = [
+      "hv_vmbus"
+      "hv_storvsc"
+    ];
     kernelParams = [ "video=hyperv_fb:1900x1200" ];
     kernel.sysctl."vm.overcommit_memory" = 1; # https://github.com/NixOS/nix/issues/421
   };
@@ -56,10 +59,14 @@
   hardware.graphics.enable = true;
 
   security.pam.loginLimits = [
-    { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+    {
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }
   ];
 
   services.openssh.enable = true;
   system.stateVersion = "23.11";
 }
-

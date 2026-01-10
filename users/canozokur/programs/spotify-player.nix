@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  sops.secrets."spotify/client-id" = {};
+  sops.secrets."spotify/client-id" = { };
 
   programs.spotify-player = {
     enable = true;

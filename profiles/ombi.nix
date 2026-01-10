@@ -18,12 +18,20 @@ in
     dataDir = mountPoint;
   };
 
-  systemd.services.ombi.unitConfig = { RequiresMountsFor = mountPoint; };
+  systemd.services.ombi.unitConfig = {
+    RequiresMountsFor = mountPoint;
+  };
 
   fileSystems."${mountPoint}" = {
     device = "/dev/disk/by-uuid/33edf5bb-6439-4509-98f5-1f0a61211a41";
     fsType = "xfs";
-    options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
+    options = [
+      "nofail"
+      "_netdev"
+      "auto"
+      "exec"
+      "defaults"
+    ];
   };
 
   systemd.tmpfiles.rules = [
@@ -33,11 +41,19 @@ in
 
   _meta.nginx = {
     upstreams = {
-      ombi = { servers."${addr}:${toString port}" = {}; };
+      ombi = {
+        servers."${addr}:${toString port}" = { };
+      };
     };
     vhosts = {
       "ombi.pco.pink" = {
-        listen = [{ addr = "192.168.1.253"; port = 443; ssl = true; }];
+        listen = [
+          {
+            addr = "192.168.1.253";
+            port = 443;
+            ssl = true;
+          }
+        ];
         enableACME = true;
         acmeRoot = null;
         forceSSL = true;

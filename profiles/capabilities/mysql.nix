@@ -1,19 +1,32 @@
-{ config, pkgs, inputs, helpers, lib, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  helpers,
+  lib,
+  ...
+}:
 let
   isGalera = (config._meta.services.galera.clusterName != "");
 
   clusterName = config._meta.services.galera.clusterName;
 
   allHosts = inputs.self.nixosConfigurations;
-  servers = helpers.getHostsWith allHosts [ "services" "galera" "clusterName" ];
-  thisCluster = lib.filterAttrs (n: h:
+  servers = helpers.getHostsWith allHosts [
+    "services"
+    "galera"
+    "clusterName"
+  ];
+  thisCluster = lib.filterAttrs (
+    n: h:
     let
       val = lib.attrByPath [ "config" "_meta" "services" "galera" "clusterName" ] null h;
     in
-      val == clusterName
+    val == clusterName
   ) servers;
-  galeraNodes = lib.flatten (lib.mapAttrsToList (_: h:
-    "${h.config._meta.networks.internalIP}") thisCluster);
+  galeraNodes = lib.flatten (
+    lib.mapAttrsToList (_: h: "${h.config._meta.networks.internalIP}") thisCluster
+  );
 in
 {
   services.mysql = {
@@ -29,27 +42,33 @@ in
     };
   };
 
-  services.consul.agentServices = [{
-    name = "mysql";
-    tags = lib.optionals isGalera ["galera-${clusterName}"] ++
-      lib.optionals (config._meta.services.mysql.instanceName != "") ["instance-${config._meta.services.mysql.instanceName}"];
-    address = config._meta.networks.internalIP;
-    port = config.services.mysql.settings.mysqld.port;
-    checks = [
-      {
-        id = "mysql-check";
-        name = "MySQL on port ${toString config.services.mysql.settings.mysqld.port}";
-        tcp = "localhost:${toString config.services.mysql.settings.mysqld.port}";
-        interval = "10s";
-        timeout = "1s";
-      }
-    ];
-  }];
+  services.consul.agentServices = [
+    {
+      name = "mysql";
+      tags =
+        lib.optionals isGalera [ "galera-${clusterName}" ]
+        ++ lib.optionals (config._meta.services.mysql.instanceName != "") [
+          "instance-${config._meta.services.mysql.instanceName}"
+        ];
+      address = config._meta.networks.internalIP;
+      port = config.services.mysql.settings.mysqld.port;
+      checks = [
+        {
+          id = "mysql-check";
+          name = "MySQL on port ${toString config.services.mysql.settings.mysqld.port}";
+          tcp = "localhost:${toString config.services.mysql.settings.mysqld.port}";
+          interval = "10s";
+          timeout = "1s";
+        }
+      ];
+    }
+  ];
 
   networking.firewall = {
     allowedTCPPorts = [
       config.services.mysql.settings.mysqld.port
-    ] ++ lib.optionals isGalera [
+    ]
+    ++ lib.optionals isGalera [
       4567 # galera port
       4568 # galera ist
       4444 # galera sst

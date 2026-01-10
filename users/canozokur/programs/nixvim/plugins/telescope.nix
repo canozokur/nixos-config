@@ -52,8 +52,7 @@
 
   # needs to happen before all config to make this function available to
   # leader keymaps
-  extraConfigLuaPre = ''
-  '';
+  extraConfigLuaPre = '''';
 
   plugins.lz-n.keymaps = [
     {

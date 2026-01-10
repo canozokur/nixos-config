@@ -1,4 +1,10 @@
-{ lib, config, pkgs, inputs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 {
   nixpkgs.overlays = [
     (final: prev: {
@@ -54,16 +60,18 @@
     TTYVTDisallocate = true;
   };
 
-
   boot.consoleLogLevel = 0;
 
   security.polkit.enable = true; # required for sway
-  security.pam.services.swaylock = {}; # required for swaylock
+  security.pam.services.swaylock = { }; # required for swaylock
 
   # swaync & i3status-rs requires dconf to pause notifications
   programs.dconf.enable = true;
 
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+  environment.pathsToLink = [
+    "/share/xdg-desktop-portal"
+    "/share/applications"
+  ];
 
   services.udisks2.enable = true; # enabled for automounting
 }

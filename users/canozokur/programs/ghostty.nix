@@ -22,7 +22,7 @@
         "ctrl+minus=decrease_font_size:1"
         "ctrl+zero=reset_font_size"
         "ctrl+plus=increase_font_size:1"
-        ];
+      ];
     };
   };
 }

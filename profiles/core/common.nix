@@ -25,14 +25,17 @@ in
       sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     };
     secrets = {
-      "network/secrets/home-wifi/psk" = {};
-      "network/secrets/home-wifi-5g/psk" = {};
+      "network/secrets/home-wifi/psk" = { };
+      "network/secrets/home-wifi-5g/psk" = { };
       "passwords/canozokur".neededForUsers = true;
     };
   };
   # enable all firmware regardless of license
   hardware.enableAllFirmware = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nix.settings.trusted-users = [ "root" ];
 
   users.mutableUsers = false;
@@ -40,7 +43,7 @@ in
 
   nix.optimise = {
     automatic = true;
-    dates = ["03:45"];
+    dates = [ "03:45" ];
   };
 
   nixpkgs.config.allowUnfree = true;

@@ -1,4 +1,9 @@
-{ inputs, pkgs, config, ... }:
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 let
   gpclient-connect = pkgs.writeScriptBin "gpclient-connect" ''
     old_resolv=$(</etc/resolv.conf)
@@ -28,12 +33,12 @@ in
     gpauth
     gpclient
     gpclient-connect
-    netbird-ui 
+    netbird-ui
   ];
 
   sops.secrets = {
-    "falcon-sensor/cid" = {};
-    "kolide-k2/secret" = {};
+    "falcon-sensor/cid" = { };
+    "kolide-k2/secret" = { };
   };
 
   services.netbird = {

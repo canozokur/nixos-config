@@ -22,7 +22,9 @@ in
     ];
   };
 
-  systemd.services.syncthing.unitConfig = { RequiresMountsFor = mountPoint; };
+  systemd.services.syncthing.unitConfig = {
+    RequiresMountsFor = mountPoint;
+  };
 
   sops.secrets."syncthing/gui" = {
     owner = uid;
@@ -47,7 +49,14 @@ in
       # to get all the options we can use this (and get the apikey from syncthing's settings if needed)
       # curl -H "X-API-Key: <apikey>" -X GET http://ip.add.re.ss:8384/rest/config
       options = {
-        listenAddresses = let uri = "${addr}:22000"; in [ "quic://${uri}" "tcp://${uri}" ];
+        listenAddresses =
+          let
+            uri = "${addr}:22000";
+          in
+          [
+            "quic://${uri}"
+            "tcp://${uri}"
+          ];
         urAccepted = -1;
       };
     };
@@ -55,11 +64,19 @@ in
 
   _meta.nginx = {
     upstreams = {
-      syncthing = { servers."${addr}:${toString port}" = {}; };
+      syncthing = {
+        servers."${addr}:${toString port}" = { };
+      };
     };
     vhosts = {
       "sync.pco.pink" = {
-        listen = [{ addr = "192.168.1.254"; port = 443; ssl = true; }];
+        listen = [
+          {
+            addr = "192.168.1.254";
+            port = 443;
+            ssl = true;
+          }
+        ];
         enableACME = true;
         acmeRoot = null;
         forceSSL = true;

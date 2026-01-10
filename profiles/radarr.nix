@@ -14,11 +14,19 @@ in
 
   _meta.nginx = {
     upstreams = {
-      radarr = { servers."${addr}:${toString port}" = {}; };
+      radarr = {
+        servers."${addr}:${toString port}" = { };
+      };
     };
     vhosts = {
       "radarr.pco.pink" = {
-        listen = [{ addr = "192.168.1.253"; port = 443; ssl = true; }];
+        listen = [
+          {
+            addr = "192.168.1.253";
+            port = 443;
+            ssl = true;
+          }
+        ];
         enableACME = true;
         acmeRoot = null;
         forceSSL = true;
@@ -38,7 +46,9 @@ in
     };
   };
 
-  users.groups = { media = { inherit gid; }; };
+  users.groups = {
+    media = { inherit gid; };
+  };
 
   services.radarr = {
     enable = true;
@@ -55,7 +65,13 @@ in
   fileSystems."${mountPoint}" = {
     device = "/dev/disk/by-uuid/1c44502d-eda8-4c27-9bac-b891618f52bf";
     fsType = "xfs";
-    options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
+    options = [
+      "nofail"
+      "_netdev"
+      "auto"
+      "exec"
+      "defaults"
+    ];
   };
 
   systemd.tmpfiles.rules = [

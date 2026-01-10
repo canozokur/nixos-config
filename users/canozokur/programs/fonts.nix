@@ -8,6 +8,6 @@
 
   fonts.fontconfig = {
     enable = true;
-    defaultFonts.monospace = ["caskaydia-cove"];
+    defaultFonts.monospace = [ "caskaydia-cove" ];
   };
 }

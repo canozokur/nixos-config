@@ -1,4 +1,10 @@
-{ inputs, config, lib, helpers, ... }:
+{
+  inputs,
+  config,
+  lib,
+  helpers,
+  ...
+}:
 let
   isIscsi = (config.services.openiscsi.enable == true);
 in
@@ -51,14 +57,15 @@ in
               interface-name = "end0";
             };
             ipv4 =
-            let
-              ipList = config._meta.networks.wiredAddresses;
-              numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
-            in
-            numberedAddresses // {
-              method = "manual";
-              dns = "192.168.1.3";
-            };
+              let
+                ipList = config._meta.networks.wiredAddresses;
+                numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
+              in
+              numberedAddresses
+              // {
+                method = "manual";
+                dns = "192.168.1.3";
+              };
           };
         };
       };
@@ -71,7 +78,10 @@ in
       internalIP = "192.168.1.4";
       externalIP = "192.168.1.4";
       internalInterface = "end0";
-      wiredAddresses = [ "192.168.1.4/24,192.168.1.1" "192.168.0.4/24" ];
+      wiredAddresses = [
+        "192.168.1.4/24,192.168.1.1"
+        "192.168.0.4/24"
+      ];
     };
     services = {
       consulServer = true;
@@ -96,7 +106,12 @@ in
   };
 
   security.pam.loginLimits = [
-    { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+    {
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }
   ];
 
   system.stateVersion = "25.05";

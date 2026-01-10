@@ -10,14 +10,16 @@ let
       8502 # grpc
       8503 # grpc tls
       8301 # lan serf
-    ] ++ lib.optionals isServer [
+    ]
+    ++ lib.optionals isServer [
       8300 # server rpc
       8302 # wan serf
     ];
     udp = [
       8600 # dns
       8301 # lan serf
-    ] ++ lib.optionals isServer [
+    ]
+    ++ lib.optionals isServer [
       8302 # wan serf
     ];
   };
@@ -26,7 +28,9 @@ in
   services.consul = {
     enable = true;
     webUi = isServer;
-    interface.bind = lib.mkIf (config._meta.networks ? internalInterface) "${config._meta.networks.internalInterface}";
+    interface.bind = lib.mkIf (
+      config._meta.networks ? internalInterface
+    ) "${config._meta.networks.internalInterface}";
     extraConfig = {
       server = isServer;
       retry_join = [ consulDomain ];
@@ -50,8 +54,10 @@ in
     allowedUDPPorts = consulPorts.udp;
   };
 
-  _meta.dnsConfigurations = lib.mkIf isServer [{
-    ip = config._meta.networks.internalIP;
-    domain = consulDomain;
-  }];
+  _meta.dnsConfigurations = lib.mkIf isServer [
+    {
+      ip = config._meta.networks.internalIP;
+      domain = consulDomain;
+    }
+  ];
 }

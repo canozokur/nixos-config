@@ -1,12 +1,22 @@
-{ inputs, home-manager, helpers }:
-{ box, system, users, profiles }:
+{
+  inputs,
+  home-manager,
+  helpers,
+}:
+{
+  box,
+  system,
+  users,
+  profiles,
+}:
 let
   lib = inputs.nixpkgs.lib;
 
   mkUser = user: [
     # inline module to merge the host overrides for home-manager configuration
     ../users/${user}/default.nix
-    home-manager.nixosModules.home-manager {
+    home-manager.nixosModules.home-manager
+    {
       home-manager.extraSpecialArgs = {
         inherit inputs system;
       };
@@ -15,24 +25,26 @@ let
       home-manager.users.${user} = {
         imports = [
           ../users/${user}/profiles/common.nix
-        ] ++ builtins.map (mkProfile ../users/${user}/profiles) profiles;
+        ]
+        ++ builtins.map (mkProfile ../users/${user}/profiles) profiles;
       };
     }
   ];
 
-  mkProfile = pathPrefix: profile: 
-  let
-    profilePath = pathPrefix + "/${profile}.nix";
-    profileExists = builtins.pathExists profilePath;
-  in
-  {
-    imports = lib.optionals profileExists [ profilePath ];
-    config = {
-      warnings = lib.mkIf (!profileExists) [
-        "The specified profile does not exist: ${profile}"
-      ];
+  mkProfile =
+    pathPrefix: profile:
+    let
+      profilePath = pathPrefix + "/${profile}.nix";
+      profileExists = builtins.pathExists profilePath;
+    in
+    {
+      imports = lib.optionals profileExists [ profilePath ];
+      config = {
+        warnings = lib.mkIf (!profileExists) [
+          "The specified profile does not exist: ${profile}"
+        ];
+      };
     };
-  };
 in
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
@@ -44,16 +56,20 @@ inputs.nixpkgs.lib.nixosSystem {
 
   modules = [
     # another inline module so we can define a "hostSpecificOverrides" config option and use it later
-    ({ lib, ... }: {
-      options.hostSpecificOverrides = lib.mkOption {
-        type = lib.types.attrs;
-        default = {};
-        description = "Host-specific overrides to be merged into the main home-manager config.";
-      };
-    })
+    (
+      { lib, ... }:
+      {
+        options.hostSpecificOverrides = lib.mkOption {
+          type = lib.types.attrs;
+          default = { };
+          description = "Host-specific overrides to be merged into the main home-manager config.";
+        };
+      }
+    )
     ../boxes/${box}
     # import common profile
     ../profiles/core/common.nix
-  ] ++ builtins.concatLists (builtins.map mkUser users)
-    ++ builtins.map (mkProfile ../profiles) profiles;
+  ]
+  ++ builtins.concatLists (builtins.map mkUser users)
+  ++ builtins.map (mkProfile ../profiles) profiles;
 }

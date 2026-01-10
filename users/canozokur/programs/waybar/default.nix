@@ -1,4 +1,10 @@
-{ pkgs, lib, config, osConfig, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  osConfig,
+  ...
+}:
 let
   ctp-mocha = pkgs.fetchurl {
     url = "https://github.com/catppuccin/waybar/releases/download/v1.1/mocha.css";
@@ -6,39 +12,39 @@ let
   };
 
   swayncScript = pkgs.writeShellApplication {
-  name = "swaync.sh";
+    name = "swaync.sh";
 
-  runtimeInputs = [
-    pkgs.swaynotificationcenter
-    pkgs.dbus
-  ];
+    runtimeInputs = [
+      pkgs.swaynotificationcenter
+      pkgs.dbus
+    ];
 
-  text = ''
-    readonly ENABLED='󰂜'
-    readonly ENABLED_WITH_NOTIFICATIONS='󰂚'
-    readonly DISABLED='󰪑'
-    readonly DISABLED_WITH_NOTIFICATIONS='󰂛'
-    dbus-monitor path='/org/freedesktop/Notifications',interface='org.freedesktop.Notifications',member='OnDndToggle' member='Notify' member='NotificationClosed' --profile |
-      while read -r _; do
-        PAUSED="$(swaync-client -D)"
-        if [ "$PAUSED" == 'false' ]; then
-          CLASS="enabled"
-          TEXT="$ENABLED"
-          COUNT="$(swaync-client -c)"
-          if [ "$COUNT" != '0' ]; then
-            TEXT="$ENABLED_WITH_NOTIFICATIONS"
+    text = ''
+      readonly ENABLED='󰂜'
+      readonly ENABLED_WITH_NOTIFICATIONS='󰂚'
+      readonly DISABLED='󰪑'
+      readonly DISABLED_WITH_NOTIFICATIONS='󰂛'
+      dbus-monitor path='/org/freedesktop/Notifications',interface='org.freedesktop.Notifications',member='OnDndToggle' member='Notify' member='NotificationClosed' --profile |
+        while read -r _; do
+          PAUSED="$(swaync-client -D)"
+          if [ "$PAUSED" == 'false' ]; then
+            CLASS="enabled"
+            TEXT="$ENABLED"
+            COUNT="$(swaync-client -c)"
+            if [ "$COUNT" != '0' ]; then
+              TEXT="$ENABLED_WITH_NOTIFICATIONS"
+            fi
+          else
+            CLASS="disabled"
+            TEXT="$DISABLED"
+            COUNT="$(swaync-client -c)"
+            if [ "$COUNT" != '0' ]; then
+              TEXT="$DISABLED_WITH_NOTIFICATIONS"
+            fi
           fi
-        else
-          CLASS="disabled"
-          TEXT="$DISABLED"
-          COUNT="$(swaync-client -c)"
-          if [ "$COUNT" != '0' ]; then
-            TEXT="$DISABLED_WITH_NOTIFICATIONS"
-          fi
-        fi
-        printf '{"text": "%s", "class": "%s"}\n' "$TEXT" "$CLASS"
-      done
-  '';
+          printf '{"text": "%s", "class": "%s"}\n' "$TEXT" "$CLASS"
+        done
+    '';
   };
 
 in
@@ -115,12 +121,21 @@ in
           tooltip-format = "{desc}@%{volume}";
           format-muted = "󰸈";
           format-icons = {
-            default = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+            default = [
+              "▁"
+              "▂"
+              "▃"
+              "▄"
+              "▅"
+              "▆"
+              "▇"
+              "█"
+            ];
           };
           scroll-step = 1;
           on-click = "${pkgs.wezterm}/bin/wezterm start -- wiremix";
           on-click-right = "wpctl set-mute @DEFAULT_SINK@ toggle";
-          ignored-sinks = ["Easy Effects Sink"];
+          ignored-sinks = [ "Easy Effects Sink" ];
         };
 
         memory = {
@@ -158,7 +173,13 @@ in
 
         network = {
           format-wifi = "{icon}";
-          format-icons = [ "󰤯" "󰤟" "󰤢" "󰤥" "󰤨" ];
+          format-icons = [
+            "󰤯"
+            "󰤟"
+            "󰤢"
+            "󰤥"
+            "󰤨"
+          ];
           format-ethernet = "󰀂";
           format-alt = "󱛇";
           format-disconnected = "󰖪";
@@ -173,10 +194,28 @@ in
           format = "{icon}";
           format-icons = {
             charging = [
-              "󰢜" "󰂆" "󰂇" "󰂈" "󰢝" "󰂉" "󰢞" "󰂊" "󰂋" "󰂅"
+              "󰢜"
+              "󰂆"
+              "󰂇"
+              "󰂈"
+              "󰢝"
+              "󰂉"
+              "󰢞"
+              "󰂊"
+              "󰂋"
+              "󰂅"
             ];
             default = [
-              "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"
+              "󰁺"
+              "󰁻"
+              "󰁼"
+              "󰁽"
+              "󰁾"
+              "󰁿"
+              "󰂀"
+              "󰂁"
+              "󰂂"
+              "󰁹"
             ];
           };
           format-full = "󱟢";
@@ -195,12 +234,17 @@ in
           rotate = 270;
           interval = 2;
           dynamic-len = 30;
-          dynamic-order = [ "title" "artist" ];
+          dynamic-order = [
+            "title"
+            "artist"
+          ];
           player-icons = {
             default = "▶";
             mpv = "🎵";
           };
-          status-icons = { paused = "⏸"; };
+          status-icons = {
+            paused = "⏸";
+          };
         };
 
         "hyprland/workspaces" = {

@@ -14,11 +14,19 @@ in
 
   _meta.nginx = {
     upstreams = {
-      sonarr = { servers."${addr}:${toString port}" = {}; };
+      sonarr = {
+        servers."${addr}:${toString port}" = { };
+      };
     };
     vhosts = {
       "sonarr.pco.pink" = {
-        listen = [{ addr = "192.168.1.253"; port = 443; ssl = true; }];
+        listen = [
+          {
+            addr = "192.168.1.253";
+            port = 443;
+            ssl = true;
+          }
+        ];
         enableACME = true;
         acmeRoot = null;
         forceSSL = true;
@@ -38,7 +46,9 @@ in
     };
   };
 
-  users.groups = { media = { inherit gid; }; };
+  users.groups = {
+    media = { inherit gid; };
+  };
 
   services.sonarr = {
     enable = true;
@@ -55,7 +65,13 @@ in
   fileSystems."${mountPoint}" = {
     device = "/dev/disk/by-uuid/9b9cea9d-b9a0-4115-ab64-40b53859f800";
     fsType = "xfs";
-    options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
+    options = [
+      "nofail"
+      "_netdev"
+      "auto"
+      "exec"
+      "defaults"
+    ];
   };
 
   systemd.tmpfiles.rules = [

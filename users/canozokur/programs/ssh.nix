@@ -18,6 +18,7 @@
           SetEnv = "TERM=xterm";
         };
       };
-    } // inputs.nix-secrets.ssh.matchBlocks;
+    }
+    // inputs.nix-secrets.ssh.matchBlocks;
   };
 }

@@ -12,11 +12,19 @@ in
 
   _meta.nginx = {
     upstreams = {
-      prowlarr = { servers."${addr}:${toString port}" = {}; };
+      prowlarr = {
+        servers."${addr}:${toString port}" = { };
+      };
     };
     vhosts = {
       "prowlarr.pco.pink" = {
-        listen = [{ addr = "192.168.1.253"; port = 443; ssl = true; }];
+        listen = [
+          {
+            addr = "192.168.1.253";
+            port = 443;
+            ssl = true;
+          }
+        ];
         enableACME = true;
         acmeRoot = null;
         forceSSL = true;
@@ -42,11 +50,19 @@ in
     dataDir = mountPoint;
   };
 
-  systemd.services.prowlarr.unitConfig = { RequiresMountsFor = mountPoint; };
+  systemd.services.prowlarr.unitConfig = {
+    RequiresMountsFor = mountPoint;
+  };
 
   fileSystems."${mountPoint}" = {
     device = "/dev/disk/by-uuid/c7b9c1ad-557a-49ea-bef1-656829c3b529";
     fsType = "xfs";
-    options = [ "nofail" "_netdev" "auto" "exec" "defaults"];
+    options = [
+      "nofail"
+      "_netdev"
+      "auto"
+      "exec"
+      "defaults"
+    ];
   };
 }

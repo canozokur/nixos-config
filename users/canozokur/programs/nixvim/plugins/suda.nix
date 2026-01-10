@@ -12,7 +12,7 @@
       plugins = [
         {
           __unkeyed-1 = "vim-suda";
-          event = ["BufRead"];
+          event = [ "BufRead" ];
         }
       ];
     };

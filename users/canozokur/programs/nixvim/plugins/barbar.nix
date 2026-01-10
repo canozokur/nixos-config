@@ -11,7 +11,7 @@
       lazyLoad = {
         enable = true;
         settings = {
-          event = ["BufRead"];
+          event = [ "BufRead" ];
         };
       };
     };

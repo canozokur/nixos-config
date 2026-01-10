@@ -1,4 +1,9 @@
-{ pkgs, lib, system, ... }:
+{
+  pkgs,
+  lib,
+  system,
+  ...
+}:
 {
   services.keybase.enable = true;
   services.kbfs.enable = true;
