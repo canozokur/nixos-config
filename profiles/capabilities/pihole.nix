@@ -21,7 +21,7 @@ let
       let
         configs = host.config._meta.dnsConfigurations;
       in
-      builtins.map (entry: "${entry.ip} ${entry.domain}") configs
+      map (entry: "${entry.ip} ${entry.domain}") configs
     ) customDnsHosts
   );
 
@@ -66,6 +66,7 @@ in
         hosts = [
           "14:cb:19:17:d7:4e,192.168.1.2,laserjet,24h"
           "d8:bb:c1:63:da:ff,192.168.1.129,truenas,24h"
+          "74:e6:b8:08:37:2d,192.168.1.148,lgwebostv,24h"
         ];
       };
       misc.dnsmasq_lines = [
