@@ -17,7 +17,7 @@
     ../../programs/waybar
     ../../programs/mouse-cursor.nix
     ../../programs/clipboard.nix
-    ../../programs/wpaperd.nix
+    ../../programs/hyprpaper.nix
     ../../programs/playerctld.nix
     ../../programs/hyprlock.nix
     ../../programs/xdg-portal.nix
