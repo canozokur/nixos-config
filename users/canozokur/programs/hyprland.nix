@@ -108,9 +108,7 @@
       windowrule = [
         "match:class ^(Zoom.*), match:title ^(meeting bottombar.*)$, stay_focused on"
         "match:class ^(Zoom.*), float on"
-      ];
-      windowrulev2 = [
-        "bordercolor rgb(50fa7b),fullscreen:1"
+        "match:fullscreen 1, border_color rgb(50fa7b)"
       ];
       workspace = [
         "1, layoutopt:orientation:left"
