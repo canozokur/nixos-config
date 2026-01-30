@@ -15,4 +15,17 @@
       };
     };
   };
+
+  keymaps = [
+    {
+      key = "<leader>q";
+      action.__raw = "function() require('quicker').toggle() end";
+      mode = "n";
+    }
+    {
+      key = "<leader>l";
+      action.__raw = "function() require('quicker').toggle({ loclist = true }) end";
+      mode = "n";
+    }
+  ];
 }
