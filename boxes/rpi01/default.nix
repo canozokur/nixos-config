@@ -125,10 +125,14 @@
               application/rss+xml
               image/svg+xml;
 
-            proxy_connect_timeout 1h;
-            proxy_send_timeout 1h;
-            proxy_read_timeout 1h;
             tcp_nodelay on;
+            sendfile    off;
+
+            client_body_timeout   10;
+            client_header_timeout 10;
+            keepalive_timeout     30;
+            send_timeout          10;
+            keepalive_requests    10;
           '';
           locations = {
             "^~ /swagger".return = 404;
