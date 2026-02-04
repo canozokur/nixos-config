@@ -157,5 +157,10 @@
         noremap = true;
       };
     }
+    {
+      key = "<leader>/";
+      action = "<Esc>/\\%V";
+      mode = "x";
+    }
   ];
 }
