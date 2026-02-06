@@ -127,6 +127,7 @@
 
             tcp_nodelay on;
             sendfile    off;
+            proxy_buffering off;
 
             client_body_timeout   10;
             client_header_timeout 10;
