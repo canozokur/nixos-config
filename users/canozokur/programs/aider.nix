@@ -9,8 +9,8 @@
 
   sops.templates.".aider.conf.yml" = {
     content = ''
-      model: openai/anthropic.claude-sonnet-4-20250514-v1:0
-      weak-model: openai/anthropic.claude-3-5-haiku-20241022-v1
+      model: openai/gemini-3-pro-preview
+      weak-model: openai/gemini-3-flash-preview
       show-model-warnings: false
 
       api-key:
