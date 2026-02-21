@@ -76,7 +76,10 @@
         homebox = {
           system = "x86_64-linux";
           users = [ "canozokur" ];
-          profiles = [ "gaming" ];
+          profiles = [
+            "gaming"
+            "sunshine"
+          ];
         };
 
         rpi01 = {

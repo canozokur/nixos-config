@@ -25,6 +25,14 @@
       );
     };
 
+    sunshine = {
+      virtualOutput = mkOption {
+        description = "Free GPU port to create virtual output";
+        default = "";
+        type = types.str;
+      };
+    };
+
     nginx = {
       vhosts = mkOption {
         description = "Nginx vhosts that will be configured on the reverse proxy";

@@ -127,6 +127,8 @@
   };
   hardware.bluetooth.powerOnBoot = true;
 
+  virtualisation.spiceUSBRedirection.enable = true;
+
   security.pam.loginLimits = [
     {
       domain = "@users";

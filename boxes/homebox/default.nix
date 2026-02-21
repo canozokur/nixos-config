@@ -75,6 +75,7 @@
       "systemd"
       "drm"
     ];
+    sunshine.virtualOutput = "HDMI-A-2";
   };
 
   hardware.graphics.enable = true;
@@ -86,6 +87,8 @@
     KernelExperimental = true;
   };
   hardware.bluetooth.powerOnBoot = true;
+
+  virtualisation.spiceUSBRedirection.enable = true;
 
   security.pam.loginLimits = [
     {
