@@ -87,6 +87,23 @@ in
           exec = "hyprctl keyword general:layout master";
         };
       }
+      {
+        profile = {
+          name = "office_sigle";
+          outputs = [
+            {
+              criteria = "HP Inc. HP Z27k G3 CN42040BP2";
+              status = "enable";
+              mode = "3840x2160@60Hz";
+            }
+            {
+              criteria = "Sharp Corporation 0x14D0 Unknown";
+              status = "disable";
+            }
+          ];
+          exec = "hyprctl keyword general:layout dwindle";
+        };
+      }
     ];
   };
 }
