@@ -35,6 +35,7 @@ in
     gpclient-connect
     netbird-ui
     quickemu
+    kind
   ];
 
   sops.secrets = {
