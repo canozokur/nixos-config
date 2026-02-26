@@ -25,6 +25,7 @@ in
               status = "enable";
             }
           ];
+          exec = "hyprctl keyword general:layout dwindle";
         };
       }
       {
