@@ -36,6 +36,7 @@ in
     netbird-ui
     quickemu
     kind
+    minikube
   ];
 
   sops.secrets = {
