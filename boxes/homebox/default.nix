@@ -68,7 +68,7 @@
       consulServer = false;
     };
     desktop = {
-      hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card1:/dev/dri/card0" ];
+      hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1" ];
       waybarTemperaturePath = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon2/temp1_input";
     };
     prometheus.enabledCollectors = [
