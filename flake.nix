@@ -23,7 +23,7 @@
 
     nix-secrets = {
       url = "git+ssh://git@github.com/canozokur/nix-secrets.git?ref=main&shallow=1&lfs=1";
-      inputs = { };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     kolide-launcher = {
@@ -35,6 +35,7 @@
 
     zjstatus = {
       url = "github:dj95/zjstatus";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     wallpapers = {
