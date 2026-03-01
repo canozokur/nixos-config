@@ -10,6 +10,10 @@
       efi.canTouchEfiVariables = true;
       timeout = 30; # large t/o to make sure we get a screen on boot at home
     };
+    kernelParams = [
+      "amd_iommu=on"
+      "vfio-pci.ids=1002:744c,1002:1640"
+    ];
   };
 
   networking = {
