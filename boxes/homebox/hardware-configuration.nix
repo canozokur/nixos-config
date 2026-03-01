@@ -23,7 +23,10 @@
     "sd_mod"
   ];
   boot.initrd.kernelModules = [
-    "amdgpu"
+    "vfio_pci"
+    "vfio"
+    "vfio_iommu_type1"
+    "amdgpu" # this must be loaded after the vfio modules, always
     "kvmfr"
   ];
   boot.kernelModules = [
