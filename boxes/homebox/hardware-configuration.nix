@@ -34,7 +34,7 @@
     config.boot.kernelPackages.asus-ec-sensors
     config.boot.kernelPackages.kvmfr
   ];
-  boot.kernelParams = [ "kvmfr.static_size_mb=96" ];
+  boot.kernelParams = [ "kvmfr.static_size_mb=128" ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/32c99a1e-ba95-4116-801a-0280e9a8fcfc";
