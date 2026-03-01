@@ -8,6 +8,7 @@
       "docker"
       "dialout"
       "libvirtd"
+      "kvm"
     ];
     createHome = true;
     # secret configured at machine level, see common profile
