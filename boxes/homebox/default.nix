@@ -79,6 +79,9 @@
   };
 
   hardware.graphics.enable = true;
+  # this one has an AMD card
+  services.lact.enable = true;
+  hardware.amdgpu.overdrive.enable = true;
   # bluetooth config
   hardware.bluetooth.enable = true;
   hardware.bluetooth.settings.General = {
