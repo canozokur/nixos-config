@@ -9,7 +9,7 @@
 
   sops.templates.".aider.conf.yml" = {
     content = ''
-      model: openai/claude-opus-4-6
+      model: openai/gemini-3.1-pro-preview
       weak-model: openai/gemini-3-flash-preview
       show-model-warnings: false
 
