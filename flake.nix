@@ -80,6 +80,7 @@
           profiles = [
             "gaming"
             "sunshine"
+            "virt-host"
           ];
         };
 
