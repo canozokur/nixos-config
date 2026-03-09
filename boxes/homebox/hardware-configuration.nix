@@ -27,6 +27,10 @@
     "kvm-amd"
     "nct6775"
   ];
+  boot.kernelParams = [
+    "amd_iommu=on"
+    "iommu=pt"
+  ];
   boot.extraModulePackages = [ config.boot.kernelPackages.asus-ec-sensors ];
 
   fileSystems."/" = {
