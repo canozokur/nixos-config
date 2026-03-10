@@ -68,7 +68,7 @@
       consulServer = false;
     };
     desktop = {
-      hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card2:/dev/dri/card1" ];
+      hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card2" ];
       waybarTemperaturePath = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon2/temp1_input";
     };
     prometheus.enabledCollectors = [
@@ -76,6 +76,10 @@
       "drm"
     ];
     sunshine.virtualOutput = "HDMI-A-2";
+    gpuPassthrough = {
+      video = "0000:03:00.0";
+      audio = "0000:03:00.1";
+    };
   };
 
   hardware.graphics.enable = true;
