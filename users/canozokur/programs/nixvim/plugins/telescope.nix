@@ -85,5 +85,11 @@
       mode = "n";
       plugin = "telescope.nvim";
     }
+    {
+      key = "<leader>fs";
+      action.__raw = "function() require'telescope.builtin'.lsp_dynamic_workspace_symbols() end";
+      mode = "n";
+      plugin = "telescope.nvim";
+    }
   ];
 }
