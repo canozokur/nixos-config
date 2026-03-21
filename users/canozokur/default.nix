@@ -7,6 +7,8 @@
       "networkmanager"
       "docker"
       "dialout"
+      "kvm"
+      "libvirtd"
     ];
     createHome = true;
     # secret configured at machine level, see common profile

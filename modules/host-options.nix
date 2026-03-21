@@ -43,6 +43,29 @@
       };
     };
 
+    gpuPassthrough = mkOption {
+      description = "GPU Passthrough options if virtualization is enabled";
+      default = { };
+      type = types.submodule {
+        options = {
+          video =
+            with types;
+            mkOption {
+              type = str;
+              default = "";
+              description = "The PCI address for passing GPU";
+            };
+          audio =
+            with types;
+            mkOption {
+              type = str;
+              default = "";
+              description = "The PCI address for passing the audio device";
+            };
+        };
+      };
+    };
+
     networks = mkOption {
       description = "External and internal IP addresses of this host";
       default = { };
