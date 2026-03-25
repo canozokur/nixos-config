@@ -44,7 +44,7 @@
     };
 
     falcon-sensor = {
-      url = "github:canozokur/falcon-sensor-nixos/src-version-params";
+      url = "github:canozokur/falcon-sensor-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
