@@ -42,6 +42,11 @@
       url = "github:canozokur/wallpapers";
       flake = false;
     };
+
+    falcon-sensor = {
+      url = "github:canozokur/falcon-sensor-nixos/src-version-params";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

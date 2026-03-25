@@ -15,6 +15,27 @@
         "type": "github"
       }
     },
+    "falcon-sensor": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774429032,
+        "narHash": "sha256-nPLW6+ywKsXhxUCApB3bJmeVGyBsejX3UvWu40PdXLs=",
+        "owner": "canozokur",
+        "repo": "falcon-sensor-nixos",
+        "rev": "70febb24bdd62c0f007aa5321bfe964f83c0bfd6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "canozokur",
+        "ref": "src-version-params",
+        "repo": "falcon-sensor-nixos",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -192,6 +213,7 @@
     },
     "root": {
       "inputs": {
+        "falcon-sensor": "falcon-sensor",
         "home-manager": "home-manager",
         "kolide-launcher": "kolide-launcher",
         "nix-secrets": "nix-secrets",

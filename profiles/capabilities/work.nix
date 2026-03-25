@@ -22,11 +22,12 @@ let
     ${pkgs.gpclient}/bin/gpclient --fix-openssl connect ${inputs.nix-secrets.network.office-vpn-address}
   '';
 
-  secretsPath = builtins.toString inputs.nix-secrets;
+  secretsPath = toString inputs.nix-secrets;
 in
 {
   imports = [
     inputs.kolide-launcher.nixosModules.kolide-launcher
+    inputs.falcon-sensor.nixosModules.default
   ];
 
   environment.systemPackages = with pkgs; [
@@ -54,12 +55,12 @@ in
   # required for Kolide integration
   programs.nix-ld.enable = true;
 
-  falconSensor = rec {
+  services.falcon-sensor = rec {
     enable = true;
     version = "7.33.0-18606";
-    arch = "amd64";
-    cid = config.sops.secrets."falcon-sensor/cid".path;
-    debFile = "${secretsPath}/binary/falcon-sensor_${version}_${arch}.deb";
+    debFile = "${secretsPath}/binary/falcon-sensor_${version}_amd64.deb";
+    cidFile = config.sops.secrets."falcon-sensor/cid".path;
+    kernelPackages = pkgs.linuxPackages_6_6;
   };
 
   environment.etc."kolide-k2/secret" = {
