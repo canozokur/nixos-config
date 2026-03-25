@@ -22,11 +22,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774429689,
-        "narHash": "sha256-r+RX7wHqwwFSiQUMgLYPyCMIFRRJa03RRNm4QQpmCwg=",
+        "lastModified": 1774452551,
+        "narHash": "sha256-ITvzipE0OXzDjfDgM0ovp5zjsM+ooTe2dYpWmzT/1Eg=",
         "owner": "canozokur",
         "repo": "falcon-sensor-nixos",
-        "rev": "a677a05551bb76d321528d8e8656119564f59843",
+        "rev": "7debdb2f4f94bae0c885f0da808cdd6d49b983ff",
         "type": "github"
       },
       "original": {
