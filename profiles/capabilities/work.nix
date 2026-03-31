@@ -60,7 +60,7 @@ in
     version = "7.33.0-18606";
     debFile = "${secretsPath}/binary/falcon-sensor_${version}_amd64.deb";
     cidFile = config.sops.secrets."falcon-sensor/cid".path;
-    kernelPackages = pkgs.linuxPackages_6_6;
+    kernelPackages = pkgs.linuxPackages_6_12;
   };
 
   environment.etc."kolide-k2/secret" = {
