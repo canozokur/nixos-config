@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 {
-  home.packages = with pkgs; [ aider-chat ];
+  home.packages = with pkgs; [ aider-chat-full ];
 
   sops.secrets = {
     "unity-ai/api-key" = { };
@@ -9,8 +9,8 @@
 
   sops.templates.".aider.conf.yml" = {
     content = ''
-      model: openai/gemini-3.1-pro-preview
-      weak-model: openai/gemini-3-flash-preview
+      model: openai/claude-opus-4-6-ent-ai
+      weak-model: openai/claude-haiku-4-5-20251001-ent-ai
       show-model-warnings: false
 
       api-key:
