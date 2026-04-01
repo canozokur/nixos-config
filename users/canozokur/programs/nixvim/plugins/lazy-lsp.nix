@@ -30,7 +30,7 @@
         "tailwindcss",                     -- associates with too many filetypes
       },
       preferred_servers = {
-        nix = { "nixd" },
+        nix = { "nixd", "nil_ls" },
         helm = { "helm_ls" },
         python = { "jedi_language_server", "ruff", "pyright" },
       },
