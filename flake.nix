@@ -134,6 +134,14 @@
             "monitoring"
           ];
         };
+
+        "tr.pco.pink" = {
+          system = "x86_64-linux";
+          users = [ "canozokur" ];
+          profiles = [
+            "server"
+          ];
+        };
       };
     in
     {
