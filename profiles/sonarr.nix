@@ -59,7 +59,7 @@ in
 
   systemd.services.sonarr = {
     unitConfig.RequiresMountsFor = mountPoint;
-    serviceConfig.UMask = 0002;
+    serviceConfig.UMask = lib.mkForce 0002;
   };
 
   fileSystems."${mountPoint}" = {
