@@ -37,6 +37,7 @@ in
     "flakes"
   ];
   nix.settings.trusted-users = [ "root" ];
+  nix.settings.download-buffer-size = 500000000; # 500 MB
 
   users.mutableUsers = false;
   time.timeZone = "Europe/Helsinki";
