@@ -22,6 +22,7 @@
     ../../programs/hyprlock.nix
     ../../programs/xdg-portal.nix
     ../../programs/udiskie.nix
+    ../../programs/powerline-go.nix
   ];
   home.packages =
     with pkgs;

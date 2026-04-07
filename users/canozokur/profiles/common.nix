@@ -18,6 +18,7 @@ in
     ../programs/nix.nix
     ../programs/lazygit.nix
     ../programs/yazi.nix
+    ../programs/shell-config.nix
   ];
 
   home.packages = with pkgs; [
