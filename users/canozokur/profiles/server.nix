@@ -2,9 +2,6 @@
 {
   imports = [
     ../programs/nixvim
-  ];
-
-  home.packages = with pkgs; [
-    direnv
+    ../programs/direnv.nix
   ];
 }
