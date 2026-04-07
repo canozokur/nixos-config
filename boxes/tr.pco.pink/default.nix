@@ -15,6 +15,10 @@
   };
 
   networking = {
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 1935 ];
+    };
     hostName = "tr";
     domain = "pco.pink";
     networkmanager = {
