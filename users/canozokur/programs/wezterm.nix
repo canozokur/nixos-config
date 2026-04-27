@@ -28,8 +28,9 @@
       local disabled = wezterm.action.DisableDefaultAssignment
 
       return {
-        color_scheme = "catppuccin-mocha",
+        color_scheme = "Catppuccin Mocha",
         term = "wezterm",
+        front_end = "WebGpu",
         font = wezterm.font({family="CaskaydiaCove Nerd Font Mono", weight="Regular"}),
         font_rules = {
           {
