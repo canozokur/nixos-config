@@ -49,6 +49,13 @@
             mode = "test";
             program = "./\${relativeFileDirname}";
           }
+          {
+            type = "delve";
+            name = "Debug Project (Root)";
+            request = "launch";
+            program = "\${workspaceFolder}";
+            cwd = "\${workspaceFolder}";
+          }
         ];
       };
     };
