@@ -118,4 +118,19 @@
       '';
     }
   ];
+
+  # enable mouse when a debug session starts and disable it when it ends
+  extraConfigLua = ''
+    local dap = require('dap')
+    local default_mouse = ""
+    dap.listeners.after.event_initialized['dap_mouse_toggle'] = function()
+        vim.opt.mouse = 'a'
+    end
+    dap.listeners.after.event_terminated['dap_mouse_toggle'] = function()
+        vim.opt.mouse = default_mouse
+    end
+    dap.listeners.after.event_exited['dap_mouse_toggle'] = function()
+        vim.opt.mouse = default_mouse
+    end
+  '';
 }
