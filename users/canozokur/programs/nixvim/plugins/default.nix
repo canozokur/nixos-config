@@ -17,7 +17,7 @@
     ./quicker.nix
     ./yazi.nix
     ./dap.nix
-    ./dapui.nix
+    ./dap-view.nix
     ./markview.nix
   ];
 }
