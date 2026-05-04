@@ -25,7 +25,7 @@
             "screen" = "";
             "complete" = true;
           };
-          "browser.toolbars.bookmarks.visibility" = "never";
+          "browser.toolbars.bookmarks.visibility" = "always";
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
           "browser.ml.chat.enabled" = false;
           "media.setsinkid.enabled" = true; # enumerate all audio sources, don't just show the default device
