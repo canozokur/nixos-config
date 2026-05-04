@@ -1,6 +1,4 @@
 {
-  lib,
-  config,
   pkgs,
   inputs,
   ...
@@ -11,8 +9,6 @@
       zjstatus = inputs.zjstatus.packages.${prev.system}.default;
     })
   ];
-
-  services.blueman.enable = lib.mkIf (config.hardware.bluetooth.enable == true) true;
 
   services.avahi = {
     enable = true;

@@ -23,6 +23,7 @@
     ../../programs/xdg-portal.nix
     ../../programs/udiskie.nix
     ../../programs/powerline-go.nix
+    ../../programs/bluetuith.nix
   ];
   home.packages =
     with pkgs;
@@ -38,7 +39,4 @@
     ++ lib.optionals (system != "aarch64-linux") [
       spotify
     ];
-
-  # enable bluetooth by default
-  services.blueman-applet.enable = true;
 }
