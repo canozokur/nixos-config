@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, config, ... }:
 {
   plugins = {
     lualine = {
@@ -11,6 +11,15 @@
       };
       settings = {
         options = {
+          disabled_filetypes = {
+            statusline = lib.optionals (config.plugins.dap-view.enable or false) [
+              "dap-repl"
+              "dap-view"
+              "dap-view-watches"
+              "dap-view-breakpoints"
+              "dap-view-term"
+            ];
+          };
           component_separators = {
             left = "\\";
             right = "/";
