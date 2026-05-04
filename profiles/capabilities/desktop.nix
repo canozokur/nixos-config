@@ -1,6 +1,6 @@
 {
   pkgs,
-  inputs,
+  inputs, config,
   ...
 }:
 {
@@ -70,4 +70,9 @@
   ];
 
   services.udisks2.enable = true; # enabled for automounting
+
+  services.blueman = {
+    enable = config.hardware.bluetooth.enable;
+    withApplet = false;
+  };
 }

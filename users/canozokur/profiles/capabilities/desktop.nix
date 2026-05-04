@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, osConfig, ... }:
 {
   imports = [
     ../../programs/shell-config.nix
@@ -39,4 +39,6 @@
     ++ lib.optionals (system != "aarch64-linux") [
       spotify
     ];
+
+  services.blueman-applet.enable = osConfig.services.blueman.enable;
 }
