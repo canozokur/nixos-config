@@ -13,7 +13,7 @@
     ./suda.nix
     ./lsp-zero.nix
     ./lazy-lsp.nix
-    ./hardline.nix
+    ./lualine.nix
     ./quicker.nix
     ./yazi.nix
     ./dap.nix
