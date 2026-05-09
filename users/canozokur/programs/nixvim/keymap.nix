@@ -132,16 +132,6 @@
       mode = "n";
     }
     {
-      key = "<leader>spn";
-      action = "<C-W>w";
-      mode = "n";
-    }
-    {
-      key = "<leader>spN";
-      action = "<C-W>W";
-      mode = "n";
-    }
-    {
       key = "<leader><ESC>";
       action = "<C-\\><C-n>";
       mode = "t";
