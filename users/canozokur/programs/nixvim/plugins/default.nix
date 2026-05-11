@@ -11,8 +11,7 @@
     ./undotree.nix
     ./lzn-auto-require.nix
     ./suda.nix
-    ./lsp-zero.nix
-    ./lazy-lsp.nix
+    ./lsp.nix
     ./lualine.nix
     ./quicker.nix
     ./yazi.nix
