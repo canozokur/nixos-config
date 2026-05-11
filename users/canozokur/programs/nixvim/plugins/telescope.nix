@@ -10,9 +10,6 @@
               "<C-q>" = {
                 __raw = "require'telescope.actions'.smart_add_to_qflist + require'telescope.actions'.open_qflist";
               };
-              "<esc>" = {
-                __raw = "require('telescope.actions').close";
-              };
             };
           };
         };
