@@ -12,6 +12,7 @@
               };
             };
           };
+          initial_mode = "normal";
         };
       };
       lazyLoad = {
