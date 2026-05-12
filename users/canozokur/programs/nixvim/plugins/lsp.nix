@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, config, ... }:
 {
   plugins.luasnip.enable = true;
 
@@ -37,10 +37,11 @@
         "gd" = "definition";
         "K" = "hover";
         "<leader>ws" = "workspace_symbol";
-        "<leader>ca" = "code_action";
         "<leader>rr" = "references";
         "<leader>rn" = "rename";
         "<C-h>" = "signature_help";
+      } // lib.optionalAttrs (!config.plugins.actions-preview.enable) {
+        "<leader>ca" = "code_action";
       };
     };
   };
