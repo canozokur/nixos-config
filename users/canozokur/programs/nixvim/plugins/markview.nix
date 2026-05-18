@@ -5,8 +5,9 @@
       enable = true;
       settings = {
         preview = {
-          enable = false;
-          enable_hybrid_mode = false;
+          enable = true;
+          filetypes = [ "markdown" "codecompanion" ];
+          enable_hybrid_mode = true;
         };
       };
     };

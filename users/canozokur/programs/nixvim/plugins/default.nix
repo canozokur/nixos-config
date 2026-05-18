@@ -19,5 +19,6 @@
     ./dap-view.nix
     ./markview.nix
     ./actions-preview.nix
+    ./codecompanion.nix
   ];
 }
