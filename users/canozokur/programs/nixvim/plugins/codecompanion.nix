@@ -1,5 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, hmConfig, ... }:
 {
+  # TODO: make this configurable, expose module options so it's possible to override per box
+  sops.secrets = {
+    "unity-ai/api-key" = { };
+    "unity-ai/baseurl" = { };
+  };
+
   plugins.treesitter.enable = true;
 
   plugins.codecompanion = {
@@ -12,18 +18,35 @@
     });
 
     settings = {
+      adapters = {
+        http = {
+          custom_litellm.__raw = ''
+            function()
+              return require("codecompanion.adapters").extend("openai_compatible", {
+                env = {
+                  url = "cmd:cat ${hmConfig.sops.secrets."unity-ai/baseurl".path}",
+                  api_key = "cmd:cat ${hmConfig.sops.secrets."unity-ai/api-key".path}",
+                  chat_url = "/v1/chat/completions",
+                },
+                schema = {
+                  model = {
+                    default = "claude-opus-4-7",
+                  },
+                },
+              })
+            end
+          '';
+        };
+      };
       interactions = {
         chat = {
-          adapter = "gemini";
-          model = "gemini-3.1-pro-preview";
+          adapter = "custom_litellm";
         };
         inline = {
-          adapter = "gemini";
-          model = "gemini-3.1-pro-preview";
+          adapter = "custom_litellm";
         };
         agent = {
-          adapter = "gemini";
-          model = "gemini-3.1-pro-preview";
+          adapter = "custom_litellm";
         };
       };
 
