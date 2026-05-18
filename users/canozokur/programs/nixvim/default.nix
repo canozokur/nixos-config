@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 {
   imports = [
     inputs.nixvim.homeModules.nixvim
@@ -8,6 +8,8 @@
     imports = [
       ./nixvim.nix
     ];
+
+    _module.args.hmConfig = config;
 
     defaultEditor = true;
     enable = true;
