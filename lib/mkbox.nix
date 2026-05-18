@@ -13,7 +13,6 @@ let
   lib = inputs.nixpkgs.lib;
 
   mkUser = user: [
-    # inline module to merge the host overrides for home-manager configuration
     ../users/${user}/default.nix
     home-manager.nixosModules.home-manager
     {
@@ -55,17 +54,6 @@ inputs.nixpkgs.lib.nixosSystem {
   };
 
   modules = [
-    # another inline module so we can define a "hostSpecificOverrides" config option and use it later
-    (
-      { lib, ... }:
-      {
-        options.hostSpecificOverrides = lib.mkOption {
-          type = lib.types.attrs;
-          default = { };
-          description = "Host-specific overrides to be merged into the main home-manager config.";
-        };
-      }
-    )
     ../boxes/${box}
     # import common profile
     ../profiles/core/common.nix

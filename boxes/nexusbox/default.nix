@@ -2,7 +2,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./configuration-overrides
     inputs.nixos-hardware.nixosModules.dell-xps-15-9510
   ];
 
