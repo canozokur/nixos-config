@@ -7,9 +7,10 @@
       settings = {
         preview = {
           enable = true;
-          filetypes = [ "markdown" "codecompanion" ];
-          ignore_buftypes = { __empty = null; };
-          enable_hybrid_mode = true;
+          filetypes = [
+            "markdown"
+            "codecompanion"
+          ];
         };
       };
     };
