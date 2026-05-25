@@ -1,4 +1,4 @@
-{ inputs, config, ... }:
+{ inputs, ... }:
 {
   imports = [
     inputs.nixvim.homeModules.nixvim
@@ -9,7 +9,5 @@
       ./nixvim.nix
       ./common-options.nix
     ];
-
-    _module.args.hmConfig = config;
   };
 }
