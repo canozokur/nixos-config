@@ -175,9 +175,9 @@
       packages = forAllSystems (system: {
         neovim =
           let
-            pkgs = import nixpkgs.legacyPackages {
+            pkgs = import nixpkgs {
               inherit system;
-              allowUnfree = true;
+              config.allowUnfree = true;
             };
             nixvimLib = inputs.nixvim.legacyPackages.${system};
           in
