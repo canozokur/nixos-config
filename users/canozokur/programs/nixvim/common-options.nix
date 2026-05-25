@@ -11,6 +11,4 @@
   performance.combinePlugins.enable = true;
   plugins.lz-n.enable = true; # enable lazy loading
   dependencies.gcc.enable = false;
-  # nixvim started using its own nixpkgs, we need to set its config here
-  nixpkgs.config.allowUnfree = true;
 }
