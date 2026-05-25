@@ -1,6 +1,5 @@
 { ... }:
 {
-  enable = true;
   enableMan = false;
   viAlias = true;
   vimAlias = true;

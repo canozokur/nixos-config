@@ -11,5 +11,6 @@
     ];
   };
 
+  enable = true;
   defaultEditor = true;
 }
