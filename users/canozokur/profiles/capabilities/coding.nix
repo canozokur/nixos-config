@@ -8,6 +8,8 @@
     ../../programs/nixvim
   ];
 
+  programs.aider.enable = true;
+
   home.packages = with pkgs; [
     kubectl
     kubectx
