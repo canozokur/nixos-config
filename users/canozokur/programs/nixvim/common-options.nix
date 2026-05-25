@@ -1,6 +1,5 @@
 { ... }:
 {
-  defaultEditor = true;
   enable = true;
   enableMan = false;
   viAlias = true;

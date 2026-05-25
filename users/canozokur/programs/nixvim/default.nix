@@ -10,4 +10,6 @@
       ./common-options.nix
     ];
   };
+
+  defaultEditor = true;
 }
