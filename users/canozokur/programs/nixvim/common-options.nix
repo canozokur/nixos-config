@@ -3,7 +3,6 @@
   enableMan = false;
   viAlias = true;
   vimAlias = true;
-  vimdiffAlias = true;
   withPerl = false;
   withPython3 = false;
   withRuby = false;

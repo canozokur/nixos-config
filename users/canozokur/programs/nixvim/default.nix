@@ -12,5 +12,6 @@
   };
 
   enable = true;
+  vimdiffAlias = true;
   defaultEditor = true;
 }
