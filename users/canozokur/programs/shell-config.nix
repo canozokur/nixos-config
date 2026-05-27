@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, config, lib, inputs, ... }:
 {
   # we need this for alias completion in bash
   home.packages = with pkgs; [
@@ -39,6 +39,9 @@
         complete -F _complete_alias ky
         complete -F _complete_alias k
         complete -F _complete_alias apl
+        ${lib.optionalString (config.sops.secrets ? "claude-code/oauth-token") ''
+          export CLAUDE_CODE_OAUTH_TOKEN="$(cat ${config.sops.secrets."claude-code/oauth-token".path})"
+        ''}
       '';
       bashrcExtra = ''
         # base64 decode helper

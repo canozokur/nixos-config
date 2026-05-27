@@ -6,6 +6,7 @@
     ../../programs/aider.nix
     ../../programs/qemu.nix
     ../../programs/nixvim
+    ../../programs/claude-code.nix
   ];
 
   programs.aider.enable = true;
