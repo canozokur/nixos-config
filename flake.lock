@@ -139,11 +139,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777277438,
+        "lastModified": 1779881960,
         "lfs": true,
-        "narHash": "sha256-AtGEWE/2M9pqpNyLsJXHGYx4/CEnHXh1alYgxcF25lg=",
+        "narHash": "sha256-GVC+QuHwhb/5Y0jHWheRcw7orZoWKRO2LwQ4oy1yMzY=",
         "ref": "main",
-        "rev": "2607e7e4d427fd6798e947b69c6e4b2b80d2c628",
+        "rev": "a20b7dcc3c8f47f7c9daf7c3174ca52146309652",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/canozokur/nix-secrets.git"
