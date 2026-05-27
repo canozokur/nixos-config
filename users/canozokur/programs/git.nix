@@ -33,6 +33,7 @@
       ".aider*"
       ".devenv*"
       "devenv.local.nix"
+      ".claude"
     ];
   };
 
