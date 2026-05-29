@@ -35,7 +35,6 @@ in
     gpclient
     gpclient-connect
     netbird-ui
-    quickemu
     kind
     minikube
   ];
