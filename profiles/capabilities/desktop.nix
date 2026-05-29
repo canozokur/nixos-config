@@ -29,7 +29,6 @@
     tuigreet
   ];
 
-  environment.enableAllTerminfo = true;
   # https://wiki.nixos.org/wiki/Wayland#Electron_and_Chromium
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 

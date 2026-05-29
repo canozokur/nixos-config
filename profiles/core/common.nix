@@ -66,7 +66,7 @@ in
     binutils
   ];
 
-  environment.enableAllTerminfo = true;
+  environment.enableAllTerminfo = false;
 
   # enable docker
   virtualisation.docker = {
