@@ -72,6 +72,5 @@
 
   services.blueman = {
     enable = config.hardware.bluetooth.enable;
-    withApplet = false;
   };
 }
