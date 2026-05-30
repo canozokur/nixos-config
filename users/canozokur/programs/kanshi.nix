@@ -51,10 +51,10 @@ in
             }
           ];
           exec = lib.mkIf config.wayland.windowManager.sway.enable (
-            builtins.map (ws: assignWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
-            ++ builtins.map (ws: assignWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9)
-            ++ builtins.map (ws: moveWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
-            ++ builtins.map (ws: moveWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9)
+            map (ws: assignWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
+            ++ map (ws: assignWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9)
+            ++ map (ws: moveWorkspace ws "ASUSTek COMPUTER INC PG279QE K7LMQS096556") (lib.range 1 5)
+            ++ map (ws: moveWorkspace ws "ASUSTek COMPUTER INC VG27B LALMQS275717") (lib.range 6 9)
           );
         };
       }
