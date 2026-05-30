@@ -1,6 +1,12 @@
-{ config, ... }:
+{
+  config,
+  helpers,
+  inputs,
+  ...
+}:
 let
   _m = config._meta;
+  proxy = helpers.getProxy inputs.self.nixosConfigurations;
 in
 {
   imports = [
@@ -20,7 +26,7 @@ in
       "grafana.pco.pink" = {
         listen = [
           {
-            addr = "192.168.1.254";
+            addr = proxy.externalIP;
             port = 443;
             ssl = true;
           }
@@ -38,19 +44,7 @@ in
     };
   };
 
-  fileSystems."/mnt/prometheus-data" = {
-    device = "/dev/disk/by-uuid/301a494c-6b1a-4bc6-9b43-2a33870fda3e";
-    fsType = "ext4";
-    options = [
-      "nofail"
-      "_netdev"
-      "auto"
-      "exec"
-      "defaults"
-    ];
-  };
-
-  # wait for the mount to be available to start
+  # wait for the mount (declared by the host box) to be available to start
   systemd.services.prometheus.unitConfig = {
     RequiresMountsFor = "/mnt/prometheus-data";
   };
