@@ -3,10 +3,10 @@
   lib,
   helpers,
   inputs,
+  constants,
   ...
 }:
 let
-  constants = import ../lib/constants.nix;
   proxy = helpers.getProxy inputs.self.nixosConfigurations;
   port = config.services.sonarr.settings.server.port;
   addr = config._meta.networks.internalIP;

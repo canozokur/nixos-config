@@ -4,10 +4,10 @@
   lib,
   pkgs,
   config,
+  constants,
   ...
 }:
 let
-  constants = import ../lib/constants.nix;
   proxy = config._meta.services.reverseProxy;
   defaultIndex = pkgs.writeTextDir "defaultVhost/index.html" (
     builtins.readFile ./files/nginx/defaultIndex.html

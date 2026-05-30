@@ -2,6 +2,7 @@
   inputs,
   home-manager,
   helpers,
+  constants,
 }:
 {
   box,
@@ -17,7 +18,11 @@ let
     home-manager.nixosModules.home-manager
     {
       home-manager.extraSpecialArgs = {
-        inherit inputs system;
+        inherit
+          inputs
+          system
+          constants
+          ;
       };
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
@@ -49,8 +54,7 @@ lib.nixosSystem {
   inherit system;
 
   specialArgs = {
-    inherit inputs;
-    inherit helpers;
+    inherit inputs helpers constants;
   };
 
   modules = [

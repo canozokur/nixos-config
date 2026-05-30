@@ -57,10 +57,14 @@
     }:
     let
       helpers = import ./lib/helpers.nix { inherit (nixpkgs) lib; };
+      constants = import ./lib/constants.nix;
       mkBox = import ./lib/mkbox.nix {
-        inherit inputs;
-        inherit home-manager;
-        inherit helpers;
+        inherit
+          inputs
+          home-manager
+          helpers
+          constants
+          ;
       };
 
       forAllSystems = nixpkgs.lib.genAttrs [
