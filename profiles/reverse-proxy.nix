@@ -7,8 +7,8 @@
   ...
 }:
 let
-  externalIP = "192.168.1.254";
-  internalIP = "192.168.1.253";
+  constants = import ../lib/constants.nix;
+  proxy = config._meta.services.reverseProxy;
   defaultIndex = pkgs.writeTextDir "defaultVhost/index.html" (
     builtins.readFile ./files/nginx/defaultIndex.html
   );
@@ -23,7 +23,7 @@ let
       let
         listenList = c.listen or [ ];
         customIps = builtins.filter (x: x != null) (builtins.map (e: e.addr or null) listenList);
-        finalIps = if customIps != [ ] then customIps else [ internalIP ];
+        finalIps = if customIps != [ ] then customIps else [ proxy.internalIP ];
       in
       builtins.map (ip: {
         domain = d;
@@ -32,7 +32,7 @@ let
     ) node.config._meta.nginx.vhosts
   );
 
-  sslDomains = [ "pco.pink" ];
+  sslDomains = constants.fleet.domains.ssl;
   acmeCerts = lib.pipe serversWithVhosts [
     (lib.mapAttrsToList (_: node: node.config._meta.nginx.vhosts))
     (lib.foldl' (acc: set: acc // set) { })
@@ -59,31 +59,26 @@ in
   _meta = {
     dnsConfigurations = lib.flatten (buildDnsCfg serversWithVhosts);
 
-    networks.wiredAddresses = [
-      externalIP
-      internalIP
-    ];
-
     # default vhosts
     nginx = {
       vhosts = {
         "pco.pink" = {
           listen = [
             {
-              addr = "192.168.1.253";
+              addr = proxy.internalIP;
               port = 80;
             }
             {
-              addr = "192.168.1.253";
+              addr = proxy.internalIP;
               port = 443;
               ssl = true;
             }
             {
-              addr = "192.168.1.254";
+              addr = proxy.externalIP;
               port = 80;
             }
             {
-              addr = "192.168.1.254";
+              addr = proxy.externalIP;
               port = 443;
               ssl = true;
             }
