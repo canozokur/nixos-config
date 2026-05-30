@@ -1,4 +1,27 @@
-{ pkgs, osConfig, ... }:
+{
+  pkgs,
+  osConfig,
+  lib,
+  ...
+}:
+let
+  mod = "SUPER";
+  terminal = "${pkgs.wezterm}/bin/wezterm";
+  launcher = "${pkgs.rofi}/bin/rofi -show-icons -matching fuzzy";
+
+  mkBind = keys: action: flags: {
+    _args = [
+      keys
+      (lib.generators.mkLuaInline action)
+    ]
+    ++ lib.optional (flags != { }) flags;
+  };
+
+  mkExec = keys: cmd: mkBind keys "hl.dsp.exec_cmd([[${cmd}]])" { };
+  mkExecFlags =
+    keys: cmd: flags:
+    mkBind keys "hl.dsp.exec_cmd([[${cmd}]])" flags;
+in
 {
   home.packages = [
     pkgs.wl-clipboard
@@ -8,135 +31,212 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
-    # until this or something adjacent has merged https://github.com/nix-community/home-manager/pull/7277
-    # we should keep extraConfig for now
-    extraConfig = ''
-      # window resize
-      bind = $mod, r, submap, resize
-      submap = resize
-      binde = , h, resizeactive, -10 0
-      binde = , l, resizeactive, 10 0
-      binde = , j, resizeactive, 0 10
-      binde = , k, resizeactive, 0 -10
-      binde = SHIFT, h, resizeactive, -30 0
-      binde = SHIFT, l, resizeactive, 30 0
-      binde = SHIFT, j, resizeactive, 0 30
-      binde = SHIFT, k, resizeactive, 0 -30
-      bind = , escape, submap, reset
-      bind = , Return, submap, reset
-      bind = $mod, r, submap, reset
-      submap = reset
+    configType = "lua";
 
-      # screenshot
-      $satty = ${pkgs.satty}/bin/satty -f - --initial-tool=arrow \
-                --copy-command=wl-copy --actions-on-escape="save-to-clipboard,exit" \
-                --brush-smooth-history-size=5 --disable-notifications
-      bind = $mod SHIFT, p, submap, screenshot
-      submap = screenshot
-      bindp = , r, exec, ${pkgs.grim}/bin/grim -t ppm -g "$(${pkgs.slurp}/bin/slurp -d)" - | $satty
-      bindp = , r, submap, reset
-      bindp = , f, exec, ${pkgs.grim}/bin/grim -t ppm - | $satty
-      bindp = , f, submap, reset
-      bindp = , w, exec, hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"' | grim -t ppm -g - - | $satty
-      bindp = , w, submap, reset
-      bind = , Return, submap, reset
-      bind = , Escape, submap, reset
-      submap = reset
-    '';
-    settings = {
-      "$mod" = "SUPER";
-      "$terminal" = "${pkgs.wezterm}/bin/wezterm";
-      "$launcher" = "${pkgs.rofi}/bin/rofi -show-icons -matching fuzzy";
-      general.layout = "dwindle";
-      master = {
-        orientation = "center";
-        slave_count_for_center_master = 0;
-        smart_resizing = false;
-      };
-      bind = [
-        "$mod, Return, exec, $terminal"
-        "$mod, q, killactive,"
-        "$mod SHIFT, q, exit"
-        "$mod, f, fullscreen, 1" # keep the gaps
-        "$mod SHIFT, f, fullscreen, 0" # don't keep the gaps
-        "$mod, h, movefocus, l"
-        "$mod, l, movefocus, r"
-        "$mod, k, movefocus, u"
-        "$mod, j, movefocus, d"
-        "$mod SHIFT, h, movewindow, l"
-        "$mod SHIFT, l, movewindow, r"
-        "$mod SHIFT, k, movewindow, u"
-        "$mod SHIFT, j, movewindow, d"
-        "$mod, 1, workspace, 1"
-        "$mod, 2, workspace, 2"
-        "$mod, 3, workspace, 3"
-        "$mod, 4, workspace, 4"
-        "$mod, 5, workspace, 5"
-        "$mod, 6, workspace, 6"
-        "$mod, 7, workspace, 7"
-        "$mod, 8, workspace, 8"
-        "$mod, 9, workspace, 9"
-        "$mod SHIFT, 1, movetoworkspace, 1"
-        "$mod SHIFT, 2, movetoworkspace, 2"
-        "$mod SHIFT, 3, movetoworkspace, 3"
-        "$mod SHIFT, 4, movetoworkspace, 4"
-        "$mod SHIFT, 5, movetoworkspace, 5"
-        "$mod SHIFT, 6, movetoworkspace, 6"
-        "$mod SHIFT, 7, movetoworkspace, 7"
-        "$mod SHIFT, 8, movetoworkspace, 8"
-        "$mod SHIFT, 9, movetoworkspace, 9"
-        "$mod, d, exec, $launcher -combi-modes \"window,drun\" -show combi -modes combi -columns 2"
-        "$mod SHIFT, e, exec, cliphist list | $launcher -dmenu -display-columns 2 | cliphist decode | wl-copy"
-        "$mod SHIFT, 0, exec, hyprlock"
-      ];
-      bindl = [
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPrev, exec, playerctl previous"
-      ];
-      bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
-      ];
-      layerrule = [
-        "blur on, match:namespace waybar"
-        #"blur, swaync-control-center"
-        #"ignorezero, swaync-control-center"
-        #"ignorealpha 0.5, swaync-control-center"
-      ];
-      windowrule = [
-        "match:class ^(Zoom.*), match:title ^(meeting bottombar.*)$, stay_focused on"
-        "match:class ^(Zoom.*), float on"
-        "match:fullscreen 1, border_color rgb(50fa7b)"
-      ];
-      workspace = [
-        "1, layoutopt:orientation:left"
-      ];
-      binds = {
-        workspace_back_and_forth = true;
-      };
-      animations.enabled = false;
-      gesture = [
-        "3, horizontal, workspace"
-      ];
-      cursor = {
-        inactive_timeout = 10;
-        hide_on_key_press = true;
-      };
-      ecosystem = {
-        no_donation_nag = true;
-        no_update_news = true;
-      };
-      decoration = {
-        blur = {
-          enabled = true;
-          size = 6;
-          passes = 1;
-          new_optimizations = true;
+    submaps = {
+      resize = {
+        onDispatch = "";
+        settings = {
+          bind = [
+            (mkBind "h" "hl.dsp.window.resize({ x = -10, y = 0, relative = true })" { repeating = true; })
+            (mkBind "l" "hl.dsp.window.resize({ x = 10, y = 0, relative = true })" { repeating = true; })
+            (mkBind "j" "hl.dsp.window.resize({ x = 0, y = 10, relative = true })" { repeating = true; })
+            (mkBind "k" "hl.dsp.window.resize({ x = 0, y = -10, relative = true })" { repeating = true; })
+
+            (mkBind "SHIFT + h" "hl.dsp.window.resize({ x = -30, y = 0, relative = true })" {
+              repeating = true;
+            })
+            (mkBind "SHIFT + l" "hl.dsp.window.resize({ x = 30, y = 0, relative = true })" {
+              repeating = true;
+            })
+            (mkBind "SHIFT + j" "hl.dsp.window.resize({ x = 0, y = 30, relative = true })" {
+              repeating = true;
+            })
+            (mkBind "SHIFT + k" "hl.dsp.window.resize({ x = 0, y = -30, relative = true })" {
+              repeating = true;
+            })
+
+            (mkBind "escape" ''hl.dsp.submap("reset")'' { })
+            (mkBind "Return" ''hl.dsp.submap("reset")'' { })
+            (mkBind "${mod} + r" ''hl.dsp.submap("reset")'' { })
+          ];
         };
       };
-      env = osConfig._meta.desktop.hyprlandGPU;
+
+      screenshot =
+        let
+          satty = "${pkgs.satty}/bin/satty -f - --initial-tool=arrow --copy-command=wl-copy --actions-on-escape=\"save-to-clipboard,exit\" --brush-smooth-history-size=5 --disable-notifications";
+        in
+        {
+          onDispatch = "";
+          settings = {
+            bind = [
+              (mkExecFlags "r" "${pkgs.grim}/bin/grim -t ppm -g \"$(${pkgs.slurp}/bin/slurp -d)\" - | ${satty}" {
+                bypass = true;
+              })
+              (mkBind "r" ''hl.dsp.submap("reset")'' { bypass = true; })
+
+              (mkExecFlags "f" "${pkgs.grim}/bin/grim -t ppm - | ${satty}" { bypass = true; })
+              (mkBind "f" ''hl.dsp.submap("reset")'' { bypass = true; })
+
+              (mkExecFlags "w"
+                "hyprctl activewindow -j | jq -r '\"\\(.at[0]),\\(.at[1]) \\(.size[0])x\\(.size[1])\"' | grim -t ppm -g - - | ${satty}"
+                { bypass = true; }
+              )
+              (mkBind "w" ''hl.dsp.submap("reset")'' { bypass = true; })
+
+              (mkBind "Return" ''hl.dsp.submap("reset")'' { })
+              (mkBind "escape" ''hl.dsp.submap("reset")'' { })
+            ];
+          };
+        };
+    };
+
+    settings = {
+      config = {
+        general.layout = "dwindle";
+        master = {
+          orientation = "center";
+          slave_count_for_center_master = 0;
+          smart_resizing = false;
+        };
+
+        animations.enabled = false;
+
+        binds = {
+          workspace_back_and_forth = true;
+        };
+        cursor = {
+          inactive_timeout = 10;
+          hide_on_key_press = true;
+        };
+
+        ecosystem = {
+          no_donation_nag = true;
+          no_update_news = true;
+        };
+
+        decoration = {
+          blur = {
+            enabled = true;
+            size = 6;
+            passes = 1;
+            new_optimizations = true;
+          };
+        };
+      };
+
+      bind = [
+        (mkExec "${mod} + Return" terminal)
+        (mkBind "${mod} + q" "hl.dsp.window.close()" { })
+        (mkBind "${mod} + SHIFT + q" "hl.dsp.exit()" { })
+
+        (mkBind "${mod} + f" ''hl.dsp.window.fullscreen({ mode = "maximized" })'' { })
+        (mkBind "${mod} + SHIFT + f" ''hl.dsp.window.fullscreen({ mode = "fullscreen" })'' { })
+
+        # Move focus
+        (mkBind "${mod} + h" ''hl.dsp.focus({ direction = "l" })'' { })
+        (mkBind "${mod} + l" ''hl.dsp.focus({ direction = "r" })'' { })
+        (mkBind "${mod} + k" ''hl.dsp.focus({ direction = "u" })'' { })
+        (mkBind "${mod} + j" ''hl.dsp.focus({ direction = "d" })'' { })
+
+        # Move window
+        (mkBind "${mod} + SHIFT + h" ''hl.dsp.window.move({ direction = "l" })'' { })
+        (mkBind "${mod} + SHIFT + l" ''hl.dsp.window.move({ direction = "r" })'' { })
+        (mkBind "${mod} + SHIFT + k" ''hl.dsp.window.move({ direction = "u" })'' { })
+        (mkBind "${mod} + SHIFT + j" ''hl.dsp.window.move({ direction = "d" })'' { })
+
+        # Switch to workspace
+        (mkBind "${mod} + 1" ''hl.dsp.focus({ workspace = "1" })'' { })
+        (mkBind "${mod} + 2" ''hl.dsp.focus({ workspace = "2" })'' { })
+        (mkBind "${mod} + 3" ''hl.dsp.focus({ workspace = "3" })'' { })
+        (mkBind "${mod} + 4" ''hl.dsp.focus({ workspace = "4" })'' { })
+        (mkBind "${mod} + 5" ''hl.dsp.focus({ workspace = "5" })'' { })
+        (mkBind "${mod} + 6" ''hl.dsp.focus({ workspace = "6" })'' { })
+        (mkBind "${mod} + 7" ''hl.dsp.focus({ workspace = "7" })'' { })
+        (mkBind "${mod} + 8" ''hl.dsp.focus({ workspace = "8" })'' { })
+        (mkBind "${mod} + 9" ''hl.dsp.focus({ workspace = "9" })'' { })
+
+        # Move active window to a workspace
+        (mkBind "${mod} + SHIFT + 1" ''hl.dsp.window.move({ workspace = "1" })'' { })
+        (mkBind "${mod} + SHIFT + 2" ''hl.dsp.window.move({ workspace = "2" })'' { })
+        (mkBind "${mod} + SHIFT + 3" ''hl.dsp.window.move({ workspace = "3" })'' { })
+        (mkBind "${mod} + SHIFT + 4" ''hl.dsp.window.move({ workspace = "4" })'' { })
+        (mkBind "${mod} + SHIFT + 5" ''hl.dsp.window.move({ workspace = "5" })'' { })
+        (mkBind "${mod} + SHIFT + 6" ''hl.dsp.window.move({ workspace = "6" })'' { })
+        (mkBind "${mod} + SHIFT + 7" ''hl.dsp.window.move({ workspace = "7" })'' { })
+        (mkBind "${mod} + SHIFT + 8" ''hl.dsp.window.move({ workspace = "8" })'' { })
+        (mkBind "${mod} + SHIFT + 9" ''hl.dsp.window.move({ workspace = "9" })'' { })
+
+        (mkExec "${mod} + d" "${launcher} -combi-modes \"window,drun\" -show combi -modes combi -columns 2")
+        (mkExec "${mod} + SHIFT + e" "cliphist list | ${launcher} -dmenu -display-columns 2 | cliphist decode | wl-copy")
+        (mkExec "${mod} + SHIFT + 0" "hyprlock")
+
+        (mkBind "${mod} + r" ''hl.dsp.submap("resize")'' { })
+        (mkBind "${mod} + SHIFT + p" ''hl.dsp.submap("screenshot")'' { })
+
+        # Mouse window controls
+        (mkBind "${mod} + mouse:272" "hl.dsp.window.drag()" { mouse = true; })
+        (mkBind "${mod} + mouse:273" "hl.dsp.window.resize()" { mouse = true; })
+
+        # Media keys
+        (mkExecFlags "XF86AudioMute" "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" { locked = true; })
+        (mkExecFlags "XF86AudioPlay" "playerctl play-pause" { locked = true; })
+        (mkExecFlags "XF86AudioNext" "playerctl next" { locked = true; })
+        (mkExecFlags "XF86AudioPrev" "playerctl previous" { locked = true; })
+      ];
+
+      layer_rule = [
+        {
+          match = {
+            namespace = "waybar";
+          };
+          blur = true;
+        }
+      ];
+
+      window_rule = [
+        {
+          match = {
+            class = "^(Zoom.*)";
+            title = "^(meeting bottombar.*)$";
+          };
+          stay_focused = true;
+        }
+        {
+          match = {
+            class = "^(Zoom.*)";
+          };
+          float = true;
+        }
+        {
+          match = {
+            fullscreen = true;
+          };
+          border_color = "rgb(50fa7b)";
+        }
+      ];
+
+      workspace_rule = [
+        {
+          workspace = "1";
+          layout_opts = {
+            orientation = "left";
+          };
+        }
+      ];
+
+      gesture = [
+        {
+          fingers = 3;
+          direction = "horizontal";
+          action = "workspace";
+        }
+      ];
+
+      env = map (item: {
+        _args = lib.splitString "," item;
+      }) osConfig._meta.desktop.hyprlandGPU;
     };
   };
 }
