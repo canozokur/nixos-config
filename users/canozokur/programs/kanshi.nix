@@ -72,7 +72,7 @@ in
               mode = "3440x1440@120Hz";
             }
           ];
-          exec = "hyprctl keyword general:layout master";
+          exec = ''hyprctl eval "hl.config({ general = { layout = 'master' } })"'';
         };
       }
       {
@@ -85,7 +85,7 @@ in
               mode = "3440x1440@120Hz";
             }
           ];
-          exec = "hyprctl keyword general:layout master";
+          exec = ''hyprctl eval "hl.config({ general = { layout = 'master' } })"'';
         };
       }
       {
@@ -102,7 +102,7 @@ in
               status = "disable";
             }
           ];
-          exec = "hyprctl keyword general:layout dwindle";
+          exec = ''hyprctl eval "hl.config({ general = { layout = 'dwindle' } })"'';
         };
       }
     ];
