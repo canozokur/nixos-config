@@ -11,6 +11,11 @@ let
     "${swayMsg} workspace ${toString ws}, workspace ${toString ws} output '\"${monitor}\"'";
   moveWorkspace =
     ws: monitor: "${swayMsg} [workspace=${toString ws}] move workspace to '\"${monitor}\"'";
+  switchLayout =
+    layout:
+    pkgs.writeShellScript "kanshi-layout-${layout}" ''
+      hyprctl eval "hl.config({ general = { layout = '${layout}' } })"
+    '';
 in
 {
   services.kanshi = {
@@ -72,7 +77,7 @@ in
               mode = "3440x1440@120Hz";
             }
           ];
-          exec = ''hyprctl eval "hl.config({ general = { layout = 'master' } })"'';
+          exec = "${switchLayout "master"}";
         };
       }
       {
@@ -85,7 +90,7 @@ in
               mode = "3440x1440@120Hz";
             }
           ];
-          exec = ''hyprctl eval "hl.config({ general = { layout = 'master' } })"'';
+          exec = "${switchLayout "master"}";
         };
       }
       {
@@ -102,7 +107,7 @@ in
               status = "disable";
             }
           ];
-          exec = ''hyprctl eval "hl.config({ general = { layout = 'dwindle' } })"'';
+          exec = "${switchLayout "dwindle"}";
         };
       }
     ];
