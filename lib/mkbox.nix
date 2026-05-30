@@ -25,7 +25,7 @@ let
         imports = [
           ../users/${user}/profiles/common.nix
         ]
-        ++ builtins.map (mkProfile ../users/${user}/profiles) profiles;
+        ++ map (mkProfile ../users/${user}/profiles) profiles;
       };
     }
   ];
@@ -45,7 +45,7 @@ let
       };
     };
 in
-inputs.nixpkgs.lib.nixosSystem {
+lib.nixosSystem {
   inherit system;
 
   specialArgs = {
@@ -58,6 +58,6 @@ inputs.nixpkgs.lib.nixosSystem {
     # import common profile
     ../profiles/core/common.nix
   ]
-  ++ builtins.concatLists (builtins.map mkUser users)
-  ++ builtins.map (mkProfile ../profiles) profiles;
+  ++ builtins.concatLists (map mkUser users)
+  ++ map (mkProfile ../profiles) profiles;
 }
