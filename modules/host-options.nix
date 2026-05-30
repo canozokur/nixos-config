@@ -118,6 +118,19 @@
         description = "Instance name of this MariaDB standalone server.";
       };
       elb = lib.mkEnableOption "This host is host to an nginx external load balancer.";
+      reverseProxy = {
+        enable = lib.mkEnableOption "This host runs the fleet reverse proxy.";
+        externalIP = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "The external-facing IP the reverse proxy listens on.";
+        };
+        internalIP = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "The internal-facing IP the reverse proxy listens on.";
+        };
+      };
     };
 
     # Image payload
