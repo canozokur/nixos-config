@@ -47,6 +47,10 @@ let
     '';
   };
 
+  hyprMoveWS = ws: pkgs.writeShellScript "hypr-move-ws" ''
+    hyprctl dispatch 'hl.dsp.focus({ workspace = "${ws}" })'
+  '';
+
 in
 {
   xdg.configFile."waybar/ctp-mocha.css".source = ctp-mocha;
@@ -250,8 +254,8 @@ in
         "hyprland/workspaces" = {
           sort-by-name = true;
           format = "{icon}";
-          on-scroll-up = "hyprctl dispatch workspace e-1";
-          on-scroll-down = "hyprctl dispatch workspace e+1";
+          on-scroll-up = "${hyprMoveWS "e-1"}";
+          on-scroll-down = "${hyprMoveWS "e+1"}";
         };
 
         "sway/workspaces" = {
