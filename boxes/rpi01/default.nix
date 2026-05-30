@@ -4,6 +4,9 @@
   helpers,
   ...
 }:
+let
+  proxy = helpers.getProxy inputs.self.nixosConfigurations;
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -96,7 +99,7 @@
         "emby.pco.pink" = {
           listen = [
             {
-              addr = "192.168.1.253";
+              addr = proxy.internalIP;
               port = 443;
               ssl = true;
             }
@@ -154,7 +157,7 @@
           '';
           listen = [
             {
-              addr = "192.168.1.253";
+              addr = proxy.internalIP;
               port = 443;
               ssl = true;
             }
@@ -173,7 +176,7 @@
           '';
           listen = [
             {
-              addr = "192.168.1.253";
+              addr = proxy.internalIP;
               port = 443;
               ssl = true;
             }
@@ -192,7 +195,7 @@
           '';
           listen = [
             {
-              addr = "192.168.1.253";
+              addr = proxy.internalIP;
               port = 443;
               ssl = true;
             }
@@ -219,6 +222,18 @@
         ip = "192.168.1.129";
         domain = "truenas.lan";
       }
+    ];
+  };
+
+  fileSystems."/mnt/sonarr-data" = {
+    device = "/dev/disk/by-uuid/9b9cea9d-b9a0-4115-ab64-40b53859f800";
+    fsType = "xfs";
+    options = [
+      "nofail"
+      "_netdev"
+      "auto"
+      "exec"
+      "defaults"
     ];
   };
 
