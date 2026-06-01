@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, options, ... }:
 {
   # Define _meta options
   options._meta = with lib; {
@@ -31,15 +31,15 @@
 
     nginx = {
       vhosts = mkOption {
-        description = "Nginx vhosts that will be configured on the reverse proxy";
+        description = "Nginx vhosts contributed by this host to the fleet proxy.";
         default = { };
-        type = types.attrs;
+        type = options.services.nginx.virtualHosts.type;
       };
 
       upstreams = mkOption {
-        description = "Nginx upstreams";
+        description = "Nginx upstreams contributed by this host to the fleet proxy.";
         default = { };
-        type = types.attrs;
+        type = options.services.nginx.upstreams.type;
       };
     };
 

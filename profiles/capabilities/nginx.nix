@@ -14,8 +14,6 @@ let
     "nginx"
     "upstreams"
   ];
-  vhostList = lib.mapAttrsToList (_: host: host.config._meta.nginx.vhosts) vhostConfigs;
-  vhosts = lib.foldl' (acc: set: acc // set) { } vhostList;
 in
 {
   services.nginx = {
@@ -36,7 +34,9 @@ in
         '$status $body_bytes_sent "$http_referer" ' '"$http_user_agent" $request_time';
       access_log /var/log/nginx/access.log vhost;
     '';
-    virtualHosts = vhosts;
+    virtualHosts = lib.mkMerge (
+      lib.mapAttrsToList (_: host: host.config._meta.nginx.vhosts) vhostConfigs
+    );
     upstreams = lib.mkMerge (
       lib.mapAttrsToList (_: host: host.config._meta.nginx.upstreams) allUpstreams
     );
