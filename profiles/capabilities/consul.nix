@@ -29,7 +29,7 @@ in
     enable = true;
     webUi = isServer;
     interface.bind = lib.mkIf (
-      config._meta.networks ? internalInterface
+      config._meta.networks.internalInterface != ""
     ) "${config._meta.networks.internalInterface}";
     extraConfig = {
       server = isServer;
