@@ -9,73 +9,79 @@ This repository contains the declarative configuration for my personal infrastru
 ## Folder Structure
 
 ```graphql
-├── boxes/            # Machine definitions (Hardware + Role)
+├── boxes/            # Per-machine definitions (hardware + identity facts)
 │   ├── nexusbox/     # Workstation (Dell XPS)
-│   ├── rpi01/        # Cluster Node 1
-│   └── ...
-├── users/            # User definitions & Home Manager profiles
-│   ├── canozokur/    # Main user environment
-│   └── ...
-├── profiles/         # Reusable system roles that collects capabilities
-│   ├── core/         # Core module(s) that is common to all nodes
-│   └── capabilities/ # Atomic module configurations
-├── modules/          # Custom NixOS modules
-│   ├── default.nix   # The schema for exported metadata from boxes
-│   └── ...
-├── lib/              # Custom helpers
-│   ├── mkbox.nix     # The system builder wrapper
-│   └── helpers.nix   # Node filtering logic
-└── flake.nix         # Entry point
+│   ├── homebox/      # Gaming / virt host
+│   ├── rpi01..04/    # Raspberry Pi cluster nodes
+│   └── tr.pco.pink/  # VPS
+├── profiles/         # Reusable system roles
+│   ├── core/         # Common to every host
+│   ├── capabilities/ # Atomic single-purpose modules
+│   └── *.nix         # Composite roles (server, monitoring, …)
+├── users/
+│   └── canozokur/
+│       ├── default.nix
+│       ├── profiles/ # Home-Manager role profiles
+│       └── programs/ # Per-program HM configs (nixvim, hyprland, …)
+├── modules/
+│   └── host-options.nix  # The _meta option schema
+├── lib/
+│   ├── mkbox.nix     # System builder (wraps `lib.nixosSystem`)
+│   ├── helpers.nix   # Fleet-aware helpers (getHostsWith, getProxy, …)
+│   └── constants.nix # Fleet-wide constants (SSL domains, NFS endpoints)
+├── flake.nix         # Entry point
+└── justfile          # Common task shortcuts
 ```
 
 ## Development tools
 
-There's a `devShells` definition in the flake so you can do `nix develop` and you should get a shell with sops, age, ssh-to-age and just tools available.
+`nix develop` drops you into a shell with `sops`, `age`, `ssh-to-age`, `just`, `dnsutils`, and `nixfmt` available.
 
 ## Flake exposed packages
 
 ### Neovim (via nixvim)
-Just run anywhere to get my neovim configuration:
 ```bash
 nix run github:canozokur/nixos-config#neovim
 ```
 
-## The "_meta" attributes
+### SD images
+Hosts that import the SD-image module (the Pi cluster) expose an `images` output:
+```bash
+nix build .#images.rpi01
+```
 
-Nodes declare their properties via a custom `_meta` option, and the modules will adapt using those.
+## The `_meta` attribute
 
-### 1. Declaring State (The Contract)
-Every machine defines its identity in its configuration (`boxes/<host>/default.nix`):
+Each host declares its identity via a custom `_meta` option, and other modules adapt by reading peers' `_meta` from `inputs.self.nixosConfigurations`.
 
+### 1. Declaring state
+
+In `boxes/<host>/default.nix`:
 ```nix
 { ... }: {
-  # Define static facts about this node
   _meta = {
     networks = {
-      externalIP = "192.168.1.50";
-      internalIP = "1.1.1.1";
+      externalIP = "192.168.1.5";
+      internalIP = "192.168.1.5";
     };
+    services.consulServer = true;
     dnsConfigurations = [
-      { ip = "192.168.1.50"; domain = "cluster.lan"; }
+      { ip = "192.168.1.129"; domain = "truenas.lan"; }
     ];
   };
 }
 ```
 
-### 2. Consuming State (Service Discovery)
-Using custom helpers, other modules can aggregate this data to configure services.
+The full schema lives in `modules/host-options.nix`.
 
-Example: **Auto-generating DNS records for the nodes:**
+### 2. Consuming state
 
+Aggregator profiles read peers' `_meta` via `helpers.getHostsWith`. Example: auto-generating `/etc/hosts` entries for every host that declares a DNS record:
 ```nix
-{ inputs, helpers, ... }:
-let
-  # Filter the fleet for hosts that actually have DNS config
-  hosts = helpers.getHostsWith inputs.self.nixosConfigurations "dnsConfigurations";
-  
-  # Generate /etc/hosts entries
-  entries = lib.flatten (lib.mapAttrsToList (_: h: 
-    map (e: "${e.ip} ${h.config.networking.hostName}.${e.domain}") h.config._meta.dnsConfigurations
+{ inputs, helpers, lib, ... }: let
+  hosts = helpers.getHostsWith inputs.self.nixosConfigurations [ "dnsConfigurations" ];
+  entries = lib.flatten (lib.mapAttrsToList (_: h:
+    map (e: "${e.ip} ${e.domain}") h.config._meta.dnsConfigurations
   ) hosts);
 in {
   networking.extraHosts = lib.concatStringsSep "\n" entries;
@@ -84,62 +90,72 @@ in {
 
 ## mkBox (`lib/mkbox.nix`)
 
-This one binds everything together. It's a function that includes modules for users and boxes. Each profile defined in the `flake.nix` file will be included here for each box and user (which means they will become home-manager modules).
+`mkBox` is the per-host system builder. Each box is declared in `flake.nix` with two independent profile lists — `profiles` for the system side and `userProfiles` for Home-Manager. A typo on either side fails the build, and a system role with no user-side counterpart (e.g. `sunshine`, `virt-host`) just lists nothing under `userProfiles`.
 
 ```nix
-# machines (boxes) are defined in flake.nix and for this example,
-# this machine will include profiles/virtual.nix profiles/desktop.nix etc.
-# also the user profiles under users/canozokur/profiles/virtual.nix etc. will be included
-    boxes = {
-      virtnixbox = {
-        system = "x86_64-linux";
-        users = [ "canozokur" ];
-        profiles = [ "virtual" "desktop" "coding" "gaming" ];
-      };
+boxes = {
+  homebox = {
+    system = "x86_64-linux";
+    users = [ "canozokur" ];
+    profiles     = [ "gaming" "sunshine" "virt-host" ];
+    userProfiles = [ "gaming" ];
+  };
+};
 ```
+
+`mkBox` also threads `inputs`, `helpers`, and `constants` through as `specialArgs` (and `extraSpecialArgs` for Home-Manager), so any module can pull them straight from its function args.
 
 ## Helpers (`lib/helpers.nix`)
 
-This one is a custom library to filter out the flake inputs, based on a given path's existince.
-
-*   **`getHostsWith hosts path`**:
-    Returns an attribute set of machines where the specified configuration option (`path`) is defined and valid (not null, not empty).
-
+* **`getHostsWith hosts path`** — Returns the subset of `hosts` whose `config._meta.<path>` is non-default (i.e. not null/""/[]/false/{}). Used to find peers that meaningfully contribute to a fleet-level aggregate.
     ```nix
-    # Get all nodes that exposes an external IP address
-    nodesWithExternalIP = helpers.getHostsWith inputs.self.nixosConfigurations ["networks" "externalIP"];
+    helpers.getHostsWith inputs.self.nixosConfigurations [ "networks" "externalIP" ];
     ```
+* **`getProxy hosts`** — Finds the unique host with `_meta.services.reverseProxy.enable = true`. Throws if 0 or >1 hosts match. Returns `{ externalIP; internalIP; hostname; }`.
+* **`listToNumberedAttrs prefix list`** — Converts `[ "a" "b" ]` to `{ prefix1 = "a"; prefix2 = "b"; }`. Used to build NetworkManager `address1`/`address2`/… keys.
+
+## Constants (`lib/constants.nix`)
+
+Fleet-wide invariants — SSL domains, the TrueNAS endpoint, etc. — live in `lib/constants.nix` and are passed through via `specialArgs`. Any module can read them from its args:
+```nix
+{ constants, ... }: {
+  fileSystems."/shared".device =
+    "${constants.fleet.storage.truenas}:${constants.fleet.storage.sharedVolume}";
+}
+```
 
 ## Usage
 
 ### Bootstrap a new machine
-1.  Boot into the NixOS Installation ISO.
-2.  Clone this repo:
+1. Boot the NixOS installer ISO.
+2. Clone:
     ```bash
     git clone https://github.com/canozokur/nixos-config /etc/nixos
     ```
-3.  Generate hardware config (if new hardware):
+3. Generate hardware config:
     ```bash
     nixos-generate-config --show-hardware-config > ./boxes/newbox/hardware-configuration.nix
     ```
-4.  Add the new box to `flake.nix` and `boxes/`.
-5.  Install:
+4. Add the new box entry to `flake.nix` and fill in `boxes/newbox/`.
+5. Install:
     ```bash
     nixos-install --flake .#newbox
     ```
 
-### Updates
-`just` to manage common tasks:
+### Day-to-day
 
+`justfile` defines the common tasks:
 ```bash
-just switch         # Rebuild and switch current system
-just dry            # Dry build to check for errors
-just build-image rpi01  # Build SD card image for rpi01
+just switch                              # Rebuild and activate the current host
+just dry                                 # Dry build (no activation)
+just push rpi01 canozokur@192.168.1.60   # Build locally, push to a remote
+just update-all                          # Update every flake input
+just update-secrets                      # Update only nix-secrets
 ```
 
 ## Secrets
 
-Secrets are managed via **sops-nix** in a private repo.
+Managed via [sops-nix](https://github.com/Mic92/sops-nix) with secrets stored in a separate private flake input (`inputs.nix-secrets`).
 
 ## License
 
