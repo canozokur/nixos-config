@@ -156,7 +156,7 @@
     };
 
     prometheus = mkOption {
-      description = "Consul configuration";
+      description = "Prometheus / node-exporter configuration for this host.";
       default = { };
       type = types.submodule {
         options = {
