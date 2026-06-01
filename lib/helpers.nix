@@ -1,25 +1,22 @@
 { lib }:
 {
+  # Returns the subset of `hosts` whose `config._meta.<path>` is non-default
+  # (i.e. not null/""/[ ]/false/{ }). Use this to find hosts that
+  # meaningfully contribute to a fleet-level aggregate — vhosts they want
+  # proxied, peers in a galera cluster, hosts that run a DNS server, etc.
   getHostsWith =
     hosts: path:
-    let
-      # Ensure path is a list (e.g. "externalIP" -> ["externalIP"])
-      keyPath = if builtins.isList path then path else [ path ];
-    in
     lib.filterAttrs (
       name: host:
       let
-        # Safely try to get config._meta.<path>
-        # We look inside the 'host' object at .config._meta
         val = lib.attrByPath (
           [
             "config"
             "_meta"
           ]
-          ++ keyPath
+          ++ path
         ) null host;
       in
-      # The Validity Checks
       val != null && val != "" && val != [ ] && val != false && val != { }
     ) hosts;
 

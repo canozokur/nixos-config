@@ -14,7 +14,7 @@ let
   ];
   localDns = lib.mapAttrsToList (n: h: "${h.config._meta.networks.internalIP} ${n}.lan") localHosts;
 
-  customDnsHosts = helpers.getHostsWith allHosts "dnsConfigurations";
+  customDnsHosts = helpers.getHostsWith allHosts [ "dnsConfigurations" ];
   customDnsEntries = lib.flatten (
     lib.mapAttrsToList (
       _: host:
