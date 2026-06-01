@@ -133,9 +133,6 @@
       };
     };
 
-    # Image payload
-    buildImage = lib.mkEnableOption "This host exports an image to build";
-
     desktop = mkOption {
       description = "Desktop related settings";
       default = { };

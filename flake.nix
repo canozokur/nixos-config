@@ -163,9 +163,8 @@
       nixosConfigurations = nixpkgs.lib.mapAttrs (name: cfg: mkBox (cfg // { box = name; })) boxes;
 
       images = nixpkgs.lib.pipe self.nixosConfigurations [
-        # based on the metadata exported from rpi-image profile ...
-        (nixpkgs.lib.filterAttrs (name: host: host.config._meta.buildImage or false))
-        # ... generate the image config
+        # hosts that import the sd-image module expose `system.build.sdImage`
+        (nixpkgs.lib.filterAttrs (name: host: host.config.system.build ? sdImage))
         (nixpkgs.lib.mapAttrs (name: host: host.config.system.build.sdImage))
       ];
 
