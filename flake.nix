@@ -80,6 +80,10 @@
             "capabilities/laptop"
             "workstation"
           ];
+          userProfiles = [
+            "capabilities/laptop"
+            "workstation"
+          ];
         };
 
         homebox = {
@@ -89,6 +93,9 @@
             "gaming"
             "sunshine"
             "virt-host"
+          ];
+          userProfiles = [
+            "gaming"
           ];
         };
 
@@ -103,6 +110,7 @@
             "radarr"
             "sonarr"
           ];
+          userProfiles = [ "server" ];
         };
 
         rpi02 = {
@@ -114,6 +122,7 @@
             "server"
             "mysql-node"
           ];
+          userProfiles = [ "server" ];
         };
 
         rpi03 = {
@@ -126,6 +135,7 @@
             "ombi"
             "syncthing"
           ];
+          userProfiles = [ "server" ];
         };
 
         rpi04 = {
@@ -136,6 +146,7 @@
             "server"
             "monitoring"
           ];
+          userProfiles = [ "server" ];
         };
 
         "tr.pco.pink" = {
@@ -144,6 +155,7 @@
           profiles = [
             "server"
           ];
+          userProfiles = [ "server" ];
         };
       };
     in

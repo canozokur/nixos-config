@@ -9,9 +9,20 @@
   system,
   users,
   profiles,
+  userProfiles ? [ ],
 }:
 let
   lib = inputs.nixpkgs.lib;
+
+  resolveProfile =
+    pathPrefix: profile:
+    let
+      profilePath = pathPrefix + "/${profile}.nix";
+    in
+    if builtins.pathExists profilePath then
+      profilePath
+    else
+      throw "mkBox: profile not found at ${toString profilePath}";
 
   mkUser = user: [
     ../users/${user}/default.nix
@@ -30,25 +41,10 @@ let
         imports = [
           ../users/${user}/profiles/common.nix
         ]
-        ++ map (mkProfile ../users/${user}/profiles) profiles;
+        ++ map (resolveProfile ../users/${user}/profiles) userProfiles;
       };
     }
   ];
-
-  mkProfile =
-    pathPrefix: profile:
-    let
-      profilePath = pathPrefix + "/${profile}.nix";
-      profileExists = builtins.pathExists profilePath;
-    in
-    {
-      imports = lib.optionals profileExists [ profilePath ];
-      config = {
-        warnings = lib.mkIf (!profileExists) [
-          "The specified profile does not exist: ${profile}"
-        ];
-      };
-    };
 in
 lib.nixosSystem {
   inherit system;
@@ -63,5 +59,5 @@ lib.nixosSystem {
     ../profiles/core/common.nix
   ]
   ++ builtins.concatLists (map mkUser users)
-  ++ map (mkProfile ../profiles) profiles;
+  ++ map (resolveProfile ../profiles) profiles;
 }
