@@ -10,7 +10,7 @@
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set("n", "gr", '<cmd>Telescope lsp_references<cr>', opts)
     vim.keymap.set('n', 'gi', '<cmd>Telescope lsp_implementations<cr>', opts)
-    vim.keymap.set("n", "<leader>gn", function() vim.diagnostic.goto_next() end, opts)
+    vim.keymap.set("n", "<leader>gn", function() vim.diagnostic.jump() end, opts)
     vim.keymap.set({ 'n', 'x' }, '==', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set("n", "<leader>ws", function() vim.lsp.buf.workspace_symbol() end, opts)
