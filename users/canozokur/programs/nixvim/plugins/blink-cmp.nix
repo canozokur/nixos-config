@@ -7,7 +7,9 @@
         keymap = {
           preset = "default";
           "<Tab>" = [
-            { __raw = "function(cmp) if cmp.snippet_active() then return cmp.accept() else return cmp.select_and_accept() end end"; }
+            {
+              __raw = "function(cmp) if cmp.snippet_active() then return cmp.accept() else return cmp.select_and_accept() end end";
+            }
             "snippet_forward"
             "fallback"
           ];
@@ -23,6 +25,10 @@
             "snippets"
             "buffer"
           ];
+        };
+        signature = {
+          enabled = true;
+          window.show_documentation = false;
         };
       };
     };
