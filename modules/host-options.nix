@@ -21,14 +21,6 @@
       );
     };
 
-    sunshine = {
-      virtualOutput = mkOption {
-        description = "Free GPU port to create virtual output";
-        default = "";
-        type = types.str;
-      };
-    };
-
     nginx = {
       vhosts = mkOption {
         description = "Nginx vhosts contributed by this host to the fleet proxy.";
@@ -172,5 +164,33 @@
     type = lib.types.listOf lib.types.attrs;
     default = [ ];
     description = "List of services to register with the local Consul agent.";
+  };
+
+  options.services.virtualDisplay = lib.mkOption {
+    type = lib.types.submodule {
+      options = {
+        enable = lib.mkEnableOption "Create a virtual headless display for streaming on this host";
+        outputName = lib.mkOption {
+          type = lib.types.str;
+          default = "CUSTOM-HEADLESS-1";
+          description = "Headless output name handed to Sunshine's output_name.";
+        };
+      };
+    };
+    default = { };
+    description = "Virtual headless display used by Sunshine and any streaming setup.";
+  };
+
+  options.services.sunshine.capture = lib.mkOption {
+    type = lib.types.enum [
+      "wlr"
+      "kms"
+    ];
+    default = "wlr";
+    description = ''
+      Sunshine capture method. `wlr` (default) works with Hyprland's headless
+      output and needs no extra capability. `kms` captures the DRM/KMS
+      framebuffer and requires cap_sys_admin on the sunshine binary.
+    '';
   };
 }
