@@ -182,6 +182,7 @@
               just
               dnsutils
               nixfmt
+              gh
             ];
           };
         }
