@@ -52,8 +52,8 @@ let
 in
 {
   imports = [
-    ./capabilities/nginx.nix
-    ./capabilities/consul.nix
+    ./base/nginx.nix
+    ./base/consul.nix
   ];
 
   _meta = {

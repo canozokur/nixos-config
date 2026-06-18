@@ -1,8 +1,8 @@
 { pkgs, ... }:
 {
   imports = [
-    ./capabilities/desktop.nix
-    ./capabilities/coding.nix
+    ./base/desktop.nix
+    ./base/coding.nix
     ../programs/vencord.nix
     ../programs/syncthing.nix
   ];

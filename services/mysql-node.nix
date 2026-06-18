@@ -4,9 +4,9 @@ let
 in
 {
   imports = [
-    ./capabilities/mysql.nix
-    ./capabilities/consul.nix
-    ./capabilities/iscsi-initiator.nix
+    ./base/mysql.nix
+    ./base/consul.nix
+    ./base/iscsi-initiator.nix
   ];
 
   fileSystems."${mountPoint}" = {

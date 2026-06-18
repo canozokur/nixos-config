@@ -8,43 +8,56 @@
   box,
   system,
   users,
-  profiles,
-  userProfiles ? [ ],
+  services,
+  userServices ? [ ],
 }:
 let
   lib = inputs.nixpkgs.lib;
 
-  resolveProfile =
-    pathPrefix: profile:
-    let
-      profilePath = pathPrefix + "/${profile}.nix";
-    in
-    if builtins.pathExists profilePath then
-      profilePath
-    else
-      throw "mkBox: profile not found at ${toString profilePath}";
+  optionalPath =
+    path:
+    if builtins.pathExists (toString path) then [ path ] else [ ];
 
-  mkUser = user: [
-    ../users/${user}/default.nix
-    home-manager.nixosModules.home-manager
-    {
-      home-manager.extraSpecialArgs = {
-        inherit
-          inputs
-          system
-          constants
-          ;
-      };
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.users.${user} = {
-        imports = [
-          ../users/${user}/profiles/common.nix
-        ]
-        ++ map (resolveProfile ../users/${user}/profiles) userProfiles;
-      };
-    }
-  ];
+  resolveService =
+    name:
+    let
+      servicePath = ../services + "/${name}.nix";
+    in
+    if builtins.pathExists servicePath then
+      [ servicePath ] ++ optionalPath ../boxes/${box}/${name}/default.nix
+    else
+      throw "mkBox: service not found at ${toString servicePath}";
+
+  resolveUserService =
+    user: name:
+    let
+      servicePath = ../users/${user}/services + "/${name}.nix";
+    in
+    optionalPath servicePath;
+
+  mkUser =
+    user:
+    [
+      ../users/${user}/default.nix
+      home-manager.nixosModules.home-manager
+      {
+        home-manager.extraSpecialArgs = {
+          inherit
+            inputs
+            system
+            constants
+            ;
+        };
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.users.${user} = {
+          imports = [
+            ../users/${user}/services/common.nix
+          ]
+          ++ builtins.concatMap (resolveUserService user) userServices;
+        };
+      }
+    ];
 in
 lib.nixosSystem {
   inherit system;
@@ -55,9 +68,8 @@ lib.nixosSystem {
 
   modules = [
     ../boxes/${box}
-    # import common profile
-    ../profiles/core/common.nix
+    ../services/core/common.nix
   ]
   ++ builtins.concatLists (map mkUser users)
-  ++ map (resolveProfile ../profiles) profiles;
+  ++ builtins.concatMap resolveService services;
 }

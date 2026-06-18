@@ -16,8 +16,8 @@ let
 in
 {
   imports = [
-    ./capabilities/consul.nix
-    ./capabilities/iscsi-initiator.nix
+    ./base/consul.nix
+    ./base/iscsi-initiator.nix
   ];
 
   _meta.nginx = {
@@ -75,7 +75,7 @@ in
     "d ${mountPoint}   0775    ${toString uid}   ${toString gid}  -    -"
   ];
 
-  # using mkDefault because other profiles might mount the same thing
+  # using mkDefault because other services might mount the same thing
   fileSystems."/shared" = lib.mkDefault {
     device = "${constants.fleet.storage.truenas}:${constants.fleet.storage.sharedVolume}";
     fsType = "nfs";

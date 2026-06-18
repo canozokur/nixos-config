@@ -10,10 +10,10 @@ let
 in
 {
   imports = [
-    ./capabilities/prometheus.nix
-    ./capabilities/grafana.nix
-    ./capabilities/consul.nix
-    ./capabilities/iscsi-initiator.nix
+    ./base/prometheus.nix
+    ./base/grafana.nix
+    ./base/consul.nix
+    ./base/iscsi-initiator.nix
   ];
 
   _meta.nginx = {

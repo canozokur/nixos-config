@@ -5,8 +5,8 @@ let
 in
 {
   imports = [
-    ./capabilities/consul.nix
-    ./capabilities/iscsi-initiator.nix
+    ./base/consul.nix
+    ./base/iscsi-initiator.nix
   ];
 
   _meta.nginx = {

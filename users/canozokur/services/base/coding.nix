@@ -15,5 +15,6 @@
     kubectl
     kubectx
     devenv
+    plannotator
   ];
 }

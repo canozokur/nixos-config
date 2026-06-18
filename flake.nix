@@ -76,12 +76,12 @@
         nexusbox = {
           system = "x86_64-linux";
           users = [ "canozokur" ];
-          profiles = [
-            "capabilities/laptop"
+          services = [
+            "base/laptop"
             "workstation"
           ];
-          userProfiles = [
-            "capabilities/laptop"
+          userServices = [
+            "base/laptop"
             "workstation"
           ];
         };
@@ -89,12 +89,12 @@
         homebox = {
           system = "x86_64-linux";
           users = [ "canozokur" ];
-          profiles = [
+          services = [
             "gaming"
             "sunshine"
             "virt-host"
           ];
-          userProfiles = [
+          userServices = [
             "gaming"
           ];
         };
@@ -102,7 +102,7 @@
         rpi01 = {
           system = "aarch64-linux";
           users = [ "canozokur" ];
-          profiles = [
+          services = [
             "pi"
             "pihole"
             "server"
@@ -110,52 +110,52 @@
             "radarr"
             "sonarr"
           ];
-          userProfiles = [ "server" ];
+          userServices = [ "server" ];
         };
 
         rpi02 = {
           system = "aarch64-linux";
           users = [ "canozokur" ];
-          profiles = [
+          services = [
             "pi"
             "pihole"
             "server"
             "mysql-node"
           ];
-          userProfiles = [ "server" ];
+          userServices = [ "server" ];
         };
 
         rpi03 = {
           system = "aarch64-linux";
           users = [ "canozokur" ];
-          profiles = [
+          services = [
             "pi"
             "server"
             "reverse-proxy"
             "ombi"
             "syncthing"
           ];
-          userProfiles = [ "server" ];
+          userServices = [ "server" ];
         };
 
         rpi04 = {
           system = "aarch64-linux";
           users = [ "canozokur" ];
-          profiles = [
+          services = [
             "pi"
             "server"
             "monitoring"
           ];
-          userProfiles = [ "server" ];
+          userServices = [ "server" ];
         };
 
         "tr.pco.pink" = {
           system = "x86_64-linux";
           users = [ "canozokur" ];
-          profiles = [
+          services = [
             "server"
           ];
-          userProfiles = [ "server" ];
+          userServices = [ "server" ];
         };
       };
     in
