@@ -16,7 +16,7 @@ in
     {
       name = "node-exporter";
       tags = [ "server" ];
-      address = config._meta.networks.internalIP;
+      address = config.box.networking.internalIP;
       port = exporterPort;
       checks = [
         {

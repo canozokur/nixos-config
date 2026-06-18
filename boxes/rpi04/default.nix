@@ -58,7 +58,7 @@ in
             };
             ipv4 =
               let
-                ipList = config._meta.networks.wiredAddresses;
+                ipList = config.box.networking.wiredAddresses;
                 numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
               in
               numberedAddresses
@@ -72,17 +72,14 @@ in
     };
   };
 
-  # exported metadata to use in modules
-  _meta = {
-    networks = {
-      internalIP = "192.168.1.6";
-      externalIP = "192.168.1.6";
-      internalInterface = "end0";
-      wiredAddresses = [
-        "192.168.1.6/24,192.168.1.1"
-        "192.168.0.6/24"
-      ];
-    };
+  box.networking = {
+    internalIP = "192.168.1.6";
+    externalIP = "192.168.1.6";
+    internalInterface = "end0";
+    wiredAddresses = [
+      "192.168.1.6/24,192.168.1.1"
+      "192.168.0.6/24"
+    ];
   };
 
   services.consul.server.enable = true;

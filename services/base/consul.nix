@@ -43,8 +43,8 @@ in
       enable = true;
       webUi = isServer;
       interface.bind = lib.mkIf (
-        config._meta.networks.internalInterface != ""
-      ) "${config._meta.networks.internalInterface}";
+        config.box.networking.internalInterface != ""
+      ) "${config.box.networking.internalInterface}";
       extraConfig = {
         server = isServer;
         retry_join = [ consulDomain ];
@@ -70,7 +70,7 @@ in
 
     services.pihole.extraStaticHosts = lib.mkIf isServer [
       {
-        ip = config._meta.networks.internalIP;
+        ip = config.box.networking.internalIP;
         domain = consulDomain;
       }
     ];

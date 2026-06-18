@@ -117,7 +117,7 @@ in
         };
 
         temperature = {
-          hwmon-path = osConfig._meta.desktop.waybarTemperaturePath;
+          hwmon-path = osConfig.box.desktop.waybarTemperaturePath;
         };
 
         pulseaudio = {

@@ -60,12 +60,10 @@
     "systemd"
   ];
 
-  _meta = {
-    networks = {
-      internalIP = "176.53.96.161";
-      externalIP = "176.53.96.161";
-      internalInterface = "ens18";
-    };
+  box.networking = {
+    internalIP = "176.53.96.161";
+    externalIP = "176.53.96.161";
+    internalInterface = "ens18";
   };
 
   security.pam.loginLimits = [

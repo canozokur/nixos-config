@@ -5,7 +5,7 @@
   ...
 }:
 let
-  _m = config._meta;
+  addr = config.box.networking.internalIP;
   proxy = helpers.getProxy inputs.self.nixosConfigurations;
 in
 {
@@ -19,7 +19,7 @@ in
   services.reverseProxy.contribs.grafana = {
     upstreams = {
       grafana = {
-        servers."${_m.networks.internalIP}:2324" = { };
+        servers."${addr}:2324" = { };
       };
     };
     vhosts = {

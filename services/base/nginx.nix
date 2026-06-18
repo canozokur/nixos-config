@@ -26,11 +26,11 @@ in
       enable = true;
       defaultListen = [
         {
-          addr = "${config._meta.networks.internalIP}";
+          addr = "${config.box.networking.internalIP}";
           port = 80;
         }
         {
-          addr = "${config._meta.networks.internalIP}";
+          addr = "${config.box.networking.internalIP}";
           port = 443;
           ssl = true;
         }
@@ -48,7 +48,7 @@ in
       {
         name = "nginx";
         tags = lib.optionals config.services.nginx.elb [ "elb" ];
-        address = config._meta.networks.internalIP;
+        address = config.box.networking.internalIP;
         port = config.services.nginx.defaultHTTPListenPort;
         checks = [
           {

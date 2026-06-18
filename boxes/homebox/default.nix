@@ -66,14 +66,10 @@
     "drm"
   ];
 
-  _meta = {
-    networks = {
-      internalInterface = "eno1";
-    };
-    desktop = {
-      hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card2" ];
-      waybarTemperaturePath = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon2/temp1_input";
-    };
+  box.networking.internalInterface = "eno1";
+  box.desktop = {
+    hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card2" ];
+    waybarTemperaturePath = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon2/temp1_input";
   };
 
   hardware.graphics.enable = true;

@@ -65,6 +65,9 @@ lib.nixosSystem {
 
   specialArgs = {
     inherit inputs helpers constants;
+    mkReverseProxyService = import ./mkReverseProxyService.nix {
+      inherit inputs helpers;
+    };
   };
 
   modules = [

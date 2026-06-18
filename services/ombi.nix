@@ -3,7 +3,7 @@ let
   mountPoint = "/mnt/ombi-data";
   uid = config.services.ombi.user;
   gid = config.services.ombi.group;
-  addr = config._meta.networks.internalIP;
+  addr = config.box.networking.internalIP;
   port = config.services.ombi.port;
 in
 {

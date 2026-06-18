@@ -9,7 +9,7 @@
 let
   proxy = helpers.getProxy inputs.self.nixosConfigurations;
   port = config.services.sonarr.settings.server.port;
-  addr = config._meta.networks.internalIP;
+  addr = config.box.networking.internalIP;
   mountPoint = "/mnt/sonarr-data";
   uid = config.ids.uids.sonarr;
   gid = 568;

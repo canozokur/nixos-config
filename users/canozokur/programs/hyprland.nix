@@ -236,7 +236,7 @@ in
 
       env = map (item: {
         _args = lib.splitString "," item;
-      }) osConfig._meta.desktop.hyprlandGPU;
+      }) osConfig.box.desktop.hyprlandGPU;
     };
   };
 }

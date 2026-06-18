@@ -9,11 +9,11 @@ let
   allHosts = inputs.self.nixosConfigurations;
 
   localHosts = helpers.getHostsWith allHosts [
-    "_meta"
-    "networks"
+    "box"
+    "networking"
     "internalIP"
   ];
-  localDns = lib.mapAttrsToList (n: h: "${h.config._meta.networks.internalIP} ${n}.lan") localHosts;
+  localDns = lib.mapAttrsToList (n: h: "${h.config.box.networking.internalIP} ${n}.lan") localHosts;
 
   customDnsHosts = helpers.getHostsWith allHosts [
     "services"
@@ -35,7 +35,7 @@ let
     "pihole"
     "dnsServer"
   ];
-  dnsServersList = lib.mapAttrsToList (n: h: "${h.config._meta.networks.internalIP}") piholeHosts;
+  dnsServersList = lib.mapAttrsToList (n: h: "${h.config.box.networking.internalIP}") piholeHosts;
   dnsServers = builtins.concatStringsSep "," dnsServersList;
 in
 {

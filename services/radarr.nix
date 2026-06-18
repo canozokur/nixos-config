@@ -1,7 +1,7 @@
 { config, lib, ... }:
 let
   port = config.services.radarr.settings.server.port;
-  addr = config._meta.networks.internalIP;
+  addr = config.box.networking.internalIP;
   mountPoint = "/mnt/radarr-data";
   uid = config.ids.uids.radarr;
   gid = 568;

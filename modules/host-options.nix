@@ -1,128 +1,49 @@
-{ lib, options, ... }:
 {
-  # Define _meta options
-  options._meta = with lib; {
-    dnsConfigurations = mkOption {
-      description = "List of DNS records associated with this host. These record will be added to pihole as static hosts.";
-      default = [ ];
-      type = types.listOf (
-        types.submodule {
-          options = {
-            ip = mkOption {
-              type = types.str;
-              description = "The external IP address.";
-            };
-            domain = mkOption {
-              type = types.str;
-              description = "The domain name (e.g. 'testing.lan').";
-            };
-          };
-        }
-      );
-    };
-
-    nginx = {
-      vhosts = mkOption {
-        description = "Nginx vhosts contributed by this host to the fleet proxy.";
-        default = { };
-        type = options.services.nginx.virtualHosts.type;
-      };
-
-      upstreams = mkOption {
-        description = "Nginx upstreams contributed by this host to the fleet proxy.";
-        default = { };
-        type = options.services.nginx.upstreams.type;
-      };
-    };
-
-    networks = mkOption {
-      description = "External and internal IP addresses of this host";
-      default = { };
-      type = types.submodule {
-        options = {
-          externalIP =
-            with types;
-            mkOption {
-              type = str;
-              default = "";
-              description = "The primary external address of this host";
-            };
-          internalIP =
-            with types;
-            mkOption {
-              type = str;
-              default = "";
-              description = "The primary internal address of this host";
-            };
-          internalInterface =
-            with types;
-            mkOption {
-              type = str;
-              default = "";
-              description = "The primary internal network interface of this host";
-            };
-          wiredAddresses =
-            with types;
-            mkOption {
-              type = listOf str;
-              default = [ ];
-              description = "List of static IPs (i.e. 192.168.1.100/24) for the wired profile";
-            };
-        };
-      };
-    };
-
-    services = {
-      consulServer = lib.mkEnableOption "This host is a Consul Server";
-      dnsServer = lib.mkEnableOption "This host is a DNS server";
-      dhcpServer = lib.mkEnableOption "This host is a DHCP server";
-      galera.clusterName = lib.mkOption {
+  lib,
+  ...
+}:
+{
+  # Host identity — these options describe *this* host, not a service.
+  # Set in `boxes/${boxName}/default.nix`. Read by service modules and by
+  # home-manager via `osConfig`.
+  options.box = {
+    networking = {
+      externalIP = lib.mkOption {
         type = lib.types.str;
         default = "";
-        description = "A unique Galera cluster name.";
+        description = "The primary external address of this host.";
       };
-      mysql.instanceName = lib.mkOption {
+      internalIP = lib.mkOption {
         type = lib.types.str;
         default = "";
-        description = "Instance name of this MariaDB standalone server.";
+        description = "The primary internal address of this host.";
+      };
+      internalInterface = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        description = "The primary internal network interface of this host.";
+      };
+      wiredAddresses = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = "List of static IPs (e.g. 192.168.1.100/24) for the wired profile.";
       };
     };
 
-    desktop = mkOption {
-      description = "Desktop related settings";
-      default = { };
-      type = types.submodule {
-        options = {
-          hyprlandGPU = mkOption {
-            type = types.listOf types.str;
-            default = [ ];
-            description = "Environment variables for Hyprland GPU settings";
-          };
-          waybarTemperaturePath = mkOption {
-            type = types.str;
-            default = "";
-            description = "HWMon path in /sys/devices for waybar to display the temp";
-          };
-        };
+    desktop = {
+      hyprlandGPU = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = "Environment variables for Hyprland GPU settings.";
       };
-    };
-
-    prometheus = mkOption {
-      description = "Prometheus / node-exporter configuration for this host.";
-      default = { };
-      type = types.submodule {
-        options = {
-          enabledCollectors = mkOption {
-            type = types.listOf types.str;
-            default = [ "systemd" ];
-            description = "Enabled node-exporter collectors";
-          };
-        };
+      waybarTemperaturePath = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        description = "HWMon path in /sys/devices for waybar to display the temp.";
       };
     };
   };
 
-  # consul services
   options.services.node-exporter.enabledCollectors = lib.mkOption {
     type = lib.types.listOf lib.types.str;
     default = [ "systemd" ];
@@ -185,5 +106,4 @@
     });
     default = { };
   };
-
 }

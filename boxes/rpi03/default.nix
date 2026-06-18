@@ -54,7 +54,7 @@
             };
             ipv4 =
               let
-                ipList = config._meta.networks.wiredAddresses;
+                ipList = config.box.networking.wiredAddresses;
                 numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
               in
               numberedAddresses
@@ -68,20 +68,17 @@
     };
   };
 
-  # exported metadata to use in modules
-  _meta = {
-    networks = {
-      internalIP = "192.168.1.5";
-      externalIP = "192.168.1.254";
-      internalInterface = "end0";
-      wiredAddresses = [
-        "192.168.1.5/24,192.168.1.1"
-        "192.168.0.5/24"
-        # reverse-proxy addresses (kept bare to preserve prior behavior)
-        "192.168.1.253"
-        "192.168.1.254"
-      ];
-    };
+  box.networking = {
+    internalIP = "192.168.1.5";
+    externalIP = "192.168.1.254";
+    internalInterface = "end0";
+    wiredAddresses = [
+      "192.168.1.5/24,192.168.1.1"
+      "192.168.0.5/24"
+      # reverse-proxy addresses (kept bare to preserve prior behavior)
+      "192.168.1.253"
+      "192.168.1.254"
+    ];
   };
 
   services.nginx.elb = true;

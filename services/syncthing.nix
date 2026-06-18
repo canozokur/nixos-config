@@ -3,8 +3,8 @@ let
   mountPoint = "/mnt/syncthing-data";
   uid = config.services.syncthing.user;
   gid = config.services.syncthing.group;
-  iface = config._meta.networks.internalInterface;
-  addr = config._meta.networks.internalIP;
+  iface = config.box.networking.internalInterface;
+  addr = config.box.networking.internalIP;
   port = 8384;
 in
 {

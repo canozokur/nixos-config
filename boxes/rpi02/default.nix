@@ -58,7 +58,7 @@ in
             };
             ipv4 =
               let
-                ipList = config._meta.networks.wiredAddresses;
+                ipList = config.box.networking.wiredAddresses;
                 numberedAddresses = helpers.listToNumberedAttrs "address" ipList;
               in
               numberedAddresses
@@ -76,17 +76,14 @@ in
   services.pihole.dnsServer = true;
   services.mysql.instanceName = "home";
 
-  # exported metadata to use in modules
-  _meta = {
-    networks = {
-      internalIP = "192.168.1.4";
-      externalIP = "192.168.1.4";
-      internalInterface = "end0";
-      wiredAddresses = [
-        "192.168.1.4/24,192.168.1.1"
-        "192.168.0.4/24"
-      ];
-    };
+  box.networking = {
+    internalIP = "192.168.1.4";
+    externalIP = "192.168.1.4";
+    internalInterface = "end0";
+    wiredAddresses = [
+      "192.168.1.4/24,192.168.1.1"
+      "192.168.0.4/24"
+    ];
   };
 
   hardware.graphics.enable = true;

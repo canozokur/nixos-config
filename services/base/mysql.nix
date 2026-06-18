@@ -26,7 +26,7 @@ let
     val == clusterName
   ) servers;
   galeraNodes = lib.flatten (
-    lib.mapAttrsToList (_: h: "${h.config._meta.networks.internalIP}") thisCluster
+    lib.mapAttrsToList (_: h: "${h.config.box.networking.internalIP}") thisCluster
   );
 in
 {
@@ -39,7 +39,7 @@ in
       nodeAddresses = galeraNodes;
       name = clusterName;
       localName = "${config.networking.hostName}";
-      localAddress = "${config._meta.networks.internalIP}";
+      localAddress = "${config.box.networking.internalIP}";
     };
   };
 
@@ -51,7 +51,7 @@ in
         ++ lib.optionals (config.services.mysql.instanceName != "") [
           "instance-${config.services.mysql.instanceName}"
         ];
-      address = config._meta.networks.internalIP;
+      address = config.box.networking.internalIP;
       port = config.services.mysql.settings.mysqld.port;
       checks = [
         {

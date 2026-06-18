@@ -1,7 +1,7 @@
 { config, ... }:
 let
   port = config.services.prowlarr.settings.server.port;
-  addr = config._meta.networks.internalIP;
+  addr = config.box.networking.internalIP;
 in
 {
   imports = [
