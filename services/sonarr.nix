@@ -20,7 +20,7 @@ in
     ./base/iscsi-initiator.nix
   ];
 
-  _meta.nginx = {
+  services.reverseProxy.contribs.sonarr = {
     upstreams = {
       sonarr = {
         servers."${addr}:${toString port}" = { };

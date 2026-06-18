@@ -39,7 +39,7 @@ in
     "d ${mountPoint}   0775    ${toString uid}   ${toString gid}  -    -"
   ];
 
-  _meta.nginx = {
+  services.reverseProxy.contribs.ombi = {
     upstreams = {
       ombi = {
         servers."${addr}:${toString port}" = { };

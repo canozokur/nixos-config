@@ -1,6 +1,6 @@
 { lib }:
 {
-  # Returns the subset of `hosts` whose `config._meta.<path>` is non-default
+  # Returns the subset of `hosts` whose `config.<path>` is non-default
   # (i.e. not null/""/[ ]/false/{ }). Use this to find hosts that
   # meaningfully contribute to a fleet-level aggregate — vhosts they want
   # proxied, peers in a galera cluster, hosts that run a DNS server, etc.
@@ -12,7 +12,6 @@
         val = lib.attrByPath (
           [
             "config"
-            "_meta"
           ]
           ++ path
         ) null host;
@@ -20,7 +19,7 @@
       val != null && val != "" && val != [ ] && val != false && val != { }
     ) hosts;
 
-  # Returns the unique host with _meta.services.reverseProxy.enable = true.
+  # Returns the unique host with services.reverseProxy.host.enable = true.
   # Throws if zero or more than one host matches — fail fast on misconfiguration.
   getProxy =
     hosts:
@@ -29,9 +28,9 @@
         _: h:
         lib.attrByPath [
           "config"
-          "_meta"
           "services"
           "reverseProxy"
+          "host"
           "enable"
         ] false h
       ) hosts;
@@ -39,16 +38,16 @@
       count = lib.length names;
     in
     if count == 0 then
-      throw "getProxy: no host has _meta.services.reverseProxy.enable = true"
+      throw "getProxy: no host has services.reverseProxy.host.enable = true"
     else if count > 1 then
       throw "getProxy: multiple reverse-proxy hosts: ${lib.concatStringsSep ", " names}"
     else
       let
         name = lib.head names;
-        meta = matches.${name}.config._meta.services.reverseProxy;
+        cfg = matches.${name}.config.services.reverseProxy.host;
       in
       {
-        inherit (meta) externalIP internalIP;
+        inherit (cfg) externalIP internalIP;
         hostname = name;
       };
 

@@ -62,7 +62,7 @@ in
     };
   };
 
-  _meta.nginx = {
+  services.reverseProxy.contribs.syncthing = {
     upstreams = {
       syncthing = {
         servers."${addr}:${toString port}" = { };

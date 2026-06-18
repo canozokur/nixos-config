@@ -82,12 +82,12 @@
         "192.168.1.254"
       ];
     };
-    services = {
-      consulServer = true;
-      galera.clusterName = "home";
-      elb = true;
-    };
   };
+
+  services.nginx.elb = true;
+
+  services.consul.server.enable = true;
+  services.mysql.galera.clusterName = "home";
 
   hardware.graphics.enable = true;
   # bluetooth config

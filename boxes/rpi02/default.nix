@@ -72,6 +72,10 @@ in
     };
   };
 
+  services.consul.server.enable = true;
+  services.pihole.dnsServer = true;
+  services.mysql.instanceName = "home";
+
   # exported metadata to use in modules
   _meta = {
     networks = {
@@ -82,11 +86,6 @@ in
         "192.168.1.4/24,192.168.1.1"
         "192.168.0.4/24"
       ];
-    };
-    services = {
-      consulServer = true;
-      dnsServer = true;
-      mysql.instanceName = "home";
     };
   };
 

@@ -83,10 +83,9 @@ in
         "192.168.0.6/24"
       ];
     };
-    services = {
-      consulServer = true;
-    };
   };
+
+  services.consul.server.enable = true;
 
   fileSystems."/mnt/prometheus-data" = {
     device = "/dev/disk/by-uuid/301a494c-6b1a-4bc6-9b43-2a33870fda3e";

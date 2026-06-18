@@ -1,6 +1,10 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
-  isServer = config._meta.services.consulServer;
+  isServer = config.services.consul.server.enable;
   consulDomain = "consul.lan";
   consulPorts = {
     tcp = [
@@ -25,39 +29,50 @@ let
   };
 in
 {
-  services.consul = {
-    enable = true;
-    webUi = isServer;
-    interface.bind = lib.mkIf (
-      config._meta.networks.internalInterface != ""
-    ) "${config._meta.networks.internalInterface}";
-    extraConfig = {
-      server = isServer;
-      retry_join = [ consulDomain ];
-      rejoin_after_leave = true;
-      bootstrap_expect = if isServer then 3 else null;
-      client_addr = "0.0.0.0";
-      services = config.services.consul.agentServices;
-      telemetry = {
-        # prom default scrape interval is 10s
-        # and the documentation suggests to use twice that value
-        prometheus_retention_time = "20s";
-        # according to documentation https://developer.hashicorp.com/consul/docs/reference/agent/configuration-file/telemetry#telemetry-prometheus_retention_time
-        # we should disable hostnames
-        disable_hostname = true;
+  options.services.consul = {
+    agentServices = lib.mkOption {
+      type = lib.types.listOf lib.types.attrs;
+      default = [ ];
+      description = "List of services to register with the local Consul agent.";
+    };
+    server.enable = lib.mkEnableOption "This host is a Consul Server";
+  };
+
+  config = {
+    services.consul = {
+      enable = true;
+      webUi = isServer;
+      interface.bind = lib.mkIf (
+        config._meta.networks.internalInterface != ""
+      ) "${config._meta.networks.internalInterface}";
+      extraConfig = {
+        server = isServer;
+        retry_join = [ consulDomain ];
+        rejoin_after_leave = true;
+        bootstrap_expect = if isServer then 3 else null;
+        client_addr = "0.0.0.0";
+        services = config.services.consul.agentServices;
+        telemetry = {
+          # prom default scrape interval is 10s
+          # and the documentation suggests to use twice that value
+          prometheus_retention_time = "20s";
+          # according to documentation https://developer.hashicorp.com/consul/docs/reference/agent/configuration-file/telemetry#telemetry-prometheus_retention_time
+          # we should disable hostnames
+          disable_hostname = true;
+        };
       };
     };
-  };
 
-  networking.firewall = {
-    allowedTCPPorts = consulPorts.tcp;
-    allowedUDPPorts = consulPorts.udp;
-  };
+    networking.firewall = {
+      allowedTCPPorts = consulPorts.tcp;
+      allowedUDPPorts = consulPorts.udp;
+    };
 
-  _meta.dnsConfigurations = lib.mkIf isServer [
-    {
-      ip = config._meta.networks.internalIP;
-      domain = consulDomain;
-    }
-  ];
+    services.pihole.extraStaticHosts = lib.mkIf isServer [
+      {
+        ip = config._meta.networks.internalIP;
+        domain = consulDomain;
+      }
+    ];
+  };
 }

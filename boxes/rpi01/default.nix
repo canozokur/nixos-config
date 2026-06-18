@@ -68,6 +68,11 @@
     };
   };
 
+  services.consul.server.enable = false;
+  services.pihole.dnsServer = true;
+  services.pihole.dhcpServer = true;
+  services.mysql.galera.clusterName = "home";
+
   # exported metadata to use in modules
   _meta = {
     networks = {
@@ -78,12 +83,6 @@
         "192.168.1.3/24,192.168.1.1"
         "192.168.0.3/24"
       ];
-    };
-    services = {
-      consulServer = false;
-      dnsServer = true;
-      dhcpServer = true;
-      galera.clusterName = "home";
     };
   };
 

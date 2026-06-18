@@ -9,7 +9,7 @@ in
     ./base/iscsi-initiator.nix
   ];
 
-  _meta.nginx = {
+  services.reverseProxy.contribs.prowlarr = {
     upstreams = {
       prowlarr = {
         servers."${addr}:${toString port}" = { };

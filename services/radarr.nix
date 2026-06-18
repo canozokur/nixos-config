@@ -12,7 +12,7 @@ in
     ./base/iscsi-initiator.nix
   ];
 
-  _meta.nginx = {
+  services.reverseProxy.contribs.radarr = {
     upstreams = {
       radarr = {
         servers."${addr}:${toString port}" = { };

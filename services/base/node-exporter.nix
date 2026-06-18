@@ -7,7 +7,7 @@ in
     node = {
       enable = true;
       openFirewall = true;
-      enabledCollectors = config._meta.prometheus.enabledCollectors;
+      enabledCollectors = config.services.node-exporter.enabledCollectors;
       disabledCollectors = [ "zfs" ];
     };
   };

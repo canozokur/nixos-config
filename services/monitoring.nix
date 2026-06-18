@@ -16,7 +16,7 @@ in
     ./base/iscsi-initiator.nix
   ];
 
-  _meta.nginx = {
+  services.reverseProxy.contribs.grafana = {
     upstreams = {
       grafana = {
         servers."${_m.networks.internalIP}:2324" = { };

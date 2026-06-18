@@ -7,20 +7,21 @@
   ...
 }:
 let
-  isGalera = (config._meta.services.galera.clusterName != "");
+  isGalera = (config.services.mysql.galera.clusterName != "");
 
-  clusterName = config._meta.services.galera.clusterName;
+  clusterName = config.services.mysql.galera.clusterName;
 
   allHosts = inputs.self.nixosConfigurations;
   servers = helpers.getHostsWith allHosts [
     "services"
+    "mysql"
     "galera"
     "clusterName"
   ];
   thisCluster = lib.filterAttrs (
     n: h:
     let
-      val = lib.attrByPath [ "config" "_meta" "services" "galera" "clusterName" ] null h;
+      val = lib.attrByPath [ "config" "services" "mysql" "galera" "clusterName" ] null h;
     in
     val == clusterName
   ) servers;
@@ -47,8 +48,8 @@ in
       name = "mysql";
       tags =
         lib.optionals isGalera [ "galera-${clusterName}" ]
-        ++ lib.optionals (config._meta.services.mysql.instanceName != "") [
-          "instance-${config._meta.services.mysql.instanceName}"
+        ++ lib.optionals (config.services.mysql.instanceName != "") [
+          "instance-${config.services.mysql.instanceName}"
         ];
       address = config._meta.networks.internalIP;
       port = config.services.mysql.settings.mysqld.port;

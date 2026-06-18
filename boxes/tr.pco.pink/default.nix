@@ -55,18 +55,17 @@
     };
   };
 
+  services.consul.server.enable = false;
+  services.node-exporter.enabledCollectors = [
+    "systemd"
+  ];
+
   _meta = {
     networks = {
       internalIP = "176.53.96.161";
       externalIP = "176.53.96.161";
       internalInterface = "ens18";
     };
-    services = {
-      consulServer = false;
-    };
-    prometheus.enabledCollectors = [
-      "systemd"
-    ];
   };
 
   security.pam.loginLimits = [

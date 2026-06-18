@@ -35,29 +35,6 @@
       };
     };
 
-    gpuPassthrough = mkOption {
-      description = "GPU Passthrough options if virtualization is enabled";
-      default = { };
-      type = types.submodule {
-        options = {
-          video =
-            with types;
-            mkOption {
-              type = str;
-              default = "";
-              description = "The PCI address for passing GPU";
-            };
-          audio =
-            with types;
-            mkOption {
-              type = str;
-              default = "";
-              description = "The PCI address for passing the audio device";
-            };
-        };
-      };
-    };
-
     networks = mkOption {
       description = "External and internal IP addresses of this host";
       default = { };
@@ -109,20 +86,6 @@
         default = "";
         description = "Instance name of this MariaDB standalone server.";
       };
-      elb = lib.mkEnableOption "This host is host to an nginx external load balancer.";
-      reverseProxy = {
-        enable = lib.mkEnableOption "This host runs the fleet reverse proxy.";
-        externalIP = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-          description = "The external-facing IP the reverse proxy listens on.";
-        };
-        internalIP = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-          description = "The internal-facing IP the reverse proxy listens on.";
-        };
-      };
     };
 
     desktop = mkOption {
@@ -160,37 +123,67 @@
   };
 
   # consul services
-  options.services.consul.agentServices = lib.mkOption {
-    type = lib.types.listOf lib.types.attrs;
-    default = [ ];
-    description = "List of services to register with the local Consul agent.";
+  options.services.node-exporter.enabledCollectors = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [ "systemd" ];
+    description = "Enabled node-exporter collectors.";
   };
 
-  options.services.virtualDisplay = lib.mkOption {
-    type = lib.types.submodule {
+  options.services.mysql = {
+    galera.clusterName = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "A unique Galera cluster name.";
+    };
+    instanceName = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "Instance name of this MariaDB standalone server.";
+    };
+  };
+
+  options.services.pihole = {
+    dnsServer = lib.mkEnableOption "This host runs the DNS server (Pi-hole)";
+    dhcpServer = lib.mkEnableOption "This host runs the DHCP server (Pi-hole)";
+    extraStaticHosts = lib.mkOption {
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options = {
+            ip = lib.mkOption {
+              type = lib.types.str;
+              description = "The IP address for the static host.";
+            };
+            domain = lib.mkOption {
+              type = lib.types.str;
+              description = "The domain name for the static host.";
+            };
+          };
+        }
+      );
+      default = [ ];
+      description = "Static DNS entries to register on the DNS server.";
+    };
+  };
+
+  # Contribs must be declared on every host that publishes vhosts/upstreams
+  # (e.g. emby/nzbget glue files run on hosts that don't load reverse-proxy.nix).
+  options.services.reverseProxy.contribs = lib.mkOption {
+    description = "Nginx vhost and upstream contributions from each service.";
+    type = lib.types.attrsOf (lib.types.submodule {
       options = {
-        enable = lib.mkEnableOption "Create a virtual headless display for streaming on this host";
-        outputName = lib.mkOption {
-          type = lib.types.str;
-          default = "CUSTOM-HEADLESS-1";
-          description = "Headless output name handed to Sunshine's output_name.";
+        vhosts = lib.mkOption {
+          type = lib.types.attrsOf lib.types.attrs;
+          default = { };
+          description = "Nginx vhosts contributed by this service.";
+        };
+        upstreams = lib.mkOption {
+          type = lib.types.attrsOf lib.types.attrs;
+          default = { };
+          description = "Nginx upstreams contributed by this service.";
         };
       };
-    };
+    });
     default = { };
-    description = "Virtual headless display used by Sunshine and any streaming setup.";
   };
 
-  options.services.sunshine.capture = lib.mkOption {
-    type = lib.types.enum [
-      "wlr"
-      "kms"
-    ];
-    default = "wlr";
-    description = ''
-      Sunshine capture method. `wlr` (default) works with Hyprland's headless
-      output and needs no extra capability. `kms` captures the DRM/KMS
-      framebuffer and requires cap_sys_admin on the sunshine binary.
-    '';
-  };
 }

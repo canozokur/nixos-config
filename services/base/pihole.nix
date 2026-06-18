@@ -9,17 +9,22 @@ let
   allHosts = inputs.self.nixosConfigurations;
 
   localHosts = helpers.getHostsWith allHosts [
+    "_meta"
     "networks"
     "internalIP"
   ];
   localDns = lib.mapAttrsToList (n: h: "${h.config._meta.networks.internalIP} ${n}.lan") localHosts;
 
-  customDnsHosts = helpers.getHostsWith allHosts [ "dnsConfigurations" ];
+  customDnsHosts = helpers.getHostsWith allHosts [
+    "services"
+    "pihole"
+    "extraStaticHosts"
+  ];
   customDnsEntries = lib.flatten (
     lib.mapAttrsToList (
       _: host:
       let
-        configs = host.config._meta.dnsConfigurations;
+        configs = host.config.services.pihole.extraStaticHosts;
       in
       map (entry: "${entry.ip} ${entry.domain}") configs
     ) customDnsHosts
@@ -27,21 +32,23 @@ let
 
   piholeHosts = helpers.getHostsWith allHosts [
     "services"
+    "pihole"
     "dnsServer"
   ];
   dnsServersList = lib.mapAttrsToList (n: h: "${h.config._meta.networks.internalIP}") piholeHosts;
   dnsServers = builtins.concatStringsSep "," dnsServersList;
 in
 {
-  services.pihole-web = {
-    enable = true;
-    hostName = "pihole.pco.pink";
-    ports = [
-      "1080r"
-      "1443s"
-    ];
-  };
-  services.pihole-ftl = {
+  config = {
+    services.pihole-web = {
+      enable = true;
+      hostName = "pihole.pco.pink";
+      ports = [
+        "1080r"
+        "1443s"
+      ];
+    };
+    services.pihole-ftl = {
     enable = true;
     openFirewallDNS = true;
     openFirewallDHCP = true;
@@ -56,7 +63,7 @@ in
         hosts = localDns ++ customDnsEntries;
       };
       dhcp = {
-        active = lib.mkIf config._meta.services.dhcpServer true;
+        active = lib.mkIf config.services.pihole.dhcpServer true;
         start = "192.168.1.50";
         end = "192.168.1.252"; # reserve 253 for internal connections, 254 for external and 255 for broadcast (just in case)
         router = "192.168.1.1";
@@ -119,5 +126,6 @@ in
         type = "allow";
       }
     ];
+  };
   };
 }
