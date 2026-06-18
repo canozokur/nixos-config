@@ -109,6 +109,10 @@
             "prowlarr"
             "radarr"
             "sonarr"
+            "emby"
+            "nzbget"
+            "qbit"
+            "bazarr"
           ];
           userServices = [ "server" ];
         };

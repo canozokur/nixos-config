@@ -22,11 +22,12 @@ let
     name:
     let
       servicePath = ../services + "/${name}.nix";
+      gluePath = ../boxes/${box}/${name}/default.nix;
     in
-    if builtins.pathExists servicePath then
-      [ servicePath ] ++ optionalPath ../boxes/${box}/${name}/default.nix
+    if builtins.pathExists servicePath || builtins.pathExists gluePath then
+      optionalPath servicePath ++ optionalPath gluePath
     else
-      throw "mkBox: service not found at ${toString servicePath}";
+      throw "mkBox: service not found at ${toString servicePath} or ${toString gluePath}";
 
   resolveUserService =
     user: name:
