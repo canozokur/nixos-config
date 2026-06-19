@@ -164,6 +164,10 @@
       };
     in
     {
+      # Re-export the box specs so external tools (justfile, scripts)
+      # can query each box's declared profiles without parsing flake.nix.
+      boxes = boxes;
+
       nixosConfigurations = nixpkgs.lib.mapAttrs (name: cfg: mkBox (cfg // { box = name; })) boxes;
 
       images = nixpkgs.lib.pipe self.nixosConfigurations [
@@ -187,6 +191,7 @@
               dnsutils
               nixfmt
               gh
+              jq
             ];
           };
         }

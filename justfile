@@ -39,3 +39,17 @@ purge-all: && _rebuild-boot
 
 purge-old: && _rebuild-boot
   sudo nix-collect-garbage --delete-older-than 7d
+
+# usage: services rpi01
+services box:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  nix eval --json '.#boxes."{{box}}"' \
+    | jq -r '
+      "{{box}} (\(.system), users: \(.users | join(", ")))",
+      "  System services:",
+      (if (.services // []) == [] then ["    (none)"] else (.services     | map("    - \(.)")) end | .[]),
+      "  User services:",
+      (if (.userServices // []) == [] then ["    (none)"] else (.userServices | map("    - \(.)")) end | .[]),
+      ""
+    '
