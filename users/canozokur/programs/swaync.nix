@@ -1,7 +1,9 @@
 { pkgs, ... }:
 {
   # this is required for proper icons i.e. "no notifications" icon
-  home.packages = [ pkgs.adwaita-icon-theme ];
+  home.packages = with pkgs; [
+    kdePackages.breeze-icons
+  ];
 
   services.swaync = {
     enable = true;
@@ -279,8 +281,6 @@
 
       .notification-group .notification-group-headers {
         font-size: 12px;
-        width: 10px;
-        height: 10px;
       }
 
       .notification-group .notification-group-headers .notification-group-icon {
@@ -508,7 +508,7 @@
         padding: 4px 8px 8px 8px;
         margin: 0px 8px 8px 8px;
         border-radius: 2px;
-        color: var(--text-primary)
+        color: var(--text-primary);
       }
 
       /* Slider widget */
