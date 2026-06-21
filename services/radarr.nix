@@ -1,7 +1,6 @@
-{ config, lib, ... }:
+{ config, lib, mkReverseProxyService, ... }:
 let
   port = config.services.radarr.settings.server.port;
-  addr = config.box.networking.internalIP;
   mountPoint = "/mnt/radarr-data";
   uid = config.ids.uids.radarr;
   gid = 568;
@@ -12,38 +11,12 @@ in
     ./base/iscsi-initiator.nix
   ];
 
-  services.reverseProxy.contribs.radarr = {
-    upstreams = {
-      radarr = {
-        servers."${addr}:${toString port}" = { };
-      };
-    };
-    vhosts = {
-      "radarr.pco.pink" = {
-        listen = [
-          {
-            addr = "192.168.1.253";
-            port = 443;
-            ssl = true;
-          }
-        ];
-        enableACME = true;
-        acmeRoot = null;
-        forceSSL = true;
-        locations = {
-          "/" = {
-            proxyPass = "http://radarr";
-            recommendedProxySettings = true;
-            extraConfig = ''
-              proxy_set_header   Upgrade $http_upgrade;
-              proxy_set_header   Connection $http_connection;
-              proxy_redirect     off;
-              proxy_http_version 1.1;
-            '';
-          };
-        };
-      };
-    };
+  services.reverseProxy.contribs = mkReverseProxyService {
+    inherit config lib;
+    name = "radarr";
+    subdomain = "radarr";
+    inherit port;
+    websocket = true;
   };
 
   users.groups = {

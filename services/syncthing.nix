@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, mkReverseProxyService, ... }:
 let
   mountPoint = "/mnt/syncthing-data";
   uid = config.services.syncthing.user;
@@ -62,36 +62,16 @@ in
     };
   };
 
-  services.reverseProxy.contribs.syncthing = {
-    upstreams = {
-      syncthing = {
-        servers."${addr}:${toString port}" = { };
-      };
-    };
-    vhosts = {
-      "sync.pco.pink" = {
-        listen = [
-          {
-            addr = "192.168.1.254";
-            port = 443;
-            ssl = true;
-          }
-        ];
-        enableACME = true;
-        acmeRoot = null;
-        forceSSL = true;
-        locations = {
-          "/" = {
-            proxyPass = "http://syncthing";
-            recommendedProxySettings = true;
-            extraConfig = ''
-              proxy_read_timeout 600s;
-              proxy_send_timeout 600s;
-            '';
-          };
-        };
-      };
-    };
+  services.reverseProxy.contribs = mkReverseProxyService {
+    inherit config lib;
+    name = "syncthing";
+    domain = "sync.pco.pink";
+    port = 8384;
+    listenAddr = "192.168.1.254";
+    locationExtraConfig = ''
+      proxy_read_timeout 600s;
+      proxy_send_timeout 600s;
+    '';
   };
 
   networking.firewall.interfaces.${iface} = {

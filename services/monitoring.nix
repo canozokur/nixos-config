@@ -1,11 +1,12 @@
 {
   config,
+  lib,
   helpers,
   inputs,
+  mkReverseProxyService,
   ...
 }:
 let
-  addr = config.box.networking.internalIP;
   proxy = helpers.getProxy inputs.self.nixosConfigurations;
 in
 {
@@ -16,35 +17,14 @@ in
     ./base/iscsi-initiator.nix
   ];
 
-  services.reverseProxy.contribs.grafana = {
-    upstreams = {
-      grafana = {
-        servers."${addr}:2324" = { };
-      };
-    };
-    vhosts = {
-      "grafana.pco.pink" = {
-        listen = [
-          {
-            addr = proxy.externalIP;
-            port = 443;
-            ssl = true;
-          }
-        ];
-        enableACME = true;
-        forceSSL = true;
-        acmeRoot = null;
-        locations = {
-          "/" = {
-            proxyPass = "http://grafana";
-            recommendedProxySettings = true;
-          };
-        };
-      };
-    };
+  services.reverseProxy.contribs = mkReverseProxyService {
+    inherit config lib;
+    name = "grafana";
+    subdomain = "grafana";
+    port = 2324;
+    listenAddr = proxy.externalIP;
   };
 
-  # wait for the mount (declared by the host box) to be available to start
   systemd.services.prometheus.unitConfig = {
     RequiresMountsFor = "/mnt/prometheus-data";
   };

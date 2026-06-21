@@ -1,9 +1,8 @@
-{ config, ... }:
+{ config, lib, mkReverseProxyService, ... }:
 let
   mountPoint = "/mnt/ombi-data";
   uid = config.services.ombi.user;
   gid = config.services.ombi.group;
-  addr = config.box.networking.internalIP;
   port = config.services.ombi.port;
 in
 {
@@ -39,55 +38,34 @@ in
     "d ${mountPoint}   0775    ${toString uid}   ${toString gid}  -    -"
   ];
 
-  services.reverseProxy.contribs.ombi = {
-    upstreams = {
-      ombi = {
-        servers."${addr}:${toString port}" = { };
-      };
-    };
-    vhosts = {
-      "ombi.pco.pink" = {
-        listen = [
-          {
-            addr = "192.168.1.253";
-            port = 443;
-            ssl = true;
-          }
-        ];
-        enableACME = true;
-        acmeRoot = null;
-        forceSSL = true;
-        extraConfig = ''
-          gzip on;
-          gzip_vary on;
-          gzip_min_length 1000;
-          gzip_proxied any;
-          gzip_types text/plain text/css text/xml application/xml text/javascript application/x-javascript image/svg+xml;
-          gzip_disable "MSIE [1-6]\.";
-        '';
-        locations = {
-          "/" = {
-            proxyPass = "http://ombi";
-            recommendedProxySettings = true;
-            extraConfig = ''
-              proxy_set_header   Upgrade $http_upgrade;
-              proxy_set_header   Connection "upgrade";
-              proxy_redirect     off;
-              proxy_http_version 1.1;
-              client_max_body_size 10m;
-              client_body_buffer_size 128k;
-              proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
-              send_timeout 5m;
-              proxy_read_timeout 240;
-              proxy_send_timeout 240;
-              proxy_connect_timeout 240;
-              proxy_cache_bypass $cookie_session;
-              proxy_no_cache $cookie_session;
-              proxy_buffers 32 4k;
-            '';
-          };
-        };
-      };
-    };
+  services.reverseProxy.contribs = mkReverseProxyService {
+    inherit config lib;
+    name = "ombi";
+    subdomain = "ombi";
+    inherit port;
+    extraConfig = ''
+      gzip on;
+      gzip_vary on;
+      gzip_min_length 1000;
+      gzip_proxied any;
+      gzip_types text/plain text/css text/xml application/xml text/javascript application/x-javascript image/svg+xml;
+      gzip_disable "MSIE [1-6]\.";
+    '';
+    locationExtraConfig = ''
+      proxy_set_header   Upgrade $http_upgrade;
+      proxy_set_header   Connection "upgrade";
+      proxy_redirect     off;
+      proxy_http_version 1.1;
+      client_max_body_size 10m;
+      client_body_buffer_size 128k;
+      proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+      send_timeout 5m;
+      proxy_read_timeout 240;
+      proxy_send_timeout 240;
+      proxy_connect_timeout 240;
+      proxy_cache_bypass $cookie_session;
+      proxy_no_cache $cookie_session;
+      proxy_buffers 32 4k;
+    '';
   };
 }

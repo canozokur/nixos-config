@@ -1,39 +1,12 @@
 { inputs, helpers }:
-# Build a reverse-proxy vhost/upstream contribution from a small typed signature.
-#
-# Wired into `specialArgs` by `lib/mkbox.nix`. Usage from a service module:
-#
-#   services.reverseProxy.contribs = mkReverseProxyService {
-#     name = "sonarr";
-#     subdomain = "sonarr";
-#     port = config.services.sonarr.settings.server.port;
-#     websocket = true;
-#   };
-#
-# What it sets:
-#   1. `services.reverseProxy.contribs.${name}.upstreams.${name}` — nginx
-#      upstream pointing at the backend.
-#   2. `services.reverseProxy.contribs.${name}.vhosts.${domain}` — nginx
-#      vhost with ACME/SSL, the standard `recommendedProxySettings`, and any
-#      caller-supplied extras.
-#
-# Defaults:
-#   backendAddr = config.box.networking.internalIP
-#                 (pass explicit IP for cross-host backends — e.g. emby on
-#                  TrueNAS at 192.168.1.129)
-#   listenAddr  = proxy.internalIP
-#                 (pass proxy.externalIP for syncthing-style external binding)
-#   domain      = "${subdomain}.pco.pink"
-#   tls         = true
+# `config` and `lib` are required: they come from the calling module's
+# function args, not from specialArgs.
 {
   config,
   lib,
-  ...
-}:
-{
   name,
-  subdomain,
   port,
+  subdomain ? name,
   backendAddr ? null,
   listenAddr ? null,
   domain ? null,
@@ -87,7 +60,7 @@ let
     // lib.optionalAttrs (extraConfig != "") { inherit extraConfig; };
 in
 {
-  services.reverseProxy.contribs.${name} = {
+  ${name} = {
     upstreams = {
       ${name} = {
         servers."${effectiveBackend}:${toString port}" = { };

@@ -1,44 +1,19 @@
 {
-  inputs,
-  helpers,
+  config,
+  lib,
+  mkReverseProxyService,
   ...
 }:
-let
-  proxy = helpers.getProxy inputs.self.nixosConfigurations;
-in
 {
-  services.reverseProxy.contribs.bazarr = {
-    upstreams = {
-      bazarr = {
-        servers."192.168.1.129:30046" = { };
-      };
-    };
-    vhosts = {
-      "bazarr.pco.pink" = {
-        extraConfig = ''
-          client_max_body_size 0; # disable max upload size for nzbs
-        '';
-        listen = [
-          {
-            addr = proxy.internalIP;
-            port = 443;
-            ssl = true;
-          }
-        ];
-        enableACME = true;
-        acmeRoot = null;
-        forceSSL = true;
-        locations."/" = {
-          proxyPass = "http://bazarr";
-          recommendedProxySettings = true;
-          extraConfig = ''
-            proxy_set_header   Upgrade $http_upgrade;
-            proxy_set_header   Connection $http_connection;
-            proxy_redirect     off;
-            proxy_http_version 1.1;
-          '';
-        };
-      };
-    };
+  services.reverseProxy.contribs = mkReverseProxyService {
+    inherit config lib;
+    name = "bazarr";
+    subdomain = "bazarr";
+    port = 30046;
+    backendAddr = "192.168.1.129";
+    extraConfig = ''
+      client_max_body_size 0; # disable max upload size for nzbs
+    '';
+    websocket = true;
   };
 }
