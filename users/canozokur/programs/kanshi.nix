@@ -35,6 +35,23 @@ in
       }
       {
         profile = {
+          name = "nexusbox_single";
+          outputs = [
+            {
+              criteria = "Sharp Corporation 0x14D0 Unknown";
+              status = "disable";
+            }
+            {
+              criteria = "Philips Consumer Electronics Company 34B2U6603 UK02509028957";
+              status = "enable";
+              mode = "3440x1440@120Hz";
+            }
+          ];
+          exec = "${switchLayout "master"}";
+        };
+      }
+      {
+        profile = {
           name = "home_dual";
           outputs = [
             {
