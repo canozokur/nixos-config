@@ -24,5 +24,6 @@
     cursorline = true;
     cursorlineopt = "number";
     winborder = "rounded";
+    ignorecase = true; # case insensitive searches
   };
 }
