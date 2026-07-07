@@ -63,16 +63,6 @@
               git clone "$@" "$REPOID"
               popd
             }
-            # git clone helper with worktrees
-            function gitbare() {
-              local REPOID="$(echo "$@" | sed -E 's#^.*([:/])([^/]+/[^/]+)$#\2#' | sed -E 's#\.git$##')"
-              mkdir -p ~/data/git-bare
-              pushd ~/data/git-bare
-              mkdir $REPOID
-              cd $REPOID
-              git clone --bare "$@"
-              popd
-            }
             # git worktree helper
             werk() {
               local cmd="$1"
@@ -82,15 +72,39 @@
               fi
               shift
               if [[ "$cmd" == "add" ]]; then
-                local branch="$1"
+                local root="" branch=""
+                while [[ $# -gt 0 ]]; do
+                  case "$1" in
+                    --root)
+                      root="$2"
+                      shift 2
+                      ;;
+                    *)
+                      branch="$1"
+                      shift
+                      ;;
+                  esac
+                done
                 if [[ -z "$branch" ]]; then
                   echo "Error: You must provide a branch name."
-                  echo "Usage: werk add <branch>"
+                  echo "Usage: werk add [--root owner/repo] <branch>"
                   return 1
                 fi
-                shift
-                git worktree add "../$branch" "$branch" "$@"
-                cd "../$branch"
+                if [[ -z "$root" ]]; then
+                  local remote_url
+                  remote_url=$(git remote get-url origin 2>/dev/null) || {
+                    echo "Error: No 'origin' remote found. Use --root owner/repo to specify the path."
+                    return 1
+                  }
+                  root=$(echo "$remote_url" | sed -E 's#^.*([:/])([^/]+/[^/]+)$#\2#' | sed -E 's#\.git$##')
+                fi
+                local worktree_path="$HOME/data/worktrees/$root/$branch"
+                mkdir -p "$(dirname "$worktree_path")"
+                if git show-ref --verify --quiet "refs/heads/$branch"; then
+                  git worktree add "$worktree_path" "$branch"
+                else
+                  git worktree add -b "$branch" "$worktree_path"
+                fi && pushd "$worktree_path"
               else
                 git worktree "$cmd" "$@"
               fi
