@@ -3,20 +3,18 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks = {
+    settings = {
       "*" = {
-        addKeysToAgent = "yes";
-        serverAliveInterval = 10;
-        serverAliveCountMax = 3;
-        compression = false;
-        hashKnownHosts = false;
-        controlMaster = "no";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
-        forwardAgent = false;
-        extraOptions = {
-          SetEnv = "TERM=xterm";
-        };
+        AddKeysToAgent = "yes";
+        ServerAliveInterval = 10;
+        ServerAliveCountMax = 3;
+        Compression = "no";
+        HashKnownHosts = "no";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
+        ForwardAgent = "no";
+        SetEnv.TERM = "xterm";
       };
     }
     // inputs.nix-secrets.ssh.matchBlocks;
