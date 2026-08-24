@@ -3,6 +3,7 @@
   home-manager,
   helpers,
   constants,
+  nixpkgs-fast,
 }:
 {
   box,
@@ -13,6 +14,11 @@
 }:
 let
   lib = inputs.nixpkgs.lib;
+
+  pkgsFast = import nixpkgs-fast {
+    inherit system;
+    config.allowUnfree = true;
+  };
 
   optionalPath =
     path:
@@ -47,6 +53,7 @@ let
             inputs
             system
             constants
+            pkgsFast
             ;
         };
         home-manager.useGlobalPkgs = true;
@@ -64,7 +71,7 @@ lib.nixosSystem {
   inherit system;
 
   specialArgs = {
-    inherit inputs helpers constants;
+    inherit inputs helpers constants pkgsFast;
     mkReverseProxyService = import ./mkReverseProxyService.nix {
       inherit inputs helpers;
     };

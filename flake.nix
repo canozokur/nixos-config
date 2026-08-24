@@ -6,6 +6,10 @@
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
 
+    nixpkgs-fast = {
+      url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -54,6 +58,7 @@
   outputs =
     inputs@{
       nixpkgs,
+      nixpkgs-fast,
       home-manager,
       self,
       ...
@@ -67,6 +72,7 @@
           home-manager
           helpers
           constants
+          nixpkgs-fast
           ;
       };
 
