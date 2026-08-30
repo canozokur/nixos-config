@@ -1,4 +1,4 @@
-{ config, lib, mkReverseProxyService, ... }:
+{ config, lib, constants, mkReverseProxyService, ... }:
 let
   port = config.services.radarr.settings.server.port;
   mountPoint = "/mnt/radarr-data";
@@ -54,7 +54,7 @@ in
 
   # using mkDefault because other services might mount the same thing
   fileSystems."/shared" = lib.mkDefault {
-    device = "192.168.0.100:/mnt/main/k8s/vols/pvc-924a7cdb-6593-4a3b-b498-3fb965cc9ef6";
+    device = "${constants.fleet.storage.truenas}:${constants.fleet.storage.sharedVolume}";
     fsType = "nfs";
     options = [ "nconnect=16" ];
   };
