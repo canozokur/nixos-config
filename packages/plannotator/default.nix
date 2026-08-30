@@ -6,17 +6,17 @@
 }:
 
 let
-  version = "0.20.3";
+  version = "0.27.9";
 
   # Upstream ships Bun-compiled single binaries per platform
   sources = {
     x86_64-linux = {
       suffix = "linux-x64";
-      hash = "sha256-nj6qhLv6XzBShWgTfMTeT5U6xqOqGhAcUsIl1rSTQ44=";
+      hash = "sha256-HTPiAEDxfrefG3UgsCY/dgPCNkaevqourQUoHC0rWF0=";
     };
     aarch64-darwin = {
       suffix = "darwin-arm64";
-      hash = "sha256-gMGOKz6VeW6FkCtOPsktj3v0nfjr/L0SGVx4T6Ui/do=";
+      hash = "sha256-PK8OY7qR+a9FTdtA6/sF9o2g2bpYi+/+2XTpiz4zrvU=";
     };
   };
 
