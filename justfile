@@ -20,8 +20,8 @@ dry-activate:
 test:
   nixos-rebuild --sudo test --flake .
 
-update-secrets:
-  nix flake update nix-secrets
+update channel:
+  nix flake update {{channel}}
 
 update-all:
   nix flake update
