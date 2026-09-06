@@ -175,6 +175,15 @@
           ];
           userServices = [ "server" ];
         };
+
+        "guild.pco.pink" = {
+          system = "x86_64-linux";
+          users = [ "canozokur" ];
+          services = [
+            "server"
+          ];
+          userServices = [ "server" ];
+        };
       };
     in
     {
