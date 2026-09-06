@@ -80,6 +80,7 @@ lib.nixosSystem {
   modules = [
     ../boxes/${box}
     ../services/core/common.nix
+    inputs.disko.nixosModules.disko
   ]
   ++ builtins.concatLists (map mkUser users)
   ++ builtins.concatMap resolveService services;
