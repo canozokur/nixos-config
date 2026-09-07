@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -21,38 +21,18 @@
     };
     hostName = "tr";
     domain = "pco.pink";
-    networkmanager = {
-      enable = true;
-      dns = "default";
-      ensureProfiles = {
-        secrets.entries = [
-          {
-            file = config.sops.secrets."network/secrets/home-wifi/psk".path;
-            key = "psk";
-            matchId = "home-wifi";
-            matchSetting = "802-11-wireless-security";
-            matchType = "802-11-wireless";
-          }
-        ];
-        profiles = {
-          wired = {
-            connection = {
-              id = "wired";
-              permissions = "";
-              type = "802-3-ethernet";
-              interface-name = "ens18";
-              autoconnect = true;
-            };
-            ipv4 = {
-              method = "manual";
-              addresses = "176.53.96.161/24";
-              gateway = "176.53.96.1";
-              dns = "1.1.1.1;1.0.0.1";
-            };
-          };
-        };
-      };
-    };
+    useNetworkd = true;
+    useDHCP = false;
+  };
+
+  services.resolved.enable = true;
+
+  systemd.network.networks."10-ens18" = {
+    matchConfig.Name = "ens18";
+    address = [ "176.53.96.161/24" ];
+    gateway = [ "176.53.96.1" ];
+    dns = [ "1.1.1.1" "1.0.0.1" ];
+    linkConfig.RequiredForOnline = "routable";
   };
 
   services.consul.server.enable = false;
