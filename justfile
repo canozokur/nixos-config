@@ -11,6 +11,10 @@ switch:
 push-build host uri=host:
   nixos-rebuild --sudo boot --flake .#{{host}} --target-host {{uri}}
 
+# usage: provision guild.pco.pink root@guild.pco.pink - automatically:
+provision host uri="root@{{host}}":
+  nixos-anywhere --flake .#{{host}} --copy-host-keys {{uri}} --generate-hardware-config nixos-generate-config ./boxes/{{host}}/hardware-configuration.nix
+
 dry-build host="":
   nixos-rebuild dry-build --flake .#{{host}}
 
