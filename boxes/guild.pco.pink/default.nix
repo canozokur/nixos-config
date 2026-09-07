@@ -6,6 +6,7 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko.nix
+    ./hardware-configuration.nix
   ];
 
   boot.loader = {
@@ -14,7 +15,7 @@
       configurationLimit = 10;
     };
     efi = {
-      canTouchEfiVariables = true;
+      canTouchEfiVariables = false;
     };
   };
 
@@ -27,6 +28,23 @@
     networkmanager = {
       enable = true;
       dns = "default";
+      ensureProfiles.profiles = {
+        wired = {
+          connection = {
+            id = "wired";
+            permissions = "";
+            type = "802-3-ethernet";
+            interface-name = "enp0s6";
+            autoconnect = true;
+          };
+          ipv4 = {
+            method = "manual";
+            addresses = "10.0.253.251/16";
+            gateway = "10.0.0.1";
+            dns = "1.1.1.1;1.0.0.1";
+          };
+        };
+      };
     };
   };
 
@@ -35,11 +53,11 @@
     "systemd"
   ];
 
-  # box.networking = {
-  #   internalIP = "";
-  #   externalIP = "";
-  #   internalInterface = "";
-  # };
+  box.networking = {
+    internalIP = "10.0.253.251";
+    externalIP = "82.70.46.56";
+    internalInterface = "enp0s6";
+  };
 
   system.stateVersion = "26.05";
 }
