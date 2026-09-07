@@ -177,7 +177,7 @@
         };
 
         "guild.pco.pink" = {
-          system = "x86_64-linux";
+          system = "aarch64-linux";
           users = [ "canozokur" ];
           services = [
             "server"
