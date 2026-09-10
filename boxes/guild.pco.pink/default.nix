@@ -27,7 +27,6 @@
     domain = "pco.pink";
     networkmanager = {
       enable = true;
-      dns = "default";
       ensureProfiles.profiles = {
         wired = {
           connection = {
@@ -57,6 +56,7 @@
     internalIP = "10.0.253.251";
     externalIP = "82.70.46.56";
     internalInterface = "enp0s6";
+    tailnet.advertiseExitNode = true;
   };
 
   system.stateVersion = "26.05";

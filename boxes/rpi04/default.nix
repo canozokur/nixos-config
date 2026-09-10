@@ -18,7 +18,6 @@ in
     hostName = "rpi04";
     networkmanager = {
       enable = true;
-      dns = "default";
       wifi.powersave = false;
       ensureProfiles = {
         secrets.entries = [
@@ -80,6 +79,7 @@ in
       "192.168.1.6/24,192.168.1.1"
       "192.168.0.6/24"
     ];
+    tailnet.advertiseRoutes = [ "192.168.1.0/24" ];
   };
 
   services.consul.server.enable = true;

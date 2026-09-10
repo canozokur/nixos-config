@@ -34,7 +34,6 @@
     hostName = "nexusbox";
     networkmanager = {
       enable = true;
-      dns = "default";
       wifi.powersave = false;
       ensureProfiles = {
         secrets.entries = [
@@ -106,6 +105,13 @@
           };
         };
       };
+    };
+  };
+
+  box.networking = {
+    tailnet = {
+      gui = true;
+      operator = "canozokur";
     };
   };
 

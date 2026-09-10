@@ -1,4 +1,9 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 let
   secretsPath = builtins.toString inputs.nix-secrets;
 in
@@ -42,6 +47,10 @@ in
 
   users.mutableUsers = false;
   time.timeZone = "Europe/Helsinki";
+
+  # Fleet-wide local resolver
+  services.resolved.enable = lib.mkDefault true;
+  networking.networkmanager.dns = lib.mkDefault "systemd-resolved";
 
   nix.optimise = {
     automatic = true;

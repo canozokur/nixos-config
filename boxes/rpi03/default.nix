@@ -14,7 +14,6 @@
     hostName = "rpi03";
     networkmanager = {
       enable = true;
-      dns = "default";
       wifi.powersave = false;
       ensureProfiles = {
         secrets.entries = [
@@ -79,6 +78,7 @@
       "192.168.1.253"
       "192.168.1.254"
     ];
+    tailnet.advertiseRoutes = [ "192.168.1.0/24" ];
   };
 
   services.nginx.elb = true;

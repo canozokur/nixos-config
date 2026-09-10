@@ -93,6 +93,7 @@
           services = [
             "base/laptop"
             "workstation"
+            "tailscale"
           ];
           userServices = [
             "base/laptop"
@@ -107,6 +108,7 @@
             "gaming"
             "sunshine"
             "virt-host"
+            "tailscale"
           ];
           userServices = [
             "gaming"
@@ -127,6 +129,7 @@
             "nzbget"
             "qbit"
             "bazarr"
+            "tailscale"
           ];
           userServices = [ "server" ];
         };
@@ -139,6 +142,7 @@
             "pihole"
             "server"
             "mysql-node"
+            "tailscale"
           ];
           userServices = [ "server" ];
         };
@@ -152,6 +156,7 @@
             "reverse-proxy"
             "ombi"
             "syncthing"
+            "tailscale"
           ];
           userServices = [ "server" ];
         };
@@ -163,6 +168,7 @@
             "pi"
             "server"
             "monitoring"
+            "tailscale"
           ];
           userServices = [ "server" ];
         };
@@ -172,6 +178,8 @@
           users = [ "canozokur" ];
           services = [
             "server"
+            "tailscale"
+            "derper"
           ];
           userServices = [ "server" ];
         };
@@ -181,6 +189,8 @@
           users = [ "canozokur" ];
           services = [
             "server"
+            "headscale"
+            "tailscale"
           ];
           userServices = [ "server" ];
         };

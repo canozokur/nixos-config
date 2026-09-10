@@ -1,0 +1,16 @@
+# Static DERP region for tr's standalone derper, merged into headscale's
+# served map. NOTE: headscale parses derp.paths with yaml.v3, which matches
+# struct fields by LOWERCASED names (tailcfg has json-only tags) — capitalized
+# keys are silently dropped and the whole region vanishes. Keep every key
+# lowercase and the region id unquoted.
+regions:
+  901:
+    regionid: 901
+    regioncode: tr
+    regionname: Turkey
+    nodes:
+      - name: tr1
+        regionid: 901
+        hostname: derp.pco.pink
+        derpport: 443
+        stunport: 3478

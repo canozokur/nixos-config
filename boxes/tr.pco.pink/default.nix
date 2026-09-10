@@ -25,13 +25,14 @@
     useDHCP = false;
   };
 
-  services.resolved.enable = true;
-
   systemd.network.networks."10-ens18" = {
     matchConfig.Name = "ens18";
     address = [ "176.53.96.161/24" ];
     gateway = [ "176.53.96.1" ];
-    dns = [ "1.1.1.1" "1.0.0.1" ];
+    dns = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
     linkConfig.RequiredForOnline = "routable";
   };
 
@@ -44,6 +45,7 @@
     internalIP = "176.53.96.161";
     externalIP = "176.53.96.161";
     internalInterface = "ens18";
+    tailnet.advertiseExitNode = true;
   };
 
   security.pam.loginLimits = [

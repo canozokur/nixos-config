@@ -18,7 +18,6 @@ in
     hostName = "rpi02";
     networkmanager = {
       enable = true;
-      dns = "default";
       wifi.powersave = false;
       ensureProfiles = {
         secrets.entries = [
@@ -84,6 +83,7 @@ in
       "192.168.1.4/24,192.168.1.1"
       "192.168.0.4/24"
     ];
+    tailnet.advertiseRoutes = [ "192.168.1.0/24" ];
   };
 
   hardware.graphics.enable = true;

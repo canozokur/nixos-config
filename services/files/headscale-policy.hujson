@@ -1,0 +1,30 @@
+// Tailnet ACL policy.
+//
+// The `fleet` headscale user owns every NixOS machine in this repo; personal
+// devices register under their owner's own headscale user. Access is permissive
+// by design
+{
+  "acls": [
+    // Everyone can reach everything, including the internet through the
+    // approved exit nodes (guild, tr).
+    {
+      "action": "accept",
+      "src": ["*"],
+      "dst": [
+        "*:*",
+        "autogroup:internet:*",
+      ],
+    },
+  ],
+
+  "autoApprovers": {
+    // Nodes under the fleet user may act as exits and advertise the home LAN
+    // without manual `headscale routes approve` calls. NOTE: headscale's
+    // policy parser rejects bare usernames here — approvers must be tags,
+    // groups, or email-form identifiers.
+    "exitNode": ["fleet@pco.pink"],
+    "routes": {
+      "192.168.1.0/24": ["fleet@pco.pink"],
+    },
+  },
+}

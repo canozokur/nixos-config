@@ -16,7 +16,6 @@
     hostName = "homebox";
     networkmanager = {
       enable = true;
-      dns = "default";
       wifi.powersave = false;
       ensureProfiles = {
         secrets.entries = [
@@ -66,7 +65,13 @@
     "drm"
   ];
 
-  box.networking.internalInterface = "eno1";
+  box.networking = {
+    internalInterface = "eno1";
+    tailnet = {
+      gui = true;
+      operator = "canozokur";
+    };
+  };
   box.desktop = {
     hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card2" ];
     waybarTemperaturePath = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon2/temp1_input";

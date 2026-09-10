@@ -30,6 +30,20 @@ let
     ) customDnsHosts
   );
 
+  # Derive static .lan records from the same lease list so every Pi-hole serves every name.
+  dhcpHosts = [
+    "14:cb:19:17:d7:4e,192.168.1.2,laserjet,24h"
+    "d8:bb:c1:63:da:ff,192.168.1.129,truenas,24h"
+    "74:e6:b8:08:37:2d,192.168.1.148,lgwebostv,24h"
+  ];
+  dhcpDnsEntries = map (
+    entry:
+    let
+      parts = lib.splitString "," entry;
+    in
+    "${builtins.elemAt parts 1} ${builtins.elemAt parts 2}.lan"
+  ) dhcpHosts;
+
   piholeHosts = helpers.getHostsWith allHosts [
     "services"
     "pihole"
@@ -44,6 +58,15 @@ in
   ];
 
   config = {
+    # The fleet resolver (services/core/common.nix) binds 127.0.0.53:53.
+    # That collides with pihole-FTL's wildcard bind on :53.
+    # Per https://docs.pi-hole.net/docker/tips-and-tricks/:
+    # disable resolved's stub listener, but keep the service itself running.
+    # NetworkManager and Tailscale MagicDNS integrate with the service.
+    # /etc/resolv.conf must then point at the real resolv.conf, not the stub.
+    services.resolved.settings.Resolve.DNSStubListener = lib.mkForce "no";
+    environment.etc."resolv.conf".source = lib.mkForce "/run/systemd/resolve/resolv.conf";
+
     services.pihole-web = {
       enable = true;
       hostName = "pihole.pco.pink";
@@ -64,7 +87,7 @@ in
             "1.1.1.1"
             "1.0.0.1"
           ];
-          hosts = localDns ++ customDnsEntries;
+          hosts = localDns ++ customDnsEntries ++ dhcpDnsEntries;
         };
         dhcp = {
           active = lib.mkIf config.services.pihole.dhcpServer true;
@@ -74,14 +97,19 @@ in
           netmask = "255.255.255.0";
           leaseTime = "24h";
           rapidCommit = true;
-          hosts = [
-            "14:cb:19:17:d7:4e,192.168.1.2,laserjet,24h"
-            "d8:bb:c1:63:da:ff,192.168.1.129,truenas,24h"
-            "74:e6:b8:08:37:2d,192.168.1.148,lgwebostv,24h"
-          ];
+          hosts = dhcpHosts;
         };
         misc.dnsmasq_lines = [
           "dhcp-option=option:dns-server,${dnsServers}"
+          # With no interface config, dnsmasq enables implicit local-service.
+          # local-service answers only queries from directly-connected subnets.
+          # Tailnet sources (100.64.x) arrive on tailscale0 and are dropped.
+          # Declaring the served interfaces disables implicit local-service.
+          # bind-dynamic tolerates tailscale0 appearing after FTL at boot.
+          "interface=lo"
+          "interface=${config.box.networking.internalInterface}"
+          "interface=tailscale0"
+          "bind-dynamic"
         ]
         ++ lib.optionals config.services.consul.enable [ "server=/consul/127.0.0.1#8600" ];
       };
