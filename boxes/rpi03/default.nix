@@ -78,6 +78,7 @@
       "192.168.1.253"
       "192.168.1.254"
     ];
+    tailnet.acceptRoutes = false;
     tailnet.advertiseRoutes = [ "192.168.1.0/24" ];
   };
 

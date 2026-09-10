@@ -24,6 +24,17 @@ in
       default = false;
       description = "Offer this machine as an exit node (guild, tr).";
     };
+    acceptRoutes = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = ''
+        Accept subnet routes advertised by the routers. An accepted route
+        shadows the directly-connected route for its prefix (table 52 wins
+        over main), so home-LAN-stationary boxes should disable this: their
+        LAN access stays direct and tailnet-independent. Roaming boxes and
+        servers that must reach the home LAN keep it enabled.
+      '';
+    };
     controlServer = lib.mkOption {
       type = lib.types.str;
       default = "https://hs.pco.pink";
@@ -82,9 +93,12 @@ in
 
       extraUpFlags =
         [ "--login-server=${cfg.controlServer}" ]
-        # Consume the subnet routers' routes everywhere except on the routers
-        # themselves (accepting a route for an already-connected LAN is noise).
-        ++ lib.optionals (cfg.advertiseRoutes == [ ]) [ "--accept-routes" ]
+        # Consume the subnet routers' routes except on the routers themselves
+        # (accepting a route for an already-connected LAN is noise) and on
+        # boxes that opt out to keep LAN access direct.
+        ++ lib.optionals (cfg.advertiseRoutes == [ ] && cfg.acceptRoutes) [
+          "--accept-routes"
+        ]
         ++ lib.optionals (cfg.advertiseRoutes != [ ]) [
           "--advertise-routes=${lib.concatStringsSep "," cfg.advertiseRoutes}"
         ]

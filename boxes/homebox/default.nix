@@ -70,6 +70,9 @@
     tailnet = {
       gui = true;
       operator = "canozokur";
+      # stationary on the home LAN: the accepted subnet route would shadow
+      # the directly-connected route and tunnel LAN traffic
+      acceptRoutes = false;
     };
   };
   box.desktop = {
