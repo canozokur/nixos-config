@@ -26,13 +26,6 @@ let
 in
 {
   config = {
-    assertions = [
-      {
-        assertion = piholeNameservers != [ ];
-        message = "headscale: no pihole DNS host found in the fleet for .lan split DNS";
-      }
-    ];
-
     services.headscale = {
       enable = true;
       address = "127.0.0.1";
@@ -45,11 +38,15 @@ in
         dns = {
           magic_dns = true;
           base_domain = "ts.pco.pink";
-          # Split DNS only: `.lan` queries go to Pi-hole over the overlay,
+          # Split DNS only: matched zones go to Pi-hole over the overlay,
           # everything else keeps the machine's own resolvers. MagicDNS names
           # still resolve via the tailnet resolver regardless.
           override_local_dns = false;
-          nameservers.split."lan" = piholeNameservers;
+        } // lib.optionalAttrs (piholeNameservers != [ ]) {
+          nameservers.split = {
+            "lan" = piholeNameservers;
+            "pco.pink" = piholeNameservers;
+          };
         };
 
         derp = {
