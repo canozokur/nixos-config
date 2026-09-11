@@ -12,6 +12,9 @@
   domain ? null,
   tls ? true,
   websocket ? false,
+  # "internal" renders on the internal reverse proxy only; "public" also
+  # renders on the public entry-point hosts (guild/tr).
+  exposure ? "internal",
   extraConfig ? "",
   locationExtraConfig ? "",
   extraLocations ? { },
@@ -61,6 +64,7 @@ let
 in
 {
   ${name} = {
+    inherit exposure;
     upstreams = {
       ${name} = {
         servers."${effectiveBackend}:${toString port}" = { };

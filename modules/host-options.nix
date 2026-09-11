@@ -92,6 +92,15 @@
     description = "Nginx vhost and upstream contributions from each service.";
     type = lib.types.attrsOf (lib.types.submodule {
       options = {
+        exposure = lib.mkOption {
+          type = lib.types.enum [ "internal" "public" ];
+          default = "internal";
+          description = ''
+            internal: rendered by the internal reverse proxy only.
+            public: also rendered on the public entry-point hosts, so the name
+            is reachable from outside the tailnet.
+          '';
+        };
         vhosts = lib.mkOption {
           type = lib.types.attrsOf lib.types.attrs;
           default = { };

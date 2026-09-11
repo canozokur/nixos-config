@@ -180,6 +180,7 @@
             "server"
             "tailscale"
             "derper"
+            "reverse-proxy"
           ];
           userServices = [ "server" ];
         };
@@ -191,6 +192,7 @@
             "server"
             "headscale"
             "tailscale"
+            "reverse-proxy"
           ];
           userServices = [ "server" ];
         };

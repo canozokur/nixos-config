@@ -98,6 +98,7 @@ in
     subdomain = "grafana";
     port = 2324;
     listenAddr = proxy.externalIP;
+    exposure = "public";
   };
 
   systemd.services.prometheus.unitConfig = {

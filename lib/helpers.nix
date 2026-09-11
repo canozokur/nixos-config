@@ -19,8 +19,11 @@
       val != null && val != "" && val != [ ] && val != false && val != { }
     ) hosts;
 
-  # Returns the unique host with services.reverseProxy.host.enable = true.
-  # Throws if zero or more than one host matches — fail fast on misconfiguration.
+  # Returns the unique internal-tier reverse proxy host
+  # (services.reverseProxy.host.enable = true, role != "public"). Public
+  # entry-point hosts enable the same module but don't provide the internal
+  # listen addresses contribs default to. Throws if zero or more than one
+  # internal host matches — fail fast on misconfiguration.
   getProxy =
     hosts:
     let
@@ -33,14 +36,21 @@
           "host"
           "enable"
         ] false h
+        && lib.attrByPath [
+          "config"
+          "services"
+          "reverseProxy"
+          "host"
+          "role"
+        ] "internal" h != "public"
       ) hosts;
       names = lib.attrNames matches;
       count = lib.length names;
     in
     if count == 0 then
-      throw "getProxy: no host has services.reverseProxy.host.enable = true"
+      throw "getProxy: no internal reverse-proxy host (services.reverseProxy.host.enable = true)"
     else if count > 1 then
-      throw "getProxy: multiple reverse-proxy hosts: ${lib.concatStringsSep ", " names}"
+      throw "getProxy: multiple internal reverse-proxy hosts: ${lib.concatStringsSep ", " names}"
     else
       let
         name = lib.head names;
