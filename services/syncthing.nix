@@ -67,7 +67,6 @@ in
     name = "syncthing";
     domain = "sync.pco.pink";
     port = 8384;
-    listenAddr = "192.168.1.254";
     locationExtraConfig = ''
       proxy_read_timeout 600s;
       proxy_send_timeout 600s;

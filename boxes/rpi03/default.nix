@@ -69,14 +69,12 @@
 
   box.networking = {
     internalIP = "192.168.1.5";
-    externalIP = "192.168.1.254";
     internalInterface = "end0";
     wiredAddresses = [
       "192.168.1.5/24,192.168.1.1"
       "192.168.0.5/24"
-      # reverse-proxy addresses (kept bare to preserve prior behavior)
+      # reverse-proxy address (kept bare to preserve prior behavior)
       "192.168.1.253"
-      "192.168.1.254"
     ];
     tailnet.acceptRoutes = false;
     tailnet.advertiseRoutes = [ "192.168.1.0/24" ];

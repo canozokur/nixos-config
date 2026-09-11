@@ -1,14 +1,9 @@
 {
   config,
   lib,
-  helpers,
-  inputs,
   mkReverseProxyService,
   ...
 }:
-let
-  proxy = helpers.getProxy inputs.self.nixosConfigurations;
-in
 {
   imports = [
     ./base/consul.nix
@@ -107,7 +102,6 @@ in
     name = "grafana";
     subdomain = "grafana";
     port = 2324;
-    listenAddr = proxy.externalIP;
     exposure = "public";
   };
 

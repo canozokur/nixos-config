@@ -28,7 +28,6 @@ let
   );
   proxy = {
     internalIP = config.services.reverseProxy.host.internalIP;
-    externalIP = config.services.reverseProxy.host.externalIP;
   };
   sslDomains = constants.fleet.domains.ssl;
   acmeCerts = lib.pipe allVhosts [
@@ -72,11 +71,6 @@ in
       default = "";
       description = "The internal-facing IP the reverse proxy listens on.";
     };
-    externalIP = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      description = "The external-facing IP the reverse proxy listens on.";
-    };
   };
 
   config = lib.mkIf config.services.reverseProxy.host.enable {
@@ -93,15 +87,6 @@ in
             }
             {
               addr = proxy.internalIP;
-              port = 443;
-              ssl = true;
-            }
-            {
-              addr = proxy.externalIP;
-              port = 80;
-            }
-            {
-              addr = proxy.externalIP;
               port = 443;
               ssl = true;
             }

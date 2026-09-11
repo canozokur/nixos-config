@@ -57,7 +57,7 @@
         cfg = matches.${name}.config.services.reverseProxy.host;
       in
       {
-        inherit (cfg) externalIP internalIP;
+        inherit (cfg) internalIP;
         hostname = name;
       };
 
