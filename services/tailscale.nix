@@ -109,6 +109,27 @@ in
       extraDaemonFlags = [ "--no-logs-no-support" ];
     };
 
+    # https://tailscale.com/kb/1320/performance-best-practices — forwarding
+    # hosts (subnet routers, exit nodes) get better UDP throughput when the
+    # outbound interface coalesces UDP. ethtool settings reset on reboot,
+    # hence the persistent unit; the interface is resolved at boot from the
+    # default route.
+    systemd.services.tailscale-gro-forwarding =
+      lib.mkIf (cfg.advertiseRoutes != [ ] || cfg.advertiseExitNode) {
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = pkgs.writeShellScript "ts-gro-forwarding" ''
+            iface=$(${pkgs.iproute2}/bin/ip route get 1.1.1.1 |
+              ${pkgs.gawk}/bin/awk '{for (i = 1; i < NF; i++) if ($i == "dev") { print $(i + 1); exit } }')
+            exec ${pkgs.ethtool}/bin/ethtool -K "$iface" rx-udp-gro-forwarding on rx-gro-list off
+          '';
+        };
+      };
+
     environment.systemPackages = lib.optionals cfg.gui [ pkgs.trayscale ];
   };
 }
