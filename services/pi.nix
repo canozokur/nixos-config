@@ -12,4 +12,11 @@
   # for every image; the rpis boot ext4, so drop it. Left on, the zfs module
   # also warns about boot.zfs.forceImportRoot using its default.
   boot.supportedFilesystems.zfs = lib.mkForce false;
+
+  box.build.remoteBuilders = [
+    {
+      host = "guild";
+      systems = [ "aarch64-linux" ];
+    }
+  ];
 }

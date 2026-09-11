@@ -109,6 +109,7 @@
             "sunshine"
             "virt-host"
             "tailscale"
+            "base/remote-builder-client"
           ];
           userServices = [
             "gaming"
@@ -193,6 +194,7 @@
             "headscale"
             "tailscale"
             "reverse-proxy"
+            "base/remote-builder"
           ];
           userServices = [ "server" ];
         };

@@ -75,6 +75,12 @@
       acceptRoutes = false;
     };
   };
+  box.build.remoteBuilders = [
+    {
+      host = "guild";
+      systems = [ "aarch64-linux" ];
+    }
+  ];
   box.desktop = {
     hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card2" ];
     waybarTemperaturePath = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon2/temp1_input";

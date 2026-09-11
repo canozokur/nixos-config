@@ -1,6 +1,13 @@
-{ inputs, config, ... }:
 {
-
+  inputs,
+  config,
+  lib,
+  ...
+}:
+let
+  cfg = config.box.build.remoteBuilders;
+in
+{
   # use a pre-generated ssh key for remotebuilds
   imports = [
     inputs.sops-nix.nixosModules.sops
@@ -10,33 +17,28 @@
     path = "/etc/ssh/remote_build_client_ed25519_key";
   };
 
-  nix = {
+  programs.ssh.knownHosts."guild" = {
+    hostNames = [
+      "guild"
+      "guild.ts.pco.pink"
+    ];
+    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMquedk0M5HiAoYVBvNbTg0ye3qSBJ3pcPZL9TAdPYe9";
+  };
+
+  nix = lib.mkIf (cfg != [ ]) {
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
 
-    buildMachines = [
-      {
-        hostName = "homebox";
-        protocol = "ssh-ng";
-        maxJobs = 8;
-        speedFactor = 2;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-        systems = [
-          "x86_64-linux"
-          "aarch64-linux"
-        ];
-        sshUser = "remotebuild";
-        sshKey = config.sops.secrets."ssh/keys/remotebuild-client".path;
-      }
-    ];
+    buildMachines = map (b: {
+      hostName = b.host;
+      protocol = "ssh-ng";
+      inherit (b) systems maxJobs speedFactor supportedFeatures;
+      sshUser = "remotebuild";
+      sshKey = config.sops.secrets."ssh/keys/remotebuild-client".path;
+    }) cfg;
 
     distributedBuilds = true;
 
@@ -56,9 +58,7 @@
         "nix-command"
       ];
 
-      extra-substituters = [
-        "ssh-ng://remotebuild@homebox"
-      ];
+      extra-substituters = map (b: "ssh-ng://remotebuild@${b.host}") cfg;
 
       fallback = true;
     };

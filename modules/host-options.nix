@@ -30,6 +30,43 @@
       };
     };
 
+    build = {
+      remoteBuilders = lib.mkOption {
+        type = lib.types.listOf (lib.types.submodule {
+          options = {
+            host = lib.mkOption {
+              type = lib.types.str;
+              description = "SSH-reachable builder host.";
+            };
+            systems = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              description = "Nix platforms this builder serves.";
+            };
+            maxJobs = lib.mkOption {
+              type = lib.types.ints.positive;
+              default = 8;
+            };
+            speedFactor = lib.mkOption {
+              type = lib.types.ints.positive;
+              default = 2;
+            };
+            supportedFeatures = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [
+                "nixos-test"
+                "benchmark"
+                "big-parallel"
+              ];
+            };
+          };
+        });
+        default = [ ];
+        description = ''
+          Remote nix build machines this host offloads to.
+        '';
+      };
+    };
+
     desktop = {
       hyprlandGPU = lib.mkOption {
         type = lib.types.listOf lib.types.str;
