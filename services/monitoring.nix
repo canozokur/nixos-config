@@ -56,6 +56,16 @@ in
         ];
       }
       {
+        job_name = "headscale";
+        # Resolved via MagicDNS on this node; the scrape rides the overlay.
+        static_configs = [
+          {
+            targets = [ "guild.ts.pco.pink:19090" ];
+            labels = { instance = "guild"; };
+          }
+        ];
+      }
+      {
         job_name = "consul";
         consul_sd_configs = [
           {

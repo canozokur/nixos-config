@@ -32,8 +32,8 @@ in
       port = 8080;
       settings = {
         server_url = "https://hs.pco.pink";
-        # Debug/metrics listener
-        metrics_listen_addr = "127.0.0.1:19090";
+        # Debug/metrics listener.
+        metrics_listen_addr = "0.0.0.0:19090";
 
         dns = {
           magic_dns = true;
@@ -97,5 +97,7 @@ in
       443
     ];
     networking.firewall.allowedUDPPorts = [ 3478 ];
+    # Metrics: overlay-only.
+    networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 19090 ];
   };
 }
