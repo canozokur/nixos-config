@@ -51,7 +51,7 @@ in
     };
 
     settings = {
-      connect-timeout = 5;
+      connect-timeout = 15;
 
       experimental-features = [
         "flakes"
