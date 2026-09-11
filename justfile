@@ -2,14 +2,18 @@ alias rebuild := switch
 alias r := switch
 alias b := switch
 alias dry := dry-build
-alias push := push-build
+alias push := push-switch
 
 switch:
   nixos-rebuild --sudo switch --flake .
 
-# usage: push-build rpi01 canozokur@192.168.1.60
-push-build host uri=host:
+# usage: push-boot rpi01 canozokur@192.168.1.60
+push-boot host uri=host:
   nixos-rebuild --sudo boot --flake .#{{host}} --target-host {{uri}}
+
+# usage: push-switch rpi01 canozokur@192.168.1.60
+push-switch host uri=host:
+  nixos-rebuild --sudo switch --flake .#{{host}} --target-host {{uri}}
 
 # usage: provision guild.pco.pink root@guild.pco.pink - automatically:
 provision host uri="root@{{host}}":
