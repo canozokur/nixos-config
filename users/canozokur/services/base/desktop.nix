@@ -1,4 +1,4 @@
-{ pkgs, lib, osConfig, ... }:
+{ pkgs, lib, system, osConfig, ... }:
 {
   imports = [
     ../../programs/shell-config.nix
