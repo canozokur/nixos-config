@@ -4,27 +4,48 @@
 // devices register under their owner's own headscale user. Access is permissive
 // by design
 {
+  "groups": {
+    // Identities allowed to route traffic to the internet via exit nodes.
+    "group:admin": [
+      "canozokur@pco.pink",
+      "fleet@pco.pink",
+    ],
+  },
+
   "acls": [
-    // Everyone can reach everything, including the internet through the
-    // approved exit nodes (guild, tr).
+    // Tailnet mesh: everyone can reach every device
     {
       "action": "accept",
       "src": ["*"],
       "dst": [
         "*:*",
+      ],
+    },
+    // Internet via the approved exit nodes
+    {
+      "action": "accept",
+      "src": ["group:admin"],
+      "dst": [
         "autogroup:internet:*",
       ],
     },
   ],
 
   "autoApprovers": {
-    // Nodes under the fleet user may act as exits and advertise the home LAN
-    // without manual `headscale routes approve` calls. NOTE: headscale's
-    // policy parser rejects bare usernames here — approvers must be tags,
-    // groups, or email-form identifiers.
+    // No single usernames here, tags groups or email-form
     "exitNode": ["fleet@pco.pink"],
     "routes": {
       "192.168.1.0/24": ["fleet@pco.pink"],
     },
   },
+
+  // Apple clients get exit-nodes only when the control plane sends a suggest-exit-node
+  // attribute.
+  // https://github.com/juanfont/headscale/issues/3415
+  "nodeAttrs": [
+    {
+      "target": ["*"],
+      "attr": ["suggest-exit-node", "suggest-exit-node-ui"],
+    },
+  ],
 }
