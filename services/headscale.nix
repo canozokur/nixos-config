@@ -39,6 +39,8 @@ in
       port = 8080;
       settings = {
         server_url = "https://hs.pco.pink";
+        # Debug/metrics listener
+        metrics_listen_addr = "127.0.0.1:19090";
 
         dns = {
           magic_dns = true;
