@@ -1,7 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, pkgsFast, config, ... }:
 {
   programs.firefox = {
     enable = true;
+    package = pkgsFast.firefox;
     # firefox decided to use XDG base dir
     # https://www.phoronix.com/news/Firefox-147-XDG-Base-Directory
     # and https://github.com/nix-community/home-manager/issues/8200

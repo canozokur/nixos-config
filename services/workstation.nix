@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  pkgsFast,
   config,
   ...
 }:
@@ -47,6 +48,7 @@ in
 
   services.netbird = {
     enable = true;
+    package = pkgsFast.netbird;
     useRoutingFeatures = "client";
     ui.enable = true;
   };
