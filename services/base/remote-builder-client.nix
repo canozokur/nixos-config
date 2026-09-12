@@ -15,8 +15,6 @@ in
 
   sops.secrets."ssh/keys/remotebuild-client" = {
     path = "/etc/ssh/remote_build_client_ed25519_key";
-    group = "wheel";
-    mode = "0440";
   };
 
   programs.ssh.knownHosts."guild" = {
@@ -26,11 +24,6 @@ in
     ];
     publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMquedk0M5HiAoYVBvNbTg0ye3qSBJ3pcPZL9TAdPYe9";
   };
-
-  programs.ssh.extraConfig = ''
-    Host guild guild.ts.pco.pink
-      IdentityFile /etc/ssh/remote_build_client_ed25519_key
-  '';
 
   nix = lib.mkIf (cfg != [ ]) {
     gc = {
@@ -42,7 +35,12 @@ in
     buildMachines = map (b: {
       hostName = b.host;
       protocol = "ssh-ng";
-      inherit (b) systems maxJobs speedFactor supportedFeatures;
+      inherit (b)
+        systems
+        maxJobs
+        speedFactor
+        supportedFeatures
+        ;
       sshUser = "remotebuild";
       sshKey = config.sops.secrets."ssh/keys/remotebuild-client".path;
     }) cfg;
@@ -64,8 +62,6 @@ in
         "flakes"
         "nix-command"
       ];
-
-      extra-substituters = map (b: "ssh-ng://remotebuild@${b.host}") cfg;
 
       fallback = true;
     };
