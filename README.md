@@ -24,7 +24,7 @@ This repository contains the declarative configuration for my personal infrastru
 │       ├── profiles/ # Home-Manager role profiles
 │       └── programs/ # Per-program HM configs (nixvim, hyprland, …)
 ├── modules/
-│   └── host-options.nix  # The _meta option schema
+│   └── host-options.nix  # The box option schema
 ├── lib/
 │   ├── mkbox.nix     # System builder (wraps `lib.nixosSystem`)
 │   ├── helpers.nix   # Fleet-aware helpers (getHostsWith, getProxy, …)
@@ -50,25 +50,24 @@ Hosts that import the SD-image module (the Pi cluster) expose an `images` output
 nix build .#images.rpi01
 ```
 
-## The `_meta` attribute
+## The `box` attribute
 
-Each host declares its identity via a custom `_meta` option, and other modules adapt by reading peers' `_meta` from `inputs.self.nixosConfigurations`.
+Each host declares its identity via a custom `box` option, and other modules adapt by reading peers' `box` from `inputs.self.nixosConfigurations`.
 
 ### 1. Declaring state
 
 In `boxes/<host>/default.nix`:
 ```nix
 { ... }: {
-  _meta = {
-    networks = {
-      externalIP = "192.168.1.5";
-      internalIP = "192.168.1.5";
-    };
-    services.consulServer = true;
-    dnsConfigurations = [
-      { ip = "192.168.1.129"; domain = "truenas.pco.pink"; }
-    ];
+  box.networking = {
+    externalIP = "";
+    lanIP = "192.168.1.5";
+    lanInterface = "end0";
   };
+  services.consul.server.enable = true;
+  services.pihole.extraStaticHosts = [
+    { ip = "192.168.1.129"; domain = "truenas.pco.pink"; }
+  ];
 }
 ```
 
@@ -76,13 +75,13 @@ The full schema lives in `modules/host-options.nix`.
 
 ### 2. Consuming state
 
-Aggregator profiles read peers' `_meta` via `helpers.getHostsWith`. Example: auto-generating `/etc/hosts` entries for every host that declares a DNS record:
+Aggregator profiles read peers' `box` via `helpers.getHostsWith`. Example: deriving static DNS entries for every host that declares a LAN address:
 ```nix
 { inputs, helpers, lib, ... }: let
-  hosts = helpers.getHostsWith inputs.self.nixosConfigurations [ "dnsConfigurations" ];
-  entries = lib.flatten (lib.mapAttrsToList (_: h:
-    map (e: "${e.ip} ${e.domain}") h.config._meta.dnsConfigurations
-  ) hosts);
+  hosts = helpers.getHostsWith inputs.self.nixosConfigurations [ "box" "networking" "lanIP" ];
+  entries = lib.mapAttrsToList (_: h:
+    "${h.config.box.networking.lanIP} ${h.config.networking.hostName}.pco.pink"
+  ) hosts;
 in {
   networking.extraHosts = lib.concatStringsSep "\n" entries;
 }
@@ -107,11 +106,11 @@ boxes = {
 
 ## Helpers (`lib/helpers.nix`)
 
-* **`getHostsWith hosts path`** — Returns the subset of `hosts` whose `config._meta.<path>` is non-default (i.e. not null/""/[]/false/{}). Used to find peers that meaningfully contribute to a fleet-level aggregate.
+* **`getHostsWith hosts path`** — Returns the subset of `hosts` whose `config.<path>` is non-default (i.e. not null/""/[]/false/{}). Used to find peers that meaningfully contribute to a fleet-level aggregate.
     ```nix
-    helpers.getHostsWith inputs.self.nixosConfigurations [ "networks" "externalIP" ];
+    helpers.getHostsWith inputs.self.nixosConfigurations [ "box" "networking" "lanIP" ];
     ```
-* **`getProxy hosts`** — Finds the unique host with `_meta.services.reverseProxy.enable = true`. Throws if 0 or >1 hosts match. Returns `{ externalIP; internalIP; hostname; }`.
+* **`getProxy hosts`** — Finds the unique host with `services.reverseProxy.host.enable = true` (and role != "public"). Throws if 0 or >1 hosts match. Returns `{ internalIP; hostname; }`.
 * **`listToNumberedAttrs prefix list`** — Converts `[ "a" "b" ]` to `{ prefix1 = "a"; prefix2 = "b"; }`. Used to build NetworkManager `address1`/`address2`/… keys.
 
 ## Constants (`lib/constants.nix`)
