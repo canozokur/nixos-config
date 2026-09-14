@@ -174,7 +174,7 @@
           userServices = [ "server" ];
         };
 
-        "tr.pco.pink" = {
+        tr = {
           system = "x86_64-linux";
           users = [ "canozokur" ];
           services = [
@@ -186,7 +186,7 @@
           userServices = [ "server" ];
         };
 
-        "guild.pco.pink" = {
+        guild = {
           system = "aarch64-linux";
           users = [ "canozokur" ];
           services = [
