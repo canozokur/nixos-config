@@ -9,11 +9,9 @@
   ...
 }:
 let
-  staticUpstreams = [
-    ./upstreams/emby.nix
-    ./upstreams/bazarr.nix
-    ./upstreams/nzbget.nix
-    ./upstreams/qbit.nix
+  staticUpstreams = lib.pipe (builtins.readDir ./upstreams) [
+    (lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name))
+    (lib.mapAttrsToList (name: _: ./upstreams + "/${name}"))
   ];
 
   contribHosts = helpers.getHostsWith inputs.self.nixosConfigurations [
