@@ -7,6 +7,7 @@
 }:
 let
   isServer = config.services.consul.server.enable;
+  tailnetIface = config.box.networking.tailnet.interface;
   consulDomain = "consul.pco.pink";
   consulServers = helpers.getHostsWith inputs.self.nixosConfigurations [
     "services"
@@ -53,7 +54,7 @@ in
     services.consul = {
       enable = true;
       webUi = isServer;
-      interface.bind = "tailscale0";
+      interface.bind = tailnetIface;
       extraConfig = {
         server = isServer;
         retry_join = retryJoin;
@@ -72,17 +73,17 @@ in
       };
     };
 
-    networking.firewall.interfaces.tailscale0 = {
+    networking.firewall.interfaces.${tailnetIface} = {
       allowedTCPPorts = consulPorts.tcp;
       allowedUDPPorts = consulPorts.udp;
     };
 
-    # tailscale0 must exist before the agent binds it.
+    # the fabric interface must exist before the agent binds it.
     systemd.services.consul.after = [ "tailscaled.service" ];
 
     services.pihole.extraStaticHosts = lib.mkIf isServer [
       {
-        ip = config.box.networking.internalIP;
+        ip = config.box.networking.lanIP;
         domain = consulDomain;
       }
     ];

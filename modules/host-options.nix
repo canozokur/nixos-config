@@ -13,15 +13,15 @@
         default = "";
         description = "The primary external address of this host.";
       };
-      internalIP = lib.mkOption {
+      lanIP = lib.mkOption {
         type = lib.types.str;
         default = "";
-        description = "The primary internal address of this host.";
+        description = "The primary home-LAN address of this host.";
       };
-      internalInterface = lib.mkOption {
+      lanInterface = lib.mkOption {
         type = lib.types.str;
         default = "";
-        description = "The primary internal network interface of this host.";
+        description = "The primary home-LAN network interface of this host.";
       };
       wiredAddresses = lib.mkOption {
         type = lib.types.listOf lib.types.str;

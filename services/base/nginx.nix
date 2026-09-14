@@ -48,15 +48,15 @@ in
       upstreams = flattenContribs "upstreams";
     } // lib.optionalAttrs (role == "internal") {
       # Public hosts keep the vhost-default binding (0.0.0.0); binding the
-      # host default to box.networking.internalIP would also re-bind the
+      # host default to box.networking.lanIP would also re-bind the
       # headscale/derper vhosts these hosts already serve.
       defaultListen = [
         {
-          addr = "${config.box.networking.internalIP}";
+          addr = "${config.box.networking.lanIP}";
           port = 80;
         }
         {
-          addr = "${config.box.networking.internalIP}";
+          addr = "${config.box.networking.lanIP}";
           port = 443;
           ssl = true;
         }
@@ -69,7 +69,7 @@ in
       {
         name = "nginx";
         tags = lib.optionals config.services.nginx.elb [ "elb" ];
-        address = config.box.networking.internalIP;
+        address = config.box.networking.lanIP;
         port = config.services.nginx.defaultHTTPListenPort;
         checks = [
           {

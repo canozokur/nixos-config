@@ -49,6 +49,17 @@ in
       default = [ ];
       description = "Subnet routes to advertise, e.g. the home LAN on rpi01/rpi02.";
     };
+    interface = lib.mkOption {
+      type = lib.types.str;
+      default = "tailscale0";
+      description = ''
+        Network interface of the overlay fabric. Tailnet-scoped service
+        modules (consul bind and firewall, node-exporter, headscale
+        metrics, pihole tailnet DNS) read this instead of hardcoding the
+        interface name. Derived from `services.tailscale.interfaceName`;
+        override per box only if a box's transport differs.
+      '';
+    };
     gui = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -74,6 +85,10 @@ in
     ];
 
     sops.secrets."tailscale/authkey-${cfg.user}" = { };
+
+    # single source of truth for the fabric interface name (see option)
+    box.networking.tailnet.interface =
+      lib.mkDefault config.services.tailscale.interfaceName;
 
     services.tailscale = {
       enable = true;

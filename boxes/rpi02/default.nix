@@ -76,9 +76,9 @@ in
   services.mysql.instanceName = "home";
 
   box.networking = {
-    internalIP = "192.168.1.4";
+    lanIP = "192.168.1.4";
     externalIP = "192.168.1.4";
-    internalInterface = "end0";
+    lanInterface = "end0";
     wiredAddresses = [
       "192.168.1.4/24,192.168.1.1"
       "192.168.0.4/24"

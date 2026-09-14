@@ -24,7 +24,7 @@ let
   proxy = helpers.getProxy inputs.self.nixosConfigurations;
   effectiveDomain = if domain != null then domain else "${subdomain}.pco.pink";
   effectiveBackend =
-    if backendAddr != null then backendAddr else config.box.networking.internalIP;
+    if backendAddr != null then backendAddr else config.box.networking.lanIP;
   effectiveListen = if listenAddr != null then listenAddr else proxy.internalIP;
 
   defaultListen = lib.optionals tls [

@@ -42,9 +42,9 @@
   ];
 
   box.networking = {
-    # no internalIP: tr is cross-site
+    # no lanIP: tr is cross-site
     externalIP = "176.53.96.161";
-    internalInterface = "ens18";
+    lanInterface = "ens18";
     tailnet.advertiseExitNode = true;
   };
 

@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   ...
 }:
 let
@@ -10,14 +9,21 @@ in
   services.prometheus.exporters = {
     node = {
       enable = true;
-      openFirewall = true;
       enabledCollectors = config.services.node-exporter.enabledCollectors;
       disabledCollectors = [ "zfs" ];
     };
   };
 
+  # reachable only over the tailnet (same scope as the consul agent),
+  # so node-exporter is never exposed on a box's public interface
+  networking.firewall.interfaces.${config.box.networking.tailnet.interface}.allowedTCPPorts = [
+    exporterPort
+  ];
+
+  # no explicit address: the agent registers the node's advertised
+  # (tailscale) address, so scrapes always ride the tailnet
   services.consul.agentServices = [
-    ({
+    {
       name = "node-exporter";
       tags = [ "server" ];
       port = exporterPort;
@@ -30,8 +36,6 @@ in
           timeout = "1s";
         }
       ];
-    } // lib.optionalAttrs (config.box.networking.internalIP != "") {
-      address = config.box.networking.internalIP;
-    })
+    }
   ];
 }

@@ -73,9 +73,9 @@
   services.mysql.galera.clusterName = "home";
 
   box.networking = {
-    internalIP = "192.168.1.3";
+    lanIP = "192.168.1.3";
     externalIP = "192.168.1.3";
-    internalInterface = "end0";
+    lanInterface = "end0";
     wiredAddresses = [
       "192.168.1.3/24,192.168.1.1"
       "192.168.0.3/24"

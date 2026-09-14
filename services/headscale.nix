@@ -2,6 +2,7 @@
   inputs,
   helpers,
   lib,
+  config,
   ...
 }:
 let
@@ -12,7 +13,7 @@ let
     "dnsServer"
   ];
   piholeNameservers = lib.mapAttrsToList (
-    _: h: h.config.box.networking.internalIP
+    _: h: h.config.box.networking.lanIP
   ) piholeHosts;
 
   websocketConfig = ''
@@ -97,6 +98,8 @@ in
     ];
     networking.firewall.allowedUDPPorts = [ 3478 ];
     # Metrics: overlay-only.
-    networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 19090 ];
+    networking.firewall.interfaces.${config.box.networking.tailnet.interface}.allowedTCPPorts = [
+      19090
+    ];
   };
 }

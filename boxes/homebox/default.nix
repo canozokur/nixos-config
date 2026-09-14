@@ -66,7 +66,7 @@
   ];
 
   box.networking = {
-    internalInterface = "eno1";
+    lanInterface = "eno1";
     tailnet = {
       gui = true;
       operator = "canozokur";

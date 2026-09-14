@@ -11,12 +11,12 @@ let
   localHosts = helpers.getHostsWith allHosts [
     "box"
     "networking"
-    "internalIP"
+    "lanIP"
   ];
   # Keyed on hostName, not the flake attr name (tr/guild attrs contain the
   # domain).
   localDns = lib.mapAttrsToList (
-    _: h: "${h.config.box.networking.internalIP} ${h.config.networking.hostName}.pco.pink"
+    _: h: "${h.config.box.networking.lanIP} ${h.config.networking.hostName}.pco.pink"
   ) localHosts;
 
   customDnsHosts = helpers.getHostsWith allHosts [
@@ -53,7 +53,7 @@ let
     "pihole"
     "dnsServer"
   ];
-  dnsServersList = lib.mapAttrsToList (n: h: "${h.config.box.networking.internalIP}") piholeHosts;
+  dnsServersList = lib.mapAttrsToList (n: h: "${h.config.box.networking.lanIP}") piholeHosts;
   dnsServers = builtins.concatStringsSep "," dnsServersList;
 in
 {
@@ -107,12 +107,13 @@ in
           "dhcp-option=option:dns-server,${dnsServers}"
           # With no interface config, dnsmasq enables implicit local-service.
           # local-service answers only queries from directly-connected subnets.
-          # Tailnet sources (100.64.x) arrive on tailscale0 and are dropped.
-          # Declaring the served interfaces disables implicit local-service.
-          # bind-dynamic tolerates tailscale0 appearing after FTL at boot.
+          # Tailnet sources (100.64.x) arrive on the tailnet interface and are
+          # dropped. Declaring the served interfaces disables implicit
+          # local-service; bind-dynamic tolerates the tailnet interface
+          # appearing after FTL at boot.
           "interface=lo"
-          "interface=${config.box.networking.internalInterface}"
-          "interface=tailscale0"
+          "interface=${config.box.networking.lanInterface}"
+          "interface=${config.box.networking.tailnet.interface}"
           "bind-dynamic"
         ]
         ++ lib.optionals config.services.consul.enable [ "server=/consul/127.0.0.1#8600" ];
