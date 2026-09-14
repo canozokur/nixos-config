@@ -20,20 +20,21 @@ let
     config.allowUnfree = true;
   };
 
-  optionalPath =
-    path:
-    if builtins.pathExists (toString path) then [ path ] else [ ];
+  optionalPath = path: if builtins.pathExists (toString path) then [ path ] else [ ];
 
   resolveService =
     name:
     let
       servicePath = ../services + "/${name}.nix";
+      serviceDir = ../services + "/${name}/default.nix";
       gluePath = ../boxes/${box}/${name}/default.nix;
     in
-    if builtins.pathExists servicePath || builtins.pathExists gluePath then
-      optionalPath servicePath ++ optionalPath gluePath
+    if
+      builtins.pathExists servicePath || builtins.pathExists serviceDir || builtins.pathExists gluePath
+    then
+      optionalPath servicePath ++ optionalPath serviceDir ++ optionalPath gluePath
     else
-      throw "mkBox: service not found at ${toString servicePath} or ${toString gluePath}";
+      throw "mkBox: service not found at ${toString servicePath}, ${toString serviceDir} or ${toString gluePath}";
 
   resolveUserService =
     user: name:
@@ -42,36 +43,39 @@ let
     in
     optionalPath servicePath;
 
-  mkUser =
-    user:
-    [
-      ../users/${user}/default.nix
-      home-manager.nixosModules.home-manager
-      {
-        home-manager.extraSpecialArgs = {
-          inherit
-            inputs
-            system
-            constants
-            pkgsFast
-            ;
-        };
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.users.${user} = {
-          imports = [
-            ../users/${user}/services/common.nix
-          ]
-          ++ builtins.concatMap (resolveUserService user) userServices;
-        };
-      }
-    ];
+  mkUser = user: [
+    ../users/${user}/default.nix
+    home-manager.nixosModules.home-manager
+    {
+      home-manager.extraSpecialArgs = {
+        inherit
+          inputs
+          system
+          constants
+          pkgsFast
+          ;
+      };
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users.${user} = {
+        imports = [
+          ../users/${user}/services/common.nix
+        ]
+        ++ builtins.concatMap (resolveUserService user) userServices;
+      };
+    }
+  ];
 in
 lib.nixosSystem {
   inherit system;
 
   specialArgs = {
-    inherit inputs helpers constants pkgsFast;
+    inherit
+      inputs
+      helpers
+      constants
+      pkgsFast
+      ;
     mkReverseProxyService = import ./mkReverseProxyService.nix {
       inherit inputs helpers;
     };

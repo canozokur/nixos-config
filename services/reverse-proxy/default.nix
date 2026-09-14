@@ -5,9 +5,17 @@
   pkgs,
   constants,
   config,
+  mkReverseProxyService,
   ...
 }:
 let
+  staticUpstreams = [
+    ./upstreams/emby.nix
+    ./upstreams/bazarr.nix
+    ./upstreams/nzbget.nix
+    ./upstreams/qbit.nix
+  ];
+
   contribHosts = helpers.getHostsWith inputs.self.nixosConfigurations [
     "services"
     "reverseProxy"
@@ -24,7 +32,7 @@ let
   );
   allVhosts = lib.foldl' lib.mergeAttrs { } (lib.map (c: c.vhosts) visibleContribs);
   defaultIndex = pkgs.writeTextDir "defaultVhost/index.html" (
-    builtins.readFile ./files/nginx/defaultIndex.html
+    builtins.readFile ../files/nginx/defaultIndex.html
   );
   proxy = {
     internalIP = config.services.reverseProxy.host.internalIP;
@@ -47,18 +55,21 @@ let
 in
 {
   imports = [
-    ./base/nginx.nix
-    ./base/consul.nix
+    ../base/nginx.nix
+    ../base/consul.nix
   ];
 
   # `services.reverseProxy.contribs` is declared in modules/host-options.nix so
-  # the option exists on hosts that don't load this module (e.g. rpi01 with
-  # emby/nzbget glue files). Only `host` is declared here since only the proxy
-  # host loads this module.
+  # the option exists on hosts that don't load this module (e.g. rpi01, whose
+  # prowlarr/radarr/sonarr contribute vhosts). Only `host` is declared here
+  # since only the proxy host loads this module.
   options.services.reverseProxy.host = {
     enable = lib.mkEnableOption "This host runs the fleet reverse proxy.";
     role = lib.mkOption {
-      type = lib.types.enum [ "internal" "public" ];
+      type = lib.types.enum [
+        "internal"
+        "public"
+      ];
       default = "internal";
       description = ''
         internal: the proxy renders every contrib on its internalIP.
@@ -74,52 +85,63 @@ in
   };
 
   config = lib.mkIf config.services.reverseProxy.host.enable {
-    services.reverseProxy.contribs.default-vhost = lib.mkIf (role == "internal") {
-      # Defined once, on the internal tier: public entry-point hosts render
-      # this contrib through exposure = "public".
-      exposure = "public";
-      vhosts = {
-        "pco.pink" = {
-          listen = [
-            {
-              addr = proxy.internalIP;
-              port = 80;
-            }
-            {
-              addr = proxy.internalIP;
-              port = 443;
-              ssl = true;
-            }
-          ];
-          serverAliases = [ "www.pco.pink" ];
-          enableACME = true;
-          acmeRoot = null;
-          forceSSL = true;
-          default = true;
-          root = "${defaultIndex}/defaultVhost";
-          locations."/".index = "index.html";
-        };
-      };
-      upstreams = { };
-    };
+    # Defined once, on the internal tier: public entry-point hosts don't carry
+    # these contribs at all (their exposure is "internal"; the default vhost
+    # renders there through exposure = "public").
+    services.reverseProxy.contribs = lib.mkIf (role == "internal") (
+      lib.mkMerge (
+        map (file: mkReverseProxyService ({ inherit config lib; } // import file)) staticUpstreams
+        ++ [
+          {
+            default-vhost = {
+              exposure = "public";
+              vhosts = {
+                "pco.pink" = {
+                  listen = [
+                    {
+                      addr = proxy.internalIP;
+                      port = 80;
+                    }
+                    {
+                      addr = proxy.internalIP;
+                      port = 443;
+                      ssl = true;
+                    }
+                  ];
+                  serverAliases = [ "www.pco.pink" ];
+                  enableACME = true;
+                  acmeRoot = null;
+                  forceSSL = true;
+                  default = true;
+                  root = "${defaultIndex}/defaultVhost";
+                  locations."/".index = "index.html";
+                };
+              };
+              upstreams = { };
+            };
+          }
+        ]
+      )
+    );
 
     # LAN resolver records describe the internal tier only; public entry-point
     # hosts would duplicate every entry in the Pi-hole fold.
     services.pihole.extraStaticHosts = lib.mkIf (role == "internal") (
       lib.flatten (
-      lib.mapAttrsToList (
-        name: c:
-        let
-          listenList = c.listen or [ ];
-          customIps = builtins.filter (x: x != null) (builtins.map (e: e.addr or null) listenList);
-          finalIps = if customIps != [ ] then customIps else [ proxy.internalIP ];
-        in
-        builtins.map (ip: {
-          domain = name;
-          ip = ip;
-        }) finalIps
-      ) allVhosts
-    ));
+        lib.mapAttrsToList (
+          name: c:
+          let
+            listenList = c.listen or [ ];
+            customIps = builtins.filter (x: x != null) (builtins.map (e: e.addr or null) listenList);
+            finalIps = if customIps != [ ] then customIps else [ proxy.internalIP ];
+          in
+          builtins.map (ip: {
+            domain = name;
+            ip = ip;
+          }) finalIps
+        ) allVhosts
+      )
+    );
 
     sops.secrets."cloudflare" = {
       owner = config.systemd.services.acme-setup.serviceConfig.User;

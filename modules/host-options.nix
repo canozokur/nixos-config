@@ -32,34 +32,36 @@
 
     build = {
       remoteBuilders = lib.mkOption {
-        type = lib.types.listOf (lib.types.submodule {
-          options = {
-            host = lib.mkOption {
-              type = lib.types.str;
-              description = "SSH-reachable builder host.";
+        type = lib.types.listOf (
+          lib.types.submodule {
+            options = {
+              host = lib.mkOption {
+                type = lib.types.str;
+                description = "SSH-reachable builder host.";
+              };
+              systems = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                description = "Nix platforms this builder serves.";
+              };
+              maxJobs = lib.mkOption {
+                type = lib.types.ints.positive;
+                default = 8;
+              };
+              speedFactor = lib.mkOption {
+                type = lib.types.ints.positive;
+                default = 2;
+              };
+              supportedFeatures = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = [
+                  "nixos-test"
+                  "benchmark"
+                  "big-parallel"
+                ];
+              };
             };
-            systems = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              description = "Nix platforms this builder serves.";
-            };
-            maxJobs = lib.mkOption {
-              type = lib.types.ints.positive;
-              default = 8;
-            };
-            speedFactor = lib.mkOption {
-              type = lib.types.ints.positive;
-              default = 2;
-            };
-            supportedFeatures = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [
-                "nixos-test"
-                "benchmark"
-                "big-parallel"
-              ];
-            };
-          };
-        });
+          }
+        );
         default = [ ];
         description = ''
           Remote nix build machines this host offloads to.
@@ -124,32 +126,37 @@
   };
 
   # Contribs must be declared on every host that publishes vhosts/upstreams
-  # (e.g. emby/nzbget glue files run on hosts that don't load reverse-proxy.nix).
+  # (e.g. prowlarr/radarr/sonarr run on hosts that don't load reverse-proxy.nix).
   options.services.reverseProxy.contribs = lib.mkOption {
     description = "Nginx vhost and upstream contributions from each service.";
-    type = lib.types.attrsOf (lib.types.submodule {
-      options = {
-        exposure = lib.mkOption {
-          type = lib.types.enum [ "internal" "public" ];
-          default = "internal";
-          description = ''
-            internal: rendered by the internal reverse proxy only.
-            public: also rendered on the public entry-point hosts, so the name
-            is reachable from outside the tailnet.
-          '';
+    type = lib.types.attrsOf (
+      lib.types.submodule {
+        options = {
+          exposure = lib.mkOption {
+            type = lib.types.enum [
+              "internal"
+              "public"
+            ];
+            default = "internal";
+            description = ''
+              internal: rendered by the internal reverse proxy only.
+              public: also rendered on the public entry-point hosts, so the name
+              is reachable from outside the tailnet.
+            '';
+          };
+          vhosts = lib.mkOption {
+            type = lib.types.attrsOf lib.types.attrs;
+            default = { };
+            description = "Nginx vhosts contributed by this service.";
+          };
+          upstreams = lib.mkOption {
+            type = lib.types.attrsOf lib.types.attrs;
+            default = { };
+            description = "Nginx upstreams contributed by this service.";
+          };
         };
-        vhosts = lib.mkOption {
-          type = lib.types.attrsOf lib.types.attrs;
-          default = { };
-          description = "Nginx vhosts contributed by this service.";
-        };
-        upstreams = lib.mkOption {
-          type = lib.types.attrsOf lib.types.attrs;
-          default = { };
-          description = "Nginx upstreams contributed by this service.";
-        };
-      };
-    });
+      }
+    );
     default = { };
   };
 }

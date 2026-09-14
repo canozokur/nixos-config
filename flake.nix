@@ -126,10 +126,6 @@
             "prowlarr"
             "radarr"
             "sonarr"
-            "emby"
-            "nzbget"
-            "qbit"
-            "bazarr"
             "tailscale"
           ];
           userServices = [ "server" ];
