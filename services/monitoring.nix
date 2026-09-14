@@ -64,7 +64,7 @@
         job_name = "consul";
         consul_sd_configs = [
           {
-            server = "consul.lan:8500";
+            server = "consul.pco.pink:8500";
           }
         ];
         # relabel configuration for consul server metrics
@@ -91,6 +91,25 @@
             regex = "consul";
             target_label = "__metrics_path__";
             replacement = "/v1/agent/metrics";
+          }
+        ];
+      }
+      {
+        job_name = "node-exporter";
+        consul_sd_configs = [
+          {
+            server = "127.0.0.1:8500";
+          }
+        ];
+        relabel_configs = [
+          {
+            source_labels = [ "__meta_consul_service" ];
+            regex = "node-exporter";
+            action = "keep";
+          }
+          {
+            source_labels = [ "__meta_consul_node" ];
+            target_label = "instance";
           }
         ];
       }

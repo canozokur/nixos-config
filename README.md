@@ -66,7 +66,7 @@ In `boxes/<host>/default.nix`:
     };
     services.consulServer = true;
     dnsConfigurations = [
-      { ip = "192.168.1.129"; domain = "truenas.lan"; }
+      { ip = "192.168.1.129"; domain = "truenas.pco.pink"; }
     ];
   };
 }

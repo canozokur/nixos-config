@@ -42,7 +42,7 @@
   ];
 
   box.networking = {
-    internalIP = "176.53.96.161";
+    # no internalIP: tr is cross-site
     externalIP = "176.53.96.161";
     internalInterface = "ens18";
     tailnet.advertiseExitNode = true;

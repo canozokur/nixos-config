@@ -1,11 +1,22 @@
 {
+  inputs,
+  helpers,
   config,
   lib,
   ...
 }:
 let
   isServer = config.services.consul.server.enable;
-  consulDomain = "consul.lan";
+  consulDomain = "consul.pco.pink";
+  consulServers = helpers.getHostsWith inputs.self.nixosConfigurations [
+    "services"
+    "consul"
+    "server"
+    "enable"
+  ];
+  retryJoin = map (h: "${h.config.networking.hostName}.ts.pco.pink") (
+    lib.attrValues consulServers
+  );
   consulPorts = {
     tcp = [
       8600 # dns
@@ -42,12 +53,10 @@ in
     services.consul = {
       enable = true;
       webUi = isServer;
-      interface.bind = lib.mkIf (
-        config.box.networking.internalInterface != ""
-      ) "${config.box.networking.internalInterface}";
+      interface.bind = "tailscale0";
       extraConfig = {
         server = isServer;
-        retry_join = [ consulDomain ];
+        retry_join = retryJoin;
         rejoin_after_leave = true;
         bootstrap_expect = if isServer then 3 else null;
         client_addr = "0.0.0.0";
@@ -63,10 +72,13 @@ in
       };
     };
 
-    networking.firewall = {
+    networking.firewall.interfaces.tailscale0 = {
       allowedTCPPorts = consulPorts.tcp;
       allowedUDPPorts = consulPorts.udp;
     };
+
+    # tailscale0 must exist before the agent binds it.
+    systemd.services.consul.after = [ "tailscaled.service" ];
 
     services.pihole.extraStaticHosts = lib.mkIf isServer [
       {

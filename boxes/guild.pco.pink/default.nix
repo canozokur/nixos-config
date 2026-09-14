@@ -53,7 +53,7 @@
   ];
 
   box.networking = {
-    internalIP = "10.0.253.251";
+    # no internalIP: guild is cross-site
     externalIP = "82.70.46.56";
     internalInterface = "enp0s6";
     tailnet.advertiseExitNode = true;

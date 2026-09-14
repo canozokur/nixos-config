@@ -1,4 +1,8 @@
-{ config, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
   exporterPort = config.services.prometheus.exporters.node.port;
 in
@@ -13,10 +17,9 @@ in
   };
 
   services.consul.agentServices = [
-    {
+    ({
       name = "node-exporter";
       tags = [ "server" ];
-      address = config.box.networking.internalIP;
       port = exporterPort;
       checks = [
         {
@@ -27,6 +30,8 @@ in
           timeout = "1s";
         }
       ];
-    }
+    } // lib.optionalAttrs (config.box.networking.internalIP != "") {
+      address = config.box.networking.internalIP;
+    })
   ];
 }

@@ -13,7 +13,11 @@ let
     "networking"
     "internalIP"
   ];
-  localDns = lib.mapAttrsToList (n: h: "${h.config.box.networking.internalIP} ${n}.lan") localHosts;
+  # Keyed on hostName, not the flake attr name (tr/guild attrs contain the
+  # domain).
+  localDns = lib.mapAttrsToList (
+    _: h: "${h.config.box.networking.internalIP} ${h.config.networking.hostName}.pco.pink"
+  ) localHosts;
 
   customDnsHosts = helpers.getHostsWith allHosts [
     "services"
@@ -41,7 +45,7 @@ let
     let
       parts = lib.splitString "," entry;
     in
-    "${builtins.elemAt parts 1} ${builtins.elemAt parts 2}.lan"
+    "${builtins.elemAt parts 1} ${builtins.elemAt parts 2}.pco.pink"
   ) dhcpHosts;
 
   piholeHosts = helpers.getHostsWith allHosts [

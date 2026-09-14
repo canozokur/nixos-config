@@ -44,7 +44,6 @@ in
           override_local_dns = false;
         } // lib.optionalAttrs (piholeNameservers != [ ]) {
           nameservers.split = {
-            "lan" = piholeNameservers;
             "pco.pink" = piholeNameservers;
           };
         };
