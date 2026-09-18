@@ -48,6 +48,10 @@ purge-all: && _rebuild-boot
 purge-old: && _rebuild-boot
   sudo nix-collect-garbage --delete-older-than 7d
 
+# usage: provision-lun logseq 100G
+provision-lun name size:
+  ./scripts/provision-lun.sh {{name}} {{size}}
+
 # usage: services rpi01
 services box:
   #!/usr/bin/env bash
