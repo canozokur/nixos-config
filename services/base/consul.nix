@@ -3,6 +3,7 @@
   helpers,
   config,
   lib,
+  mkReverseProxyService,
   ...
 }:
 let
@@ -73,10 +74,24 @@ in
       };
     };
 
-    networking.firewall.interfaces.${tailnetIface} = {
-      allowedTCPPorts = consulPorts.tcp;
-      allowedUDPPorts = consulPorts.udp;
+    networking.firewall.interfaces = {
+      ${tailnetIface} = {
+        allowedTCPPorts = consulPorts.tcp;
+        allowedUDPPorts = consulPorts.udp;
+      };
+    } // lib.optionalAttrs (isServer && config.box.networking.lanInterface != "") {
+      # consul.pco.pink hands out every server's lanIP for the http api.
+      ${config.box.networking.lanInterface}.allowedTCPPorts = [ 8500 ];
     };
+
+    services.reverseProxy.contribs = lib.mkIf isServer (mkReverseProxyService {
+      inherit config lib;
+      name = "consul-ui";
+      subdomain = "consul-ui";
+      port = 8500;
+      # blocking queries wait up to 5 minutes
+      locationExtraConfig = "proxy_read_timeout 300s;";
+    });
 
     # the fabric interface must exist before the agent binds it.
     systemd.services.consul.after = [ "tailscaled.service" ];
