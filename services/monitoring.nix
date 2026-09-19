@@ -69,7 +69,14 @@
         ];
         # relabel configuration for consul server metrics
         # documentation: https://developer.hashicorp.com/consul/docs/reference/agent/configuration-file/telemetry#telemetry-prometheus_retention_time
+        # keep: without this the job scrapes EVERY registered service at
+        # /metrics (couchdb answered 401, mysql got probed as well)
         relabel_configs = [
+          {
+            source_labels = [ "__meta_consul_service" ];
+            regex = "consul";
+            action = "keep";
+          }
           {
             source_labels = [
               "__address__"
@@ -112,6 +119,29 @@
             target_label = "instance";
           }
         ];
+      }
+      {
+        job_name = "couchdb";
+        # couchdb's dedicated metrics listener, registered in consul by
+        # services.obsidian-sync (tailnet address). The path embeds the erlang
+        # node name (nixpkgs vm.args default, single node).
+        consul_sd_configs = [
+          {
+            server = "127.0.0.1:8500";
+          }
+        ];
+        relabel_configs = [
+          {
+            source_labels = [ "__meta_consul_service" ];
+            regex = "obsidian-sync-metrics";
+            action = "keep";
+          }
+          {
+            source_labels = [ "__meta_consul_node" ];
+            target_label = "instance";
+          }
+        ];
+        metrics_path = "/_node/couchdb@127.0.0.1/_prometheus";
       }
     ];
   };
