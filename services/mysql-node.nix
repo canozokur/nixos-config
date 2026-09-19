@@ -17,6 +17,8 @@ in
   services.mysql = {
     enable = true;
     package = pkgs.mariadb;
+    # level 2 (default) logs consul's tcp checks as aborted connections
+    settings.mysqld.log_warnings = 1;
   };
 
   services.consul.agentServices = [
