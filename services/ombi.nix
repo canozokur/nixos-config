@@ -11,6 +11,8 @@ in
     ./base/iscsi-initiator.nix
   ];
 
+  # ombi's database configuration is made manually from the web ui
+  # mysql is used there.
   services.ombi = {
     enable = true;
     openFirewall = true;
