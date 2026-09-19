@@ -1,36 +1,12 @@
 {
   config,
   pkgs,
-  inputs,
-  helpers,
   lib,
   ...
 }:
 let
   # TODO: maybe make this configurable?
   mountPoint = "/var/lib/mysql";
-
-  isGalera = (config.services.mysql.galera.clusterName != "");
-
-  clusterName = config.services.mysql.galera.clusterName;
-
-  allHosts = inputs.self.nixosConfigurations;
-  servers = helpers.getHostsWith allHosts [
-    "services"
-    "mysql"
-    "galera"
-    "clusterName"
-  ];
-  thisCluster = lib.filterAttrs (
-    n: h:
-    let
-      val = lib.attrByPath [ "config" "services" "mysql" "galera" "clusterName" ] null h;
-    in
-    val == clusterName
-  ) servers;
-  galeraNodes = lib.flatten (
-    lib.mapAttrsToList (_: h: "${h.config.box.networking.lanIP}") thisCluster
-  );
 in
 {
   imports = [
@@ -41,24 +17,14 @@ in
   services.mysql = {
     enable = true;
     package = pkgs.mariadb;
-    galeraCluster = lib.mkIf isGalera {
-      enable = true;
-      package = pkgs.mariadb-galera;
-      nodeAddresses = galeraNodes;
-      name = clusterName;
-      localName = "${config.networking.hostName}";
-      localAddress = "${config.box.networking.lanIP}";
-    };
   };
 
   services.consul.agentServices = [
     {
       name = "mysql";
-      tags =
-        lib.optionals isGalera [ "galera-${clusterName}" ]
-        ++ lib.optionals (config.services.mysql.instanceName != "") [
-          "instance-${config.services.mysql.instanceName}"
-        ];
+      tags = lib.optionals (config.services.mysql.instanceName != "") [
+        "instance-${config.services.mysql.instanceName}"
+      ];
       address = config.box.networking.lanIP;
       port = config.services.mysql.settings.mysqld.port;
       checks = [
@@ -73,16 +39,10 @@ in
     }
   ];
 
-  networking.firewall = {
-    allowedTCPPorts = [
-      config.services.mysql.settings.mysqld.port
-    ]
-    ++ lib.optionals isGalera [
-      4567 # galera port
-      4568 # galera ist
-      4444 # galera sst
-    ];
-  };
+  networking.firewall.allowedTCPPorts = [
+    config.services.mysql.settings.mysqld.port
+  ];
+
   fileSystems."${mountPoint}" = {
     device = "/dev/disk/by-uuid/0a4ed9a9-c4cd-49bf-93d3-132d11d684e6";
     fsType = "xfs";
