@@ -165,6 +165,7 @@
             "pi"
             "server"
             "monitoring"
+            "obsidian-sync"
             "tailscale"
           ];
           userServices = [ "server" ];
