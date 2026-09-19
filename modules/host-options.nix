@@ -90,11 +90,6 @@
   };
 
   options.services.mysql = {
-    galera.clusterName = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      description = "A unique Galera cluster name.";
-    };
     instanceName = lib.mkOption {
       type = lib.types.str;
       default = "";
