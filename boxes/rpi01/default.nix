@@ -70,7 +70,6 @@
   services.consul.server.enable = false;
   services.pihole.dnsServer = true;
   services.pihole.dhcpServer = true;
-  services.mysql.galera.clusterName = "home";
 
   box.networking = {
     lanIP = "192.168.1.3";
