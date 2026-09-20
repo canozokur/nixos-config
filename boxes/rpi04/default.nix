@@ -84,6 +84,7 @@ in
 
   services.consul.server.enable = true;
   services.obsidianSync.enable = true;
+  services.ocis.enable = true;
 
   fileSystems."/mnt/prometheus-data" = {
     device = "/dev/disk/by-uuid/301a494c-6b1a-4bc6-9b43-2a33870fda3e";

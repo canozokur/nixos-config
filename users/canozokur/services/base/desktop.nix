@@ -29,6 +29,7 @@
     with pkgs;
     [
       obsidian
+      owncloud-client
       # slurp, grim and satty are required for screenshots
       slurp
       grim

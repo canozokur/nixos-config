@@ -166,6 +166,7 @@
             "server"
             "monitoring"
             "obsidian-sync"
+            "ocis"
             "tailscale"
           ];
           userServices = [ "server" ];
