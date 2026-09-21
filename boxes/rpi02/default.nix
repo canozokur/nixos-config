@@ -74,6 +74,7 @@ in
   services.consul.server.enable = true;
   services.pihole.dnsServer = true;
   services.mysql.instanceName = "home";
+  services.immich.enable = true;
 
   box.networking = {
     lanIP = "192.168.1.4";

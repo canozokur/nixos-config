@@ -139,6 +139,7 @@
             "pihole"
             "server"
             "mysql-node"
+            "immich"
             "tailscale"
           ];
           userServices = [ "server" ];
