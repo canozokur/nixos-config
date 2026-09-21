@@ -36,10 +36,9 @@ in
     gpauth
     gpclient
     gpclient-connect
-    netbird-ui
     kind
     minikube
-  ];
+  ] ++ [ pkgsFast.netbird-ui ];
 
   sops.secrets = {
     "falcon-sensor/cid" = { };
