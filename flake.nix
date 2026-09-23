@@ -58,6 +58,8 @@
       url = "github:canozokur/falcon-sensor-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
 
   outputs =

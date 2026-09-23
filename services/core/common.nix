@@ -21,6 +21,7 @@ in
       plannotator = final.callPackage ../../packages/plannotator { };
       ocis-bin = final.callPackage ../../packages/ocis { };
     })
+    inputs.claude-code.overlays.default
   ];
 
   sops = {
@@ -39,12 +40,19 @@ in
   };
   # enable all firmware regardless of license
   hardware.enableAllFirmware = true;
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-  nix.settings.trusted-users = [ "root" ];
-  nix.settings.download-buffer-size = 500000000; # 500 MB
+
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [ "root" ];
+    download-buffer-size = 500000000; # 500 MB
+    substituters = [ "https://claude-code.cachix.org" ];
+    trusted-public-keys = [
+      "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
+    ];
+  };
 
   users.mutableUsers = false;
   time.timeZone = "Europe/Helsinki";
