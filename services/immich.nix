@@ -19,7 +19,11 @@ in
   ];
 
   config = lib.mkIf config.services.immich.enable {
-    users.users.immich.uid = lib.mkIf (config.services.immich.user == "immich") uid;
+    users.users.immich = {
+      uid = lib.mkIf (config.services.immich.user == "immich") uid;
+      home = mountPoint;
+      createHome = false;
+    };
     users.groups.immich.gid = lib.mkIf (config.services.immich.group == "immich") gid;
 
     fileSystems.${mountPoint} = {
@@ -52,6 +56,9 @@ in
     services.immich = {
       host = addr;
       mediaLocation = mountPoint;
+      machine-learning.environment = {
+        HF_XET_CACHE = "${mountPoint}/cache/huggingface-xet";
+      };
     };
 
     systemd.services.immich-server.unitConfig.RequiresMountsFor = mountPoint;
