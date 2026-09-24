@@ -19,6 +19,13 @@ in
         Set to "" to disable the module on this host.
       '';
     };
+    autoConnect = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = ''
+        Bring the tailnet up at boot.
+      '';
+    };
     advertiseExitNode = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -144,6 +151,10 @@ in
           '';
         };
       };
+
+    systemd.services.tailscaled-autoconnect.wantedBy = lib.mkIf (!cfg.autoConnect) (
+      lib.mkForce [ ]
+    );
 
     environment.systemPackages = lib.optionals cfg.gui [ pkgs.trayscale ];
   };

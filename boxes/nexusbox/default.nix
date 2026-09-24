@@ -112,6 +112,8 @@
     tailnet = {
       gui = true;
       operator = "canozokur";
+      # Connect on demand instead of fighting netbird at every boot.
+      autoConnect = false;
     };
   };
 
