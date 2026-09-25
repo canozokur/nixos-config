@@ -59,6 +59,9 @@ in
       # authelia subs are per-user UUIDs, so ids never match existing local
       # accounts; allow matching by the provider's email claim instead.
       auth.oauth_allow_insecure_email_lookup = true;
+      # disable default login when authelia is enabled
+      auth.disable_login = true;
+      auth.disable_login_form = true;
     };
     provision = {
       datasources.settings = {
