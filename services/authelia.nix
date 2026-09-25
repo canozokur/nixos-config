@@ -118,6 +118,7 @@ in
       };
       settings = {
         log.level = "info";
+        theme = "dark";
         server.address = "tcp://:${toString port}/";
         telemetry.metrics = {
           enabled = true;
