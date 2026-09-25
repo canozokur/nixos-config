@@ -74,6 +74,39 @@ in
         client_max_body_size 0;
       '';
       exposure = "internal";
+      # SSO via authelia. service:role group convention: both groups grant
+      # access; immich:admin maps to the admin role claim. Authorization
+      # policy "immich" is generated from `groups`.
+      oidc = {
+        client_id = "immich";
+        client_name = "Immich";
+        client_secret_file = "authelia/clients/immich";
+        groups = [
+          "immich:user"
+          "immich:admin"
+        ];
+        role_claim = {
+          claim = "immich_role";
+          # CEL, evaluated by authelia per login against the user's groups
+          expression = "'immich:admin' in groups ? 'admin' : 'user'";
+        };
+        authorization_policy = "immich";
+        require_pkce = true;
+        pkce_challenge_method = "S256";
+        redirect_uris = [
+          "https://immich.pco.pink/auth/login"
+          "https://immich.pco.pink/user-settings"
+          "app.immich:///oauth-callback"
+        ];
+        scopes = [
+          "openid"
+          "email"
+          "profile"
+        ];
+        response_types = [ "code" ];
+        grant_types = [ "authorization_code" ];
+        token_endpoint_auth_method = "client_secret_post";
+      };
     };
 
     services.consul.agentServices = [

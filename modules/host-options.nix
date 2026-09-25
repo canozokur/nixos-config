@@ -156,7 +156,12 @@
               Authelia OIDC client registration consumed by services/authelia.nix
               (identity_providers.oidc.clients entry). Set client_secret_file to
               the sops key holding the pbkdf2 digest of the client secret; no
-              digest or plaintext ever lands in this repo.
+              digest or plaintext ever lands in this repo. Declaring `groups`
+              generates an authorization policy named after client_id
+              (default-deny, one_factor allow per group) and the client's
+              authorization_policy must be set to that name. Declaring
+              `role_claim` emits that claim from admin_groups membership
+              ("admin"/"user"); the client gets its own claims_policy.
             '';
           };
           forwardAuth = lib.mkOption {
