@@ -159,6 +159,16 @@
               digest or plaintext ever lands in this repo.
             '';
           };
+          forwardAuth = lib.mkOption {
+            type = lib.types.nullOr lib.types.bool;
+            default = null;
+            description = ''
+              Gate this service's vhosts behind fleet SSO via nginx auth_request
+              on the public tier. null follows exposure: public vhosts are
+              gated by default, internal ones are not. Set false for services
+              that authenticate themselves (native OIDC) or must stay open.
+            '';
+          };
         };
       }
     );

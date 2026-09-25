@@ -3,6 +3,7 @@
   name = "emby";
   port = 8096;
   backendAddr = "192.168.1.129";
+  exposure = "public";
   extraConfig = ''
     gzip on;
     gzip_disable "msie6";

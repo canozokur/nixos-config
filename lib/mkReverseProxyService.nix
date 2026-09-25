@@ -22,6 +22,8 @@
   # Authelia OIDC client registration for this service; passed through as
   # the contrib's `oidc` field (consumed by services/authelia.nix).
   oidc ? null,
+  # SSO gating: null follows exposure (public vhosts gated by default).
+  forwardAuth ? null,
 }:
 let
   proxy = helpers.getProxy inputs.self.nixosConfigurations;
@@ -68,6 +70,8 @@ in
 {
   ${name} = {
     inherit exposure oidc;
+    forwardAuth =
+      if forwardAuth == null then (exposure == "public") else forwardAuth;
     upstreams = {
       ${name} = {
         servers."${effectiveBackend}:${toString port}" = { };

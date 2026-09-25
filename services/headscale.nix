@@ -16,6 +16,53 @@ let
     _: h: h.config.box.networking.lanIP
   ) piholeHosts;
 
+  # Tailnet-side answers for the public tier: enrolled devices resolve the
+  # public vhosts to a public proxy's tailnet address, riding the overlay so
+  # the SSO network bypass applies (the public DNS path can't see tailnet
+  # membership and would hit the login portal).
+  proxyHosts = helpers.getHostsWith inputs.self.nixosConfigurations [
+    "services"
+    "reverseProxy"
+    "host"
+  ];
+  contribHosts = helpers.getHostsWith inputs.self.nixosConfigurations [
+    "services"
+    "reverseProxy"
+    "contribs"
+  ];
+  publicProxyIPs = lib.unique (
+    lib.mapAttrsToList (_: h: h.config.box.networking.tailnet.ip) (
+      lib.filterAttrs (_: h:
+        lib.attrByPath [
+          "config"
+          "services"
+          "reverseProxy"
+          "host"
+          "role"
+        ] "" h == "public"
+        && lib.attrByPath [
+          "config"
+          "box"
+          "networking"
+          "tailnet"
+          "ip"
+        ] null h != null
+      ) proxyHosts
+    )
+  );
+  publicContribs = lib.concatMap (
+    host: lib.filter (c: c.exposure == "public") (lib.attrValues host.config.services.reverseProxy.contribs)
+  ) (lib.attrValues contribHosts);
+  publicDomains = lib.unique (
+    lib.concatMap (c:
+      (lib.attrNames c.vhosts)
+      ++ lib.concatMap (v: v.serverAliases or [ ]) (lib.attrValues c.vhosts)
+    ) publicContribs
+  );
+  tailnetPublicRecords = lib.concatMap (
+    domain: map (ip: { name = domain; type = "A"; value = ip; }) publicProxyIPs
+  ) publicDomains;
+
   websocketConfig = ''
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection $http_connection;
@@ -43,6 +90,7 @@ in
           # everything else keeps the machine's own resolvers. MagicDNS names
           # still resolve via the tailnet resolver regardless.
           override_local_dns = false;
+          extra_records = tailnetPublicRecords;
         } // lib.optionalAttrs (piholeNameservers != [ ]) {
           nameservers.split = {
             "pco.pink" = piholeNameservers;

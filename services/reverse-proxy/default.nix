@@ -93,6 +93,7 @@ in
           {
             default-vhost = {
               exposure = "public";
+              forwardAuth = false;
               vhosts = {
                 "pco.pink" = {
                   listen = [
