@@ -50,11 +50,27 @@ in
 {
   imports = [ ./base/consul.nix ];
 
-  options.services.authelia.enable = lib.mkEnableOption ''
-    the fleet Authelia SSO server (OIDC provider + forward-auth backend).
-    Exactly one host fleet-wide should enable it; other modules detect it
-    via helpers.getAuthelia.
-  '';
+  options.services.authelia = {
+    enable = lib.mkEnableOption ''
+      the fleet Authelia SSO server (OIDC provider + forward-auth backend).
+      Exactly one host fleet-wide should enable it; other modules detect it
+      via helpers.getAuthelia.
+    '';
+    internalNetworks = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [
+        "192.168.1.0/24"
+        "192.168.0.0/24"
+        "100.64.0.0/10"
+      ];
+      description = ''
+        Source networks that bypass forward-auth gating: home LANs and the
+        tailnet CGNAT range. Gated vhosts are reachable without a login from
+        these sources (the proxies pass the client's real address as
+        X-Forwarded-For); everyone else hits the portal.
+      '';
+    };
+  };
 
   config = lib.mkIf cfg.enable {
     assertions = [
@@ -111,9 +127,15 @@ in
         authentication_backend.file.path = config.sops.secrets."authelia/users".path;
         access_control = {
           # default-deny: forward-auth consumers only get in via a rule (or an
-          # OIDC client's own authorization_policy).
+          # OIDC client's own authorization_policy). Internal sources bypass;
+          # the rest needs one factor.
           default_policy = "deny";
           rules = [
+            {
+              domain = "*.pco.pink";
+              networks = cfg.internalNetworks;
+              policy = "bypass";
+            }
             {
               domain = "*.pco.pink";
               policy = "one_factor";
@@ -150,6 +172,8 @@ in
       inherit port;
       backendAddr = tailnetIP;
       exposure = "public";
+      # the portal cannot gate itself
+      forwardAuth = false;
     };
 
     services.consul.agentServices = [

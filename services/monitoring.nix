@@ -211,6 +211,8 @@ in
     subdomain = "grafana";
     port = 2324;
     exposure = "public";
+    # native OIDC via authelia; no nginx forward-auth on top
+    forwardAuth = false;
     # Consumed by services/authelia.nix when it collects fleet clients.
     oidc = {
       client_id = "grafana";
