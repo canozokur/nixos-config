@@ -1,9 +1,17 @@
 {
   config,
   lib,
+  helpers,
+  inputs,
   mkReverseProxyService,
   ...
 }:
+let
+  # Feature flag: grafana's SSO wiring appears only when some host in the
+  # fleet runs Authelia (helpers.getAuthelia returns null otherwise).
+  authelia = helpers.getAuthelia inputs.self.nixosConfigurations;
+  autheliaDomain = "auth.pco.pink";
+in
 {
   imports = [
     ./base/consul.nix
@@ -15,13 +23,42 @@
     group = "grafana";
   };
 
+  sops.secrets."grafana/oidc-client-secret" = lib.mkIf (authelia != null) {
+    owner = "grafana";
+    group = "grafana";
+  };
+
   services.grafana = {
     enable = true;
     openFirewall = true;
     settings = {
       server.http_addr = "0.0.0.0";
       server.http_port = 2324;
+      # Correct public redirect URI (OAuth redirect_uri derives from this).
+      server.root_url = "https://grafana.pco.pink";
       security.secret_key = "$__file{${config.sops.secrets."grafana/secret-key".path}}";
+    } // lib.optionalAttrs (authelia != null) {
+      "auth.generic_oauth" = {
+        enabled = true;
+        name = "Authelia";
+        icon = "signin";
+        client_id = "grafana";
+        client_secret = "$__file{${config.sops.secrets."grafana/oidc-client-secret".path}}";
+        scopes = "openid profile email groups";
+        empty_scopes = false;
+        auth_url = "https://${autheliaDomain}/api/oidc/authorization";
+        token_url = "https://${autheliaDomain}/api/oidc/token";
+        api_url = "https://${autheliaDomain}/api/oidc/userinfo";
+        login_attribute_path = "preferred_username";
+        groups_attribute_path = "groups";
+        name_attribute_path = "name";
+        use_pkce = true;
+        role_attribute_path = "contains(groups[], 'admins') && 'Admin' || 'Viewer'";
+        allow_sign_up = false;
+      };
+      # authelia subs are per-user UUIDs, so ids never match existing local
+      # accounts; allow matching by the provider's email claim instead.
+      auth.oauth_allow_insecure_email_lookup = true;
     };
     provision = {
       datasources.settings = {
@@ -143,6 +180,25 @@
         ];
         metrics_path = "/_node/couchdb@127.0.0.1/_prometheus";
       }
+      {
+        job_name = "authelia";
+        consul_sd_configs = [
+          {
+            server = "127.0.0.1:8500";
+          }
+        ];
+        relabel_configs = [
+          {
+            source_labels = [ "__meta_consul_service" ];
+            regex = "authelia-metrics";
+            action = "keep";
+          }
+          {
+            source_labels = [ "__meta_consul_node" ];
+            target_label = "instance";
+          }
+        ];
+      }
     ];
   };
 
@@ -152,6 +208,29 @@
     subdomain = "grafana";
     port = 2324;
     exposure = "public";
+    # Consumed by services/authelia.nix when it collects fleet clients.
+    oidc = {
+      client_id = "grafana";
+      client_name = "Grafana";
+      # sops key holding the pbkdf2 digest of the plaintext in
+      # `grafana/oidc-client-secret`; authelia expands it at startup.
+      client_secret_file = "authelia/clients/grafana";
+      authorization_policy = "one_factor";
+      require_pkce = true;
+      pkce_challenge_method = "S256";
+      redirect_uris = [ "https://grafana.pco.pink/login/generic_oauth" ];
+      scopes = [
+        "openid"
+        "profile"
+        "groups"
+        "email"
+      ];
+      response_types = [ "code" ];
+      grant_types = [ "authorization_code" ];
+      access_token_signed_response_alg = "none";
+      userinfo_signed_response_alg = "none";
+      token_endpoint_auth_method = "client_secret_basic";
+    };
   };
 
   systemd.services.prometheus.unitConfig = {

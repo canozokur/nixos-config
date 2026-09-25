@@ -1,0 +1,191 @@
+{
+  config,
+  lib,
+  helpers,
+  inputs,
+  mkReverseProxyService,
+  ...
+}:
+let
+  cfg = config.services.authelia;
+  instance = "main";
+  domain = "auth.pco.pink";
+  port = 9091;
+  metricsPort = 9959;
+  tailnetIface = config.box.networking.tailnet.interface;
+  # 100.x address: cross-host nginx upstreams target it by IP because nginx
+  # resolves upstream hostnames once at startup (MagicDNS would race
+  # tailscaled at boot).
+  tailnetIP = config.box.networking.tailnet.ip;
+
+  # OIDC client registrations from every fleet reverse-proxy contrib
+  # (mkReverseProxyService { oidc = { ... }; }). Each client must name the
+  # sops key holding its secret digest via client_secret_file.
+  contribOidcClients = lib.filter (c: c != null && c != { }) (
+    lib.concatMap (
+      host: lib.map (c: c.oidc) (lib.attrValues host.config.services.reverseProxy.contribs)
+    ) (lib.attrValues (helpers.getHostsWith inputs.self.nixosConfigurations [
+      "services"
+      "reverseProxy"
+      "contribs"
+    ]))
+  );
+
+  clientSecretFile = c:
+    let file = c.client_secret_file or null;
+    in if file == null then
+      throw "authelia oidc client ${c.client_id or "??"}: client_secret_file (sops key holding the client secret) is required"
+    else file;
+
+  # Authelia's template filter (active via the jwks key) reads the digest
+  # from the sops-rendered file at startup; digests never land in the repo.
+  fleetOidcClients = map (c:
+    let file = clientSecretFile c;
+    in (removeAttrs c [ "client_secret_file" ]) // {
+      client_secret = "{{ secret \"${config.sops.secrets.${file}.path}\" }}";
+    }) contribOidcClients;
+
+  clientSecretKeys = lib.unique (map clientSecretFile contribOidcClients);
+in
+{
+  imports = [ ./base/consul.nix ];
+
+  options.services.authelia.enable = lib.mkEnableOption ''
+    the fleet Authelia SSO server (OIDC provider + forward-auth backend).
+    Exactly one host fleet-wide should enable it; other modules detect it
+    via helpers.getAuthelia.
+  '';
+
+  config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = tailnetIP != null;
+        message = "services.authelia.enable requires box.networking.tailnet.ip (cross-host nginx upstreams target the tailnet address).";
+      }
+    ];
+
+    sops.secrets = {
+      "authelia/jwt-secret" = {
+        owner = "authelia-main";
+        group = "authelia-main";
+      };
+      "authelia/storage-key" = {
+        owner = "authelia-main";
+        group = "authelia-main";
+      };
+      "authelia/oidc-hmac" = {
+        owner = "authelia-main";
+        group = "authelia-main";
+      };
+      "authelia/oidc-jwks" = {
+        owner = "authelia-main";
+        group = "authelia-main";
+      };
+      "authelia/users" = {
+        owner = "authelia-main";
+        group = "authelia-main";
+      };
+    } // lib.listToAttrs (
+      map (key: lib.nameValuePair key {
+        owner = "authelia-main";
+        group = "authelia-main";
+      }) clientSecretKeys
+    );
+
+    services.authelia.instances.${instance} = {
+      enable = true;
+      secrets = {
+        jwtSecretFile = config.sops.secrets."authelia/jwt-secret".path;
+        storageEncryptionKeyFile = config.sops.secrets."authelia/storage-key".path;
+        oidcHmacSecretFile = config.sops.secrets."authelia/oidc-hmac".path;
+        oidcIssuerPrivateKeyFile = config.sops.secrets."authelia/oidc-jwks".path;
+      };
+      settings = {
+        log.level = "info";
+        server.address = "tcp://:${toString port}/";
+        telemetry.metrics = {
+          enabled = true;
+          # all interfaces; the firewall scopes the port to the tailnet
+          address = "tcp://:${toString metricsPort}";
+        };
+        authentication_backend.file.path = config.sops.secrets."authelia/users".path;
+        access_control = {
+          # default-deny: forward-auth consumers only get in via a rule (or an
+          # OIDC client's own authorization_policy).
+          default_policy = "deny";
+          rules = [
+            {
+              domain = "*.pco.pink";
+              policy = "one_factor";
+            }
+          ];
+        };
+        session.cookies = [
+          {
+            domain = "pco.pink";
+            authelia_url = "https://${domain}";
+          }
+        ];
+        storage.local.path = "/var/lib/authelia-${instance}/storage.db";
+        notifier.filesystem.filename = "/var/lib/authelia-${instance}/notification.txt";
+        identity_providers.oidc = {
+          # 4.39 dropped scope claims from id tokens by default; relying
+          # parties evaluate role/group paths against the id token first.
+          claims_policies.default.id_token = [
+            "groups"
+            "email"
+            "email_verified"
+            "preferred_username"
+            "name"
+          ];
+          clients = map (c: c // { claims_policy = "default"; }) fleetOidcClients;
+        };
+      };
+    };
+
+    services.reverseProxy.contribs = mkReverseProxyService {
+      inherit config lib;
+      name = "authelia";
+      inherit domain;
+      inherit port;
+      backendAddr = tailnetIP;
+      exposure = "public";
+    };
+
+    services.consul.agentServices = [
+      {
+        name = "authelia";
+        address = tailnetIP;
+        inherit port;
+        checks = [
+          {
+            id = "authelia-check";
+            name = "Authelia on port ${toString port}";
+            http = "http://${tailnetIP}:${toString port}/api/health";
+            interval = "10s";
+            timeout = "2s";
+          }
+        ];
+      }
+      {
+        name = "authelia-metrics";
+        address = tailnetIP;
+        port = metricsPort;
+        checks = [
+          {
+            id = "authelia-metrics-check";
+            name = "Authelia metrics on port ${toString metricsPort}";
+            http = "http://${tailnetIP}:${toString metricsPort}/metrics";
+            interval = "10s";
+            timeout = "2s";
+          }
+        ];
+      }
+    ];
+
+    networking.firewall.interfaces.${tailnetIface}.allowedTCPPorts = [
+      port
+      metricsPort
+    ];
+  };
+}

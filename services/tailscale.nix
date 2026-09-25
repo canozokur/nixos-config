@@ -67,6 +67,16 @@ in
         override per box only if a box's transport differs.
       '';
     };
+    ip = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = ''
+        This host's 100.x tailnet address. Set on hosts without a home-LAN
+        address (guild) so cross-host modules can target them by IP: nginx
+        upstreams resolve hostnames once at startup, so a MagicDNS name
+        there would race tailscaled at boot.
+      '';
+    };
     gui = lib.mkOption {
       type = lib.types.bool;
       default = false;

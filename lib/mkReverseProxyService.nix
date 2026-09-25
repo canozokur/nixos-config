@@ -19,6 +19,9 @@
   locationExtraConfig ? "",
   extraLocations ? { },
   extraListen ? [ ],
+  # Authelia OIDC client registration for this service; passed through as
+  # the contrib's `oidc` field (consumed by services/authelia.nix).
+  oidc ? null,
 }:
 let
   proxy = helpers.getProxy inputs.self.nixosConfigurations;
@@ -64,7 +67,7 @@ let
 in
 {
   ${name} = {
-    inherit exposure;
+    inherit exposure oidc;
     upstreams = {
       ${name} = {
         servers."${effectiveBackend}:${toString port}" = { };

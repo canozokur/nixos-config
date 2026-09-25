@@ -195,6 +195,7 @@
             "headscale"
             "tailscale"
             "reverse-proxy"
+            "authelia"
             "base/remote-builder"
           ];
           userServices = [ "server" ];

@@ -149,6 +149,16 @@
             default = { };
             description = "Nginx upstreams contributed by this service.";
           };
+          oidc = lib.mkOption {
+            type = lib.types.nullOr lib.types.attrs;
+            default = null;
+            description = ''
+              Authelia OIDC client registration consumed by services/authelia.nix
+              (identity_providers.oidc.clients entry). Set client_secret_file to
+              the sops key holding the pbkdf2 digest of the client secret; no
+              digest or plaintext ever lands in this repo.
+            '';
+          };
         };
       }
     );

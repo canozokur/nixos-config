@@ -61,6 +61,45 @@
         hostname = name;
       };
 
+  # Returns the unique fleet Authelia host as { hostName; tailnetIP; } or
+  # null when no host configures any instance. SSO-gating modules read this
+  # to decide whether to emit their OIDC/forward-auth configuration.
+  getAuthelia =
+    hosts:
+    let
+      # An instance exists wherever the instances attrset is non-empty
+      # (setting any instance's enable flips it non-empty via the module).
+      hasInstances =
+        h:
+        let
+          instances = lib.attrByPath [
+            "config"
+            "services"
+            "authelia"
+            "instances"
+          ] null h;
+        in
+        instances != null && instances != { };
+      matches = lib.filterAttrs (_: hasInstances) hosts;
+      names = lib.attrNames matches;
+      count = lib.length names;
+    in
+    if count == 0 then
+      null
+    else if count > 1 then
+      throw "getAuthelia: multiple Authelia hosts: ${lib.concatStringsSep ", " names}"
+    else
+      {
+        hostName = lib.head names;
+        tailnetIP = lib.attrByPath [
+          "config"
+          "box"
+          "networking"
+          "tailnet"
+          "ip"
+        ] null matches.${lib.head names};
+      };
+
   # Converts a list [ "a" "b" ] -> { prefix1="a"; prefix2="b"; }
   listToNumberedAttrs =
     prefix: list:

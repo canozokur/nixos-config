@@ -52,11 +52,14 @@
     "systemd"
   ];
 
+  services.authelia.enable = true;
+
   box.networking = {
     # no lanIP: guild is cross-site
     externalIP = "82.70.46.56";
     lanInterface = "enp0s6";
     tailnet.advertiseExitNode = true;
+    tailnet.ip = "100.64.0.1";
   };
 
   system.stateVersion = "26.05";

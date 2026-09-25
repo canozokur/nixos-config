@@ -99,6 +99,12 @@
   };
   hardware.bluetooth.powerOnBoot = true;
 
+  # USB controller wedges and dies ("xHCI host controller not responding, assume dead")
+  # trying to disable autosuspend, let's see if that fixes the issue
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x1022", ATTR{device}=="0x43f7", ATTR{power/control}="on"
+  '';
+
   virtualisation.spiceUSBRedirection.enable = true;
 
   security.pam.loginLimits = [
