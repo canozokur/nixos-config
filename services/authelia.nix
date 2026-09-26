@@ -34,7 +34,9 @@ let
   clientSecretFile = c:
     let file = c.client_secret_file or null;
     in if file == null then
-      throw "authelia oidc client ${c.client_id or "??"}: client_secret_file (sops key holding the client secret) is required"
+      # public clients (e.g. PKCE-only SPAs) legitimately have no secret
+      if c.public or false then null
+      else throw "authelia oidc client ${c.client_id or "?"}: client_secret_file (sops key holding the client secret) is required"
     else file;
 
   # Authelia's template filter (active via the jwks key) reads the digest
@@ -43,12 +45,14 @@ let
   # claims_policy (named after the client), everyone else the default one.
   fleetOidcClients = map (c:
     let file = clientSecretFile c;
-    in (removeAttrs c [ "client_secret_file" "groups" "role_claim" ]) // {
+    in (removeAttrs c [ "client_secret_file" "groups" "role_claim" ])
+    // (lib.optionalAttrs (file != null) {
       client_secret = "{{ secret \"${config.sops.secrets.${file}.path}\" }}";
+    }) // {
       claims_policy = if (c.role_claim or null) != null then c.client_id else "default";
     }) contribOidcClients;
 
-  clientSecretKeys = lib.unique (map clientSecretFile contribOidcClients);
+  clientSecretKeys = lib.unique (lib.filter (x: x != null) (map clientSecretFile contribOidcClients));
 
   # Clients declaring `groups` get a per-client authorization policy named
   # after their client_id: default-deny, one allow rule per group. One
@@ -67,6 +71,13 @@ let
   # Immich role, re-read on every SSO login); the expression lives in the
   # contrib next to the group convention it encodes.
   roleClaimClients = lib.filter (c: (c.role_claim or null) != null) contribOidcClients;
+
+  # Custom claims reach a relying party's userinfo only through a scope the
+  # client requests; one scope per role-claim client, named after the client.
+  roleClaimScopes = lib.listToAttrs (map (c:
+    lib.nameValuePair c.client_id {
+      claims = [ c.role_claim.claim ];
+    }) roleClaimClients);
 in
 {
   imports = [ ./base/consul.nix ];
@@ -184,6 +195,17 @@ in
         identity_providers.oidc = {
           # 4.39 dropped scope claims from id tokens by default; relying
           # parties evaluate role/group paths against the id token first.
+          lifespans.custom.ocis = {
+            access_token = "12 hours";
+            refresh_token = "30 days";
+          };
+          cors.endpoints = [
+            "authorization"
+            "token"
+            "revocation"
+            "introspection"
+            "userinfo"
+          ];
           claims_policies = {
             default.id_token = [
               "groups"
@@ -206,6 +228,7 @@ in
                 attribute = c.role_claim.claim;
               };
             }) roleClaimClients);
+          scopes = roleClaimScopes;
           authorization_policies = oidcAuthorizationPolicies;
           clients = fleetOidcClients;
         };
