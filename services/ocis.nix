@@ -2,6 +2,8 @@
   pkgs,
   config,
   lib,
+  helpers,
+  inputs,
   mkReverseProxyService,
   ...
 }:
@@ -11,6 +13,9 @@ let
   mountPoint = "/mnt/ocis-data";
   uid = 328;
   gid = uid;
+  # the fleet authelia host, or null; the SSO env block below only exists
+  # when authelia is enabled somewhere in the fleet (grafana pattern)
+  authelia = helpers.getAuthelia inputs.self.nixosConfigurations;
 in
 {
   imports = [
@@ -53,13 +58,35 @@ in
       configDir = "${mountPoint}/config";
       stateDir = "${mountPoint}/data";
       url = "https://${config.services.ocis.domain}";
-      # TLS terminates at the internal reverse proxy; OCIS_INSECURE alone does
-      # not turn off the proxy's own listener TLS (PROXY_TLS defaults true)
-      environment.OCIS_INSECURE = "true";
-      environment.PROXY_TLS = "false";
-      # web defaults to 0.0.0.0:9100, which is node-exporter's tailnet port;
-      # only the proxy needs web, discovered via the internal registry
-      environment.WEB_HTTP_ADDR = "${addr}:9110";
+      environment = {
+        # TLS terminates at the internal reverse proxy; OCIS_INSECURE alone
+        # does not turn off the proxy's own listener TLS (PROXY_TLS defaults
+        # true)
+        OCIS_INSECURE = "true";
+        PROXY_TLS = "false";
+        # web defaults to 0.0.0.0:9100, which is node-exporter's tailnet
+        # port; only the proxy needs web, discovered via the internal registry
+        WEB_HTTP_ADDR = "${addr}:9110";
+      } // lib.optionalAttrs (authelia != null) {
+        # SSO via authelia. PROXY_* configures oCIS's own embedded proxy
+        # (the component doing the OIDC dance), not the fleet nginx.
+        OCIS_OIDC_ISSUER = "https://auth.pco.pink";
+        PROXY_OIDC_REWRITE_WELLKNOWN = "true";
+        PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD = "none";
+        PROXY_OIDC_SKIP_USER_INFO = "false";
+        PROXY_OIDC_INSECURE = "false";
+        WEB_OIDC_CLIENT_ID = "ocis";
+        WEB_OIDC_SCOPE = "openid profile email ocis";
+        PROXY_USER_OIDC_CLAIM = "preferred_username";
+        PROXY_USER_CS3_CLAIM = "username";
+        PROXY_AUTOPROVISION_ACCOUNTS = "true";
+        PROXY_ROLE_ASSIGNMENT_DRIVER = "oidc";
+        PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM = "owncloud_role";
+        OCIS_ADMIN_USER_ID = "";
+        OCIS_EXCLUDE_RUN_SERVICES = "idp";
+        GRAPH_ASSIGN_DEFAULT_USER_ROLE = "false";
+        GRAPH_USERNAME_MATCH = "none";
+      };
     };
 
     # bootstraps ocis.yaml (with its generated secrets) onto the LUN on first
@@ -107,6 +134,50 @@ in
         client_max_body_size 0;
       '';
       exposure = "internal";
+      # SSO via authelia. service:role group convention: both groups grant
+      # access; owncloud:admin maps to the ocisAdmin role claim (the stock
+      # value oCIS's role-assignment driver expects). Authorization policy
+      # "ocis" is generated from `groups`.
+      oidc = {
+        client_id = "ocis";
+        client_name = "ownCloud Infinite Scale";
+        public = true;
+        groups = [
+          "owncloud:user"
+          "owncloud:admin"
+        ];
+        role_claim = {
+          claim = "owncloud_role";
+          # CEL, evaluated by authelia per login against the user's groups
+          expression = "'owncloud:admin' in groups ? 'ocisAdmin' : 'ocisUser'";
+        };
+        authorization_policy = "ocis";
+        require_pkce = true;
+        pkce_challenge_method = "S256";
+        redirect_uris = [
+          "https://files.pco.pink/"
+          "https://files.pco.pink/oidc-callback.html"
+          "https://files.pco.pink/oidc-silent-redirect.html"
+          "https://files.pco.pink/apps/openidconnect/redirect"
+        ];
+        scopes = [
+          "openid"
+          "offline_access"
+          "groups"
+          "profile"
+          "email"
+          "ocis"
+        ];
+        response_types = [ "code" ];
+        grant_types = [
+          "authorization_code"
+          "refresh_token"
+        ];
+        token_endpoint_auth_method = "none";
+        access_token_signed_response_alg = "none";
+        userinfo_signed_response_alg = "none";
+        lifespan = "ocis";
+      };
     };
 
     services.consul.agentServices = [
