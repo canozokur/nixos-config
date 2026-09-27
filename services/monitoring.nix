@@ -214,7 +214,7 @@ in
     # native OIDC via authelia; no nginx forward-auth on top
     forwardAuth = false;
     # Consumed by services/authelia.nix when it collects fleet clients.
-    oidc = {
+    oidc = [ {
       client_id = "grafana";
       client_name = "Grafana";
       # sops key holding the pbkdf2 digest of the plaintext in
@@ -235,7 +235,7 @@ in
       access_token_signed_response_alg = "none";
       userinfo_signed_response_alg = "none";
       token_endpoint_auth_method = "client_secret_basic";
-    };
+    } ];
   };
 
   systemd.services.prometheus.unitConfig = {

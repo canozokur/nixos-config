@@ -19,23 +19,23 @@ let
   tailnetIP = config.box.networking.tailnet.ip;
 
   # OIDC client registrations from every fleet reverse-proxy contrib
-  # (mkReverseProxyService { oidc = { ... }; }). Each client must name the
-  # sops key holding its secret digest via client_secret_file.
-  contribOidcClients = lib.filter (c: c != null && c != { }) (
-    lib.concatMap (
-      host: lib.map (c: c.oidc) (lib.attrValues host.config.services.reverseProxy.contribs)
-    ) (lib.attrValues (helpers.getHostsWith inputs.self.nixosConfigurations [
-      "services"
-      "reverseProxy"
-      "contribs"
-    ]))
-  );
+  # (mkReverseProxyService { oidc = [ { ... }; ]; }), flattened. Each client
+  # names its sops secret digest via client_secret_file, or ships its secret
+  # inline when it is a public constant baked into the client binary.
+  contribOidcClients = lib.concatMap (
+    host: lib.concatMap (c: lib.optionals (c.oidc != null) c.oidc) (lib.attrValues host.config.services.reverseProxy.contribs)
+  ) (lib.attrValues (helpers.getHostsWith inputs.self.nixosConfigurations [
+    "services"
+    "reverseProxy"
+    "contribs"
+  ]));
 
   clientSecretFile = c:
     let file = c.client_secret_file or null;
     in if file == null then
-      # public clients (e.g. PKCE-only SPAs) legitimately have no secret
-      if c.public or false then null
+      # public clients (e.g. PKCE-only SPAs) and clients shipping a
+      # public-by-design secret (native apps) legitimately need no sops key
+      if c.public or false || (c.client_secret or null) != null then null
       else throw "authelia oidc client ${c.client_id or "?"}: client_secret_file (sops key holding the client secret) is required"
     else file;
 

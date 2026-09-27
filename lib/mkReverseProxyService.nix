@@ -19,8 +19,9 @@
   locationExtraConfig ? "",
   extraLocations ? { },
   extraListen ? [ ],
-  # Authelia OIDC client registration for this service; passed through as
-  # the contrib's `oidc` field (consumed by services/authelia.nix).
+  # Authelia OIDC client registrations owned by this service (list of client
+  # records, may be null); passed through as the contrib's `oidc` field
+  # (consumed by services/authelia.nix).
   oidc ? null,
   # SSO gating: null follows exposure (public vhosts gated by default).
   forwardAuth ? null,

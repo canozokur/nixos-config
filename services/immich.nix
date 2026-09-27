@@ -77,7 +77,7 @@ in
       # SSO via authelia. service:role group convention: both groups grant
       # access; immich:admin maps to the admin role claim. Authorization
       # policy "immich" is generated from `groups`.
-      oidc = {
+      oidc = [ {
         client_id = "immich";
         client_name = "Immich";
         client_secret_file = "authelia/clients/immich";
@@ -106,7 +106,7 @@ in
         response_types = [ "code" ];
         grant_types = [ "authorization_code" ];
         token_endpoint_auth_method = "client_secret_post";
-      };
+      } ];
     };
 
     services.consul.agentServices = [

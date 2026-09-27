@@ -150,18 +150,20 @@
             description = "Nginx upstreams contributed by this service.";
           };
           oidc = lib.mkOption {
-            type = lib.types.nullOr lib.types.attrs;
+            type = lib.types.nullOr (lib.types.listOf lib.types.attrs);
             default = null;
             description = ''
-              Authelia OIDC client registration consumed by services/authelia.nix
-              (identity_providers.oidc.clients entry). Set client_secret_file to
-              the sops key holding the pbkdf2 digest of the client secret; no
-              digest or plaintext ever lands in this repo. Declaring `groups`
-              generates an authorization policy named after client_id
-              (default-deny, one_factor allow per group) and the client's
-              authorization_policy must be set to that name. Declaring
-              `role_claim` emits that claim from admin_groups membership
-              ("admin"/"user"); the client gets its own claims_policy.
+              Authelia OIDC client registrations owned by this service, one
+              entry per identity_providers.oidc.clients entry. Set
+              client_secret_file to the sops key holding the pbkdf2 digest of
+              the client secret; no digest or plaintext ever lands in this
+              repo. Secrets that are public constants shipped inside the
+              client binary (e.g. oCIS native apps) may instead set
+              client_secret directly. Declaring `groups` generates an
+              authorization policy named after client_id (default-deny,
+              one_factor allow per group) and the client's authorization_policy
+              must be set to that name. Declaring `role_claim` emits that claim
+              from a CEL expression; the client gets its own claims_policy.
             '';
           };
           forwardAuth = lib.mkOption {
