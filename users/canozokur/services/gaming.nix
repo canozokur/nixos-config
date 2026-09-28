@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgsFast, ... }:
 {
   imports = [
     ./base/desktop.nix
@@ -8,7 +8,7 @@
 
   home.packages = with pkgs; [
     telegram-desktop
-    tsukimi
+    pkgsFast.plezy
     mangohud
   ];
 }
