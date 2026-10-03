@@ -1,4 +1,4 @@
-{ pkgs, lib, system, osConfig, ... }:
+{ pkgs, osConfig, ... }:
 {
   imports = [
     ../../programs/shell-config.nix
@@ -36,9 +36,7 @@
       satty
       obs-studio
       cameractrls-gtk4
-    ]
-    ++ lib.optionals (system != "aarch64-linux") [
-      spotify
+      spotifast
     ];
 
   services.blueman-applet.enable = osConfig.services.blueman.enable;
