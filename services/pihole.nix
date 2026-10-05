@@ -62,6 +62,13 @@ in
   ];
 
   config = {
+    # FTL 6.7.1 doesn't build under GCC 16; pin GCC 15 until upstream fixes it.
+    nixpkgs.overlays = [
+      (final: prev: {
+        pihole-ftl = prev.pihole-ftl.override { stdenv = prev.gcc15Stdenv; };
+      })
+    ];
+
     # The fleet resolver (services/core/common.nix) binds 127.0.0.53:53.
     # That collides with pihole-FTL's wildcard bind on :53.
     # Per https://docs.pi-hole.net/docker/tips-and-tricks/:
