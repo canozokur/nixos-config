@@ -56,8 +56,11 @@ in
     services.immich = {
       host = addr;
       mediaLocation = mountPoint;
+      environment = {
+        IMMICH_LOG_LEVEL = "debug";
+      };
       machine-learning.environment = {
-        HF_XET_CACHE = "${mountPoint}/cache/huggingface-xet";
+        IMMICH_LOG_LEVEL = "debug";
       };
     };
 
