@@ -36,7 +36,7 @@
       satty
       obs-studio
       cameractrls-gtk4
-      spotifast
+      spotify
     ];
 
   services.blueman-applet.enable = osConfig.services.blueman.enable;
