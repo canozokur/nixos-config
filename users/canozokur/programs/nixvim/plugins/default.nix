@@ -2,6 +2,7 @@
 {
   imports = [
     ./barbar.nix
+    ./gitsigns.nix
     ./blink-cmp.nix
     ./harpoon2.nix
     ./telescope.nix
