@@ -8,6 +8,11 @@
 
   fonts.fontconfig = {
     enable = true;
+    # hopefuly better fonts
+    antialiasing = true;
+    hinting = "slight";
+    subpixelRendering = "rgb";
+
     defaultFonts.monospace = [ "caskaydia-cove" ];
   };
 }
