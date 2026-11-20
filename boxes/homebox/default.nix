@@ -82,7 +82,7 @@
     }
   ];
   box.desktop = {
-    hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card2" ];
+    hyprlandGPU = [ "AQ_DRM_DEVICES,/dev/dri/card1" ];
     waybarTemperaturePath = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon2/temp1_input";
   };
 
