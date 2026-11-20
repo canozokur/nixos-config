@@ -3,9 +3,11 @@
   lib,
   helpers,
   config,
+  pkgs,
   ...
 }:
 let
+  cfg = config.services.pihole;
   allHosts = inputs.self.nixosConfigurations;
 
   localHosts = helpers.getHostsWith allHosts [
@@ -55,121 +57,157 @@ let
   ];
   dnsServersList = lib.mapAttrsToList (n: h: "${h.config.box.networking.lanIP}") piholeHosts;
   dnsServers = builtins.concatStringsSep "," dnsServersList;
+
+  efi = pkgs.fetchurl {
+    url = "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3/netboot.xyz-snp.efi";
+    hash = "sha256-5+d4ipSk3RcONEWQ96l7JnHKOUvoZM6d4gLD30Zcys0=";
+    name = "netboot-xyz-amd64.efi";
+  };
+
+  tftpRoot = pkgs.runCommand "netboot-xyz-tftp" { } ''
+    mkdir -p $out
+    cp ${efi} $out/netboot-amd64.efi
+    chmod 0444 $out/*
+  '';
 in
 {
   imports = [
     ./base/consul.nix
   ];
 
-  config = {
-    # FTL 6.7.1 doesn't build under GCC 16; pin GCC 15 until upstream fixes it.
-    nixpkgs.overlays = [
-      (final: prev: {
-        pihole-ftl = prev.pihole-ftl.override { stdenv = prev.gcc15Stdenv; };
-      })
-    ];
+  options.services.pihole = {
+    netboot = lib.mkEnableOption "netboot.xyz PXE bootloader setup with TFTP + DHCP options";
 
-    # The fleet resolver (services/core/common.nix) binds 127.0.0.53:53.
-    # That collides with pihole-FTL's wildcard bind on :53.
-    # Per https://docs.pi-hole.net/docker/tips-and-tricks/:
-    # disable resolved's stub listener, but keep the service itself running.
-    # NetworkManager and Tailscale MagicDNS integrate with the service.
-    # /etc/resolv.conf must then point at the real resolv.conf, not the stub.
-    services.resolved.settings.Resolve.DNSStubListener = lib.mkForce "no";
-    environment.etc."resolv.conf".source = lib.mkForce "/run/systemd/resolve/resolv.conf";
-
-    services.pihole-web = {
-      enable = true;
-      hostName = "pihole.pco.pink";
-      ports = [
-        "1080r"
-        "1443s"
-      ];
-    };
-    services.pihole-ftl = {
-      enable = true;
-      openFirewallDNS = true;
-      openFirewallDHCP = true;
-      openFirewallWebserver = true;
-      queryLogDeleter.enable = true; # deletes logs weekly by default
-      settings = {
-        dns = {
-          upstreams = [
-            "1.1.1.1"
-            "1.0.0.1"
-          ];
-          hosts = localDns ++ customDnsEntries ++ dhcpDnsEntries;
-        };
-        dhcp = {
-          active = lib.mkIf config.services.pihole.dhcpServer true;
-          start = "192.168.1.50";
-          end = "192.168.1.252"; # reserve 253 for internal connections, 254 for external and 255 for broadcast (just in case)
-          router = "192.168.1.1";
-          netmask = "255.255.255.0";
-          leaseTime = "24h";
-          rapidCommit = true;
-          hosts = dhcpHosts;
-        };
-        misc.dnsmasq_lines = [
-          "dhcp-option=option:dns-server,${dnsServers}"
-          # With no interface config, dnsmasq enables implicit local-service.
-          # local-service answers only queries from directly-connected subnets.
-          # Tailnet sources (100.64.x) arrive on the tailnet interface and are
-          # dropped. Declaring the served interfaces disables implicit
-          # local-service; bind-dynamic tolerates the tailnet interface
-          # appearing after FTL at boot.
-          "interface=lo"
-          "interface=${config.box.networking.lanInterface}"
-          "interface=${config.box.networking.tailnet.interface}"
-          "bind-dynamic"
-        ]
-        ++ lib.optionals config.services.consul.enable [ "server=/consul/127.0.0.1#8600" ];
-      };
-      lists = [
-        {
-          url = "https://reddestdream.github.io/Projects/MinimalHosts/etc/MinimalHostsBlocker/minimalhosts";
-        }
-        { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/KADhosts/hosts"; }
-        { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.Spam/hosts"; }
-        { url = "https://v.firebog.net/hosts/static/w3kbl.txt"; }
-        { url = "https://www.joewein.net/dl/bl/dom-bl-base.txt"; }
-        {
-          url = "https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt";
-        }
-        { url = "https://someonewhocares.org/hosts/zero/hosts"; }
-        { url = "https://raw.githubusercontent.com/Dawsey21/Lists/master/main-blacklist.txt"; }
-        { url = "https://raw.githubusercontent.com/vokins/yhosts/master/hosts"; }
-        { url = "http://winhelp2002.mvps.org/hosts.txt"; }
-        { url = "https://adaway.org/hosts.txt"; }
-        { url = "https://v.firebog.net/hosts/AdguardDNS.txt"; }
-        { url = "https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt"; }
-        { url = "https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt"; }
-        { url = "https://v.firebog.net/hosts/Easylist.txt"; }
-        { url = "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts;showintro=0"; }
-        { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/UncheckyAds/hosts"; }
-        { url = "https://v.firebog.net/hosts/Easyprivacy.txt"; }
-        { url = "https://v.firebog.net/hosts/Prigent-Ads.txt"; }
-        { url = "https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-blocklist.txt"; }
-        { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.2o7Net/hosts"; }
-        { url = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt"; }
-        { url = "https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt"; }
-        { url = "https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt"; }
-        { url = "https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt"; }
-        {
-          url = "https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt";
-        }
-        { url = "https://v.firebog.net/hosts/Prigent-Malware.txt"; }
-        { url = "https://phishing.army/download/phishing_army_blocklist_extended.txt"; }
-        { url = "https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt"; }
-        { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.Risk/hosts"; }
-        { url = "https://raw.githubusercontent.com/HorusTeknoloji/TR-PhishingList/master/url-lists.txt"; }
-        { url = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt"; }
-        # allow lists (type = allow)
-        {
-          url = "https://raw.githubusercontent.com/GoodnessJSON/PiHole-Whitelist/master/lists/whitelist.txt";
-          type = "allow";
-        }
-      ];
+    tftpRoot = lib.mkOption {
+      type = lib.types.str;
+      readOnly = true;
+      default = "${tftpRoot}";
+      description = "Store path containing the pinned bootloader files.";
     };
   };
+
+  config = lib.mkMerge [
+    {
+      # FTL 6.7.1 doesn't build under GCC 16; pin GCC 15 until upstream fixes it.
+      nixpkgs.overlays = [
+        (final: prev: {
+          pihole-ftl = prev.pihole-ftl.override { stdenv = prev.gcc15Stdenv; };
+        })
+      ];
+
+      # The fleet resolver (services/core/common.nix) binds 127.0.0.53:53.
+      # That collides with pihole-FTL's wildcard bind on :53.
+      # Per https://docs.pi-hole.net/docker/tips-and-tricks/:
+      # disable resolved's stub listener, but keep the service itself running.
+      # NetworkManager and Tailscale MagicDNS integrate with the service.
+      # /etc/resolv.conf must then point at the real resolv.conf, not the stub.
+      services.resolved.settings.Resolve.DNSStubListener = lib.mkForce "no";
+      environment.etc."resolv.conf".source = lib.mkForce "/run/systemd/resolve/resolv.conf";
+
+      services.pihole-web = {
+        enable = true;
+        hostName = "pihole.pco.pink";
+        ports = [
+          "1080r"
+          "1443s"
+        ];
+      };
+      services.pihole-ftl = {
+        enable = true;
+        openFirewallDNS = true;
+        openFirewallDHCP = true;
+        openFirewallWebserver = true;
+        queryLogDeleter.enable = true; # deletes logs weekly by default
+        settings = {
+          dns = {
+            upstreams = [
+              "1.1.1.1"
+              "1.0.0.1"
+            ];
+            hosts = localDns ++ customDnsEntries ++ dhcpDnsEntries;
+          };
+          dhcp = {
+            active = lib.mkIf cfg.dhcpServer true;
+            start = "192.168.1.50";
+            end = "192.168.1.252"; # reserve 253 for internal connections, 254 for external and 255 for broadcast (just in case)
+            router = "192.168.1.1";
+            netmask = "255.255.255.0";
+            leaseTime = "24h";
+            rapidCommit = false; # breaks PXE boot
+            hosts = dhcpHosts;
+          };
+          misc.dnsmasq_lines = [
+            "dhcp-option=option:dns-server,${dnsServers}"
+            # With no interface config, dnsmasq enables implicit local-service.
+            # local-service answers only queries from directly-connected subnets.
+            # Tailnet sources (100.64.x) arrive on the tailnet interface and are
+            # dropped. Declaring the served interfaces disables implicit
+            # local-service; bind-dynamic tolerates the tailnet interface
+            # appearing after FTL at boot.
+            "interface=lo"
+            "interface=${config.box.networking.lanInterface}"
+            "interface=${config.box.networking.tailnet.interface}"
+            "bind-dynamic"
+          ]
+          ++ lib.optionals config.services.consul.enable [ "server=/consul/127.0.0.1#8600" ];
+          resolver.resolveIPv6 = false; # we don't have ipv6 support at home, unfortunately
+        };
+        lists = [
+          {
+            url = "https://reddestdream.github.io/Projects/MinimalHosts/etc/MinimalHostsBlocker/minimalhosts";
+          }
+          { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/KADhosts/hosts"; }
+          { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.Spam/hosts"; }
+          { url = "https://v.firebog.net/hosts/static/w3kbl.txt"; }
+          { url = "https://www.joewein.net/dl/bl/dom-bl-base.txt"; }
+          {
+            url = "https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt";
+          }
+          { url = "https://someonewhocares.org/hosts/zero/hosts"; }
+          { url = "https://raw.githubusercontent.com/Dawsey21/Lists/master/main-blacklist.txt"; }
+          { url = "https://raw.githubusercontent.com/vokins/yhosts/master/hosts"; }
+          { url = "http://winhelp2002.mvps.org/hosts.txt"; }
+          { url = "https://adaway.org/hosts.txt"; }
+          { url = "https://v.firebog.net/hosts/AdguardDNS.txt"; }
+          { url = "https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt"; }
+          { url = "https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt"; }
+          { url = "https://v.firebog.net/hosts/Easylist.txt"; }
+          { url = "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts;showintro=0"; }
+          { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/UncheckyAds/hosts"; }
+          { url = "https://v.firebog.net/hosts/Easyprivacy.txt"; }
+          { url = "https://v.firebog.net/hosts/Prigent-Ads.txt"; }
+          { url = "https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-blocklist.txt"; }
+          { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.2o7Net/hosts"; }
+          { url = "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt"; }
+          { url = "https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt"; }
+          { url = "https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt"; }
+          { url = "https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt"; }
+          {
+            url = "https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt";
+          }
+          { url = "https://v.firebog.net/hosts/Prigent-Malware.txt"; }
+          { url = "https://phishing.army/download/phishing_army_blocklist_extended.txt"; }
+          { url = "https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt"; }
+          { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.Risk/hosts"; }
+          { url = "https://raw.githubusercontent.com/HorusTeknoloji/TR-PhishingList/master/url-lists.txt"; }
+          { url = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt"; }
+          # allow lists (type = allow)
+          {
+            url = "https://raw.githubusercontent.com/GoodnessJSON/PiHole-Whitelist/master/lists/whitelist.txt";
+            type = "allow";
+          }
+        ];
+      };
+    }
+
+    (lib.mkIf cfg.netboot {
+      networking.firewall.allowedUDPPorts = [ 69 ];
+      services.pihole-ftl.settings.misc.dnsmasq_lines = lib.mkAfter [
+        "enable-tftp"
+        "tftp-root=${tftpRoot}"
+        "dhcp-no-override"
+        "dhcp-boot=netboot-amd64.efi,,${config.box.networking.lanIP}"
+      ];
+    })
+  ];
 }
