@@ -267,6 +267,7 @@ in
     }
     pane_frames false
     show_startup_tips false
+    context_menu_enabled false
   '';
   xdg.configFile."zellij/layouts/default.kdl".text = ''
     layout {
