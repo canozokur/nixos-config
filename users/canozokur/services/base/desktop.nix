@@ -9,7 +9,6 @@
     ../../programs/rofi.nix
     ../../programs/cliphist.nix
     ../../programs/wlsunset.nix
-    ../../programs/keybase.nix
     ../../programs/kanshi.nix
     ../../programs/wezterm.nix
     ../../programs/swaync.nix
