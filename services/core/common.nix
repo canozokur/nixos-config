@@ -54,6 +54,12 @@ in
     ];
   };
 
+  nix.gc = {
+    automatic = true;
+    persistent = true;
+    randomizedDelaySec = "45min";
+  };
+
   users.mutableUsers = false;
   time.timeZone = "Europe/Helsinki";
 
